@@ -1,0 +1,207 @@
+BOOK:Desplazamientos_Fijos
+NUMBER: 1 CONDITION: Restricciones_Puntuales
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Restricción_X:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-X,0.0)(#DEFAULT#,RESTORE,Desplazamiento-X,0.0)
+QUESTION: Desplazamiento-X
+VALUE: 0.000
+QUESTION: Restricción_Y:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Y,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Y,0.0)
+QUESTION: Desplazamiento-Y
+VALUE: 0.000
+QUESTION: Restricción_Z:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Z,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Z,0.0)
+QUESTION: Desplazamiento-Z
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+NUMBER: 2 CONDITION: Restricciones_Lineales
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Restricción_X:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-X,0.0)(#DEFAULT#,RESTORE,Desplazamiento-X,0.0)
+QUESTION: Desplazamiento-X
+VALUE: 0.000
+QUESTION: Restricción_Y:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Y,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Y,0.0)
+QUESTION: Desplazamiento-Y
+VALUE: 0.000
+QUESTION: Restricción_Z:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Z,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Z,0.0)
+QUESTION: Desplazamiento-Z
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+NUMBER: 3 CONDITION: Restricciones_Superf.
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Restricción_X:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-X,0.0)(#DEFAULT#,RESTORE,Desplazamiento-X,0.0)
+QUESTION: Desplazamiento-X
+VALUE: 0.000
+QUESTION: Restricción_Y:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Y,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Y,0.0)
+QUESTION: Desplazamiento-Y
+VALUE: 0.000
+QUESTION: Restricción_Z:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Desplazamiento-Z,0.0)(#DEFAULT#,RESTORE,Desplazamiento-Z,0.0)
+QUESTION: Desplazamiento-Z
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+BOOK:Apoyos_Elasticos
+NUMBER: 4 CONDITION: Apoyos_Elást._Puntuales
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+CANREPEAT: yes
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Kx:
+VALUE: 0.000
+QUESTION: Ky:
+VALUE: 0.000
+QUESTION: Kz:
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+NUMBER: 5 CONDITION: Apoyos_Elást._Lineales
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Kx:
+VALUE: 0.000
+QUESTION: Ky:
+VALUE: 0.000
+QUESTION: Kz:
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+NUMBER: 6 CONDITION: Apoyos_Elást._Superf.
+CONDTYPE: over surfaces
+QUESTION: Ejes_Locales#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+QUESTION: Kx:
+VALUE: 0.000
+QUESTION: Ky:
+VALUE: 0.000
+QUESTION: Kz:
+VALUE: 0.000
+image: logo.gif
+END CONDITION
+BOOK:Cargas
+NUMBER: 7 CONDITION: Carga_Puntual
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+QUESTION: Fuerza-X
+VALUE: 0.0
+QUESTION: Fuerza-Y
+VALUE: 0.0
+QUESTION: Fuerza-Z
+VALUE: 0.0
+END CONDITION
+NUMBER: 8 CONDITION: Presión-Global-Projectada
+CONDTYPE: over surfaces
+HELP: Presión en ejes globales uniformemente distribuida en la projección del eje.
+QUESTION: Presión_X
+VALUE: 0.0
+QUESTION: Presión_Y
+VALUE: 0.0
+QUESTION: Presión_Z
+VALUE: 0.0
+END CONDITION
+NUMBER: 9 CONDITION: Presión-Uniforme
+CONDTYPE: over surfaces
+HELP: Presión en ejes locales uniformemente distribuida en la superficie aplicada.
+QUESTION: Ejes_Locales#LA#(GLOBAL,Automatic)
+VALUE: GLOBAL
+DEPENDENCIES: (GLOBAL,RESTORE,Presión_X,0.0,RESTORE,Presión_Y,0.0,RESTORE,Presión_Z,0.0,HIDE,Presión_X',0.0,HIDE,Tangencial_x,0.0,HIDE,Presión_Y',0.0,HIDE,Tangencial_y,0.0,HIDE,Presión_Z',0.0,HIDE,Normal_z,0.0) (Automatic,RESTORE,Tangencial_x,0.0,RESTORE,Tangencial_y,0.0,RESTORE,Normal_z,0.0,HIDE,Presión_X,0.0,HIDE,Presión_X',0.0,HIDE,Presión_Y,0.0,HIDE,Presión_Y',0.0,HIDE,Presión_Z',0.0,HIDE,Presión_Z,0.0)(#DEFAULT#,RESTORE,Presión_X',0.0,RESTORE,Presión_Y',0.0,RESTORE,Presión_Z',0.0,HIDE,Tangencial_x,0.0,HIDE,Presión_X,0.0,HIDE,Tangencial_y,0.0,HIDE,Presión_Y,0.0,HIDE,Normal_z,0.0,HIDE,Presión_Z,0.0)
+QUESTION: Presión_X
+VALUE: 0.0
+QUESTION: Presión_Y
+VALUE: 0.0
+QUESTION: Presión_Z
+VALUE: 0.0
+QUESTION: Tangencial_x
+VALUE: 0.0
+QUESTION: Tangencial_y
+VALUE: 0.0
+QUESTION: Normal_z
+VALUE: 0.0
+QUESTION: Presión_X'
+VALUE: 0.0
+QUESTION: Presión_Y'
+VALUE: 0.0
+QUESTION: Presión_Z'
+VALUE: 0.0
+END CONDITION
+NUMBER: 10 CONDITION: Presión-Trapezoidal
+CONDTYPE: over surfaces
+HELP: Esta carga es similar a la de "Presión-Uniforme" pero su intensidad cambia dependiendo del punto donde esta aplicada. Los dos puntos definen una linea imaginaria en el espacio. Por cada punto en el contorno del volumen donde la carga es aplicada, es posible projectar este punto sobre la linea imaginaria e interpolar el valor de la presión.
+TITLE: Position
+QUESTION: X_punto_1
+VALUE: 0.0
+QUESTION: Y_punto_1
+VALUE: 0.0
+QUESTION: Z_punto_1
+VALUE: 0.0
+QUESTION: X_punto_2
+VALUE: 0.0
+QUESTION: Y_punto_2
+VALUE: 0.0
+QUESTION: Z_punto_2
+VALUE: 0.0
+TITLE: Pressures
+QUESTION: Ejes_Locales#LA#(GLOBAL,Automatic)
+VALUE: GLOBAL
+DEPENDENCIES: (GLOBAL,RESTORE,Presión_X_1,0.0,RESTORE,Presión_X_2,0.0,RESTORE,Presión_Y_1,0.0,RESTORE,Presión_Y_2,0.0,RESTORE,Presión_Z_1,0.0,RESTORE,Presión_Z_2,0.0,HIDE,Presión_X'_1,0.0,HIDE,Presión_X'_2,0.0,HIDE,Presión_Y'_1,0.0,HIDE,Presión_Y'_2,0.0,HIDE,Presión_Z'_1,0.0,HIDE,Presión_Z'_2,0.0)(#DEFAULT#,RESTORE,Presión_X'_1,0.0,RESTORE,Presión_X'_2,0.0,RESTORE,Presión_Y'_1,0.0,RESTORE,Presión_Y'_2,0.0,RESTORE,Presión_Z'_1,0.0,RESTORe,Presión_Z'_2,0.0,HIDE,Presión_X_1,0.0,HIDE,Presión_X_2,0.0,HIDE,Presión_Y_1,0.0,HIDE,Presión_Y_2,0.0,HIDE,Presión_Z_1,0.0,HIDE,Presión_Z_2,0.0)
+QUESTION: Presión_X_1
+VALUE: 0.0
+QUESTION: Presión_Y_1
+VALUE: 0.0
+QUESTION: Presión_Z_1
+VALUE: 0.0
+QUESTION: Presión_X_2
+VALUE: 0.0
+QUESTION: Presión_Y_2
+VALUE: 0.0
+QUESTION: Presión_Z_2
+VALUE: 0.0
+QUESTION: Presión_X'_1
+VALUE: 0.0
+QUESTION: Presión_Y'_1
+VALUE: 0.0
+QUESTION: Presión_Z'_1
+VALUE: 0.0
+QUESTION: Presión_X'_2
+VALUE: 0.0
+QUESTION: Presión_Y'_2
+VALUE: 0.0
+QUESTION: Presión_Z'_2
+VALUE: 0.0
+END CONDITION
+NUMBER: 11 CONDITION: Presión-Hidrostática
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: Esta es una carga triangular que tiene el valor 0.0 en la coordenada de referencia (en el sentido del eje z) y da la presión hidrostática que depende del peso específico del agua.
+QUESTION: Coordenada_z_de_referencia:
+VALUE: 0.0
+QUESTION: Peso_específico_del_agua:
+VALUE: 10000
+END CONDITION

@@ -1,0 +1,21 @@
+PROBLEM DATA
+TITLE: General_Data
+QUESTION: Problem_Title
+VALUE: Untitled
+HELP: The title of the problem
+QUESTION: Problem_Type#CB#(Plane-Stress,Plane-Strain)
+VALUE: Plane-Strain
+QUESTION: Consider_Self_weight#CB#(Yes,No)
+VALUE: Yes
+QUESTION: Results_units#CB#(N-m-kg,N-cm-kg,N-mm-kg,kp-m-utm,kp-cm-utm,kN-m-kg,kN-cm-kg,ton-m-kg,ton-cm-kg)
+VALUE: N-m-kg
+HELP: Choose the units for the results to postprocess after calculation
+TITLE: Adaptive_Mesh_Refinement
+QUESTION: Mesh_Optimality_Criteria#CB#(EDGE,EDSE)
+VALUE: EDGE
+HELP: Choose a mesh optimality criteria based on the equal distribution of the global error (EDGE) or the equal distribution of the specific error (EDSE)
+QUESTION: Permissible_Error
+VALUE: 0.05
+END PROBLEM DATA
+INTERVAL DATA
+END INTERVAL DATA

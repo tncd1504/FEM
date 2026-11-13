@@ -1,0 +1,25 @@
+PROBLEM DATA
+QUESTION: Título_del_Problema
+VALUE: Untitled
+HELP: El título del problema
+QUESTION: Salida_ASCII#CB#(Si,No)
+VALUE: No
+HELP: Salida ASCII para la vista la salida de los archivos de texto
+QUESTION: Considerar_Peso_propio#CB#(Si,No)
+VALUE: Si
+QUESTION: Factor_de_Escala
+VALUE: 1.0
+HELP: Opción para escalar las dimensiones del problema
+QUESTION: Considerar_GL-X#CB#(0,1)
+VALUE: 1
+HELP: Considerar grados de libertad en dirección X
+QUESTION: Considerar_GL-Y#CB#(0,1)
+VALUE: 1
+HELP: Considerar grados de libertad en dirección Y
+QUESTION: Considerar_GL-Z#CB#(0,1)
+VALUE: 1
+HELP: Considerar grados de libertad en dirección Z
+image: logo.gif
+END PROBLEM DATA
+INTERVAL DATA
+END INTERVAL DATA

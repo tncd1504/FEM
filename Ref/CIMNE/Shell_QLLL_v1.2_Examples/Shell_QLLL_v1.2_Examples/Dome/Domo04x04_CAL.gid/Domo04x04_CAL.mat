@@ -1,0 +1,182 @@
+BOOK:Laminate_shell
+NUMBER: 1 MATERIAL: laminate
+QUESTION: type
+VALUE: laminate
+STATE: hidden
+QUESTION: laminate_properties
+VALUE: 0
+STATE: hidden
+QUESTION: win_info
+VALUE: end
+STATE: hidden
+QUESTION: numero_de_capas
+VALUE: 0
+STATE: hidden
+QUESTION: Units
+VALUE: N-m-kg
+STATE: hidden
+QUESTION: matlist
+VALUE: 0
+STATE: hidden
+QUESTION: lamlist
+VALUE: 0
+STATE: hidden
+QUESTION: mathick
+VALUE: 0
+STATE: hidden
+TKWIDGET: Composite::ComunicateWithGiD
+QUESTION: Table
+VALUE: 0
+STATE: hidden
+END MATERIAL
+BOOK:Naval_Stiffeners
+NUMBER: 2 MATERIAL: naval_stiffeners
+QUESTION: type
+VALUE: naval_stiffeners
+STATE: hidden
+QUESTION: section_prop
+VALUE: 0
+STATE: hidden
+QUESTION: mat_prop
+VALUE: 0
+STATE: hidden
+QUESTION: lam_prop
+VALUE: 0
+STATE: hidden
+QUESTION: comp_prop
+VALUE: 0
+STATE: hidden
+QUESTION: layer
+VALUE: 0
+STATE: hidden
+QUESTION: laminates
+VALUE: 0
+STATE: hidden
+QUESTION: section_info
+VALUE: 0
+STATE: hidden
+QUESTION: area
+VALUE: 0
+STATE: hidden
+QUESTION: iyy
+VALUE: 0
+STATE: hidden
+QUESTION: izz
+VALUE: 0
+STATE: hidden
+QUESTION: e
+VALUE: 0
+STATE: hidden
+QUESTION: g
+VALUE: 0
+STATE: hidden
+QUESTION: j
+VALUE: 0
+STATE: hidden
+QUESTION: weight
+VALUE: 0
+STATE: hidden
+QUESTION: units
+VALUE: 0
+STATE: hidden
+QUESTION: Table
+VALUE: 0
+STATE: hidden
+TKWIDGET: stiffeners::ComunicateWithGiD
+END MATERIAL
+BOOK:Tables
+NUMBER: 3 MATERIAL: Table
+QUESTION: Table
+VALUE: 1
+STATE: hidden
+QUESTION: Table_Interpolation_Values:(x,y[x])
+VALUE: #N# 1 none
+STATE: hidden
+QUESTION: type
+VALUE: table
+STATE: hidden
+TKWIDGET: Function::ComunicateWithGiD
+END MATERIAL
+BOOK:Plasticity
+NUMBER: 4 MATERIAL: J2_Plasticity
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Elastic_limit
+VALUE: 150.0e+6
+QUESTION: ISOTROPIC_HARDENING:#CB#(NONE,LINEAR,EXPONENTIAL,LINEAR+EXPONENTIAL)
+VALUE: NONE
+DEPENDENCIES: (NONE,HIDE,Saturation_flow_stress,#CURRENT#,HIDE,Saturation_hardening_law_exponent,#CURRENT#,HIDE,Linear_hardening,#CURRENT#)
+DEPENDENCIES: (LINEAR,RESTORE,Linear_hardening,#CURRENT#,HIDE,Saturation_flow_stress,#CURRENT#,HIDE,Saturation_hardening_law_exponent,#CURRENT#)
+DEPENDENCIES: (EXPONENTIAL,RESTORE,Saturation_flow_stress,#CURRENT#,RESTORE,Saturation_hardening_law_exponent,#CURRENT#,HIDE,Linear_hardening,#CURRENT#)
+DEPENDENCIES: (LINEAR+EXPONENTIAL,RESTORE,Saturation_flow_stress,#CURRENT#,RESTORE,Saturation_hardening_law_exponent,#CURRENT#,RESTORE,Linear_hardening,#CURRENT#)
+QUESTION: Saturation_flow_stress
+VALUE: 180.0e+6
+QUESTION: Saturation_hardening_law_exponent
+VALUE: 7.0
+QUESTION: Linear_hardening
+VALUE: 100.0e+6
+QUESTION: KINEMATIC_HARDENING:#CB#(NONE,LINEAR)
+VALUE: NONE
+DEPENDENCIES: (NONE,HIDE,Linear_kinematic_hardening,#CURRENT#)
+DEPENDENCIES: (LINEAR,RESTORE,Linear_kinematic_hardening,#CURRENT#)
+DEPENDENCIES: (NON_LINEAR,RESTORE,Linear_kinematic_hardening,#CURRENT#)
+QUESTION: Linear_kinematic_hardening
+VALUE: 500.0e+6
+QUESTION: type
+VALUE: plasticity
+STATE: hidden
+QUESTION: Table
+VALUE: 0
+STATE: hidden
+END MATERIAL
+BOOK:Full_anisotropic_shell
+NUMBER: 5 MATERIAL: Full_anisotropic_shell
+HELP: This property must be assigned to orthotropic shells. 'Thickness' is the transversal dimension of the shell. 'Ex' and 'Ey' are the Young Modulus and 'nuXY' 'nuYX' are the Poisson coefficient. 'Gxy', 'Gxz' and 'Gyz' are the shear modulus\nUnits in International System for values are:\n\t (m) for the thickness\n\t(N/m2) for 'Ex','Ey', 'Gxy', 'Gxz' and 'Gyz' \n\t(adimensional) 'nuXY' 'nuYX'\n\t(N/m3) for the Specific_weight.
+TITLE: Data
+QUESTION: type
+VALUE: full_anisotropic_shell
+STATE: hidden
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Dm:(COL1,COL2,COL3)
+VALUE: #N# 9 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+QUESTION: Df:(COL1,COL2,COL3)
+VALUE: #N# 9 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+QUESTION: Dmf:(COL1,COL2,COL3)
+VALUE: #N# 9 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+QUESTION: Dc:(COL1,COL2)
+VALUE: #N# 4 0.0 0.0 0.0 0.0
+QUESTION: Weight
+VALUE: 0.0
+TITLE: Stress data
+QUESTION: Ax
+VALUE: 0.0
+QUESTION: Ay
+VALUE: 0.0
+QUESTION: At
+VALUE: 0.0
+QUESTION: Wx
+VALUE: 0.0
+QUESTION: Wy
+VALUE: 0.0
+QUESTION: Wt
+VALUE: 0.0
+QUESTION: Atx
+VALUE: 0.0
+QUESTION: Aty
+VALUE: 0.0
+QUESTION: maximum_stress
+VALUE: 0.0
+END MATERIAL
+BOOK:Custom_data
+NUMBER: 6 MATERIAL: Custom_data1
+QUESTION: type
+VALUE: custom_data
+STATE: hidden
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: tcl_code
+VALUE: +
+STATE: hidden
+TKWIDGET: custom_data::ComunicateWithGiD
+END MATERIAL

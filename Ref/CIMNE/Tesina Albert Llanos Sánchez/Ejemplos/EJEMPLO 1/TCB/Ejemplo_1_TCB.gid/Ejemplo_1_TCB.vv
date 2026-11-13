@@ -1,0 +1,41 @@
+BeginZE C:\Users\Albert\Desktop\ALBERT\CAMINOS\TESINA\Ejemplos Buenos\EJEMPLO_1\TCB\Ejemplo_1_TCB.gid\Ejemplo_1_TCB.vv
+   x -2.8199260234832764 12.819926261901855
+   y 5.9720911979675293 -5.9720911979675293
+   z -16.583124160766602 16.583124160766602
+   e 5.5277080535888672
+   v 0 0 0
+   r 1
+   m 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+   c 5 0 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 0
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:\Users\Albert\Desktop\ALBERT\CAMINOS\TESINA\Ejemplos Buenos\EJEMPLO_1\TCB\Ejemplo_1_TCB.gid\Ejemplo_1_TCB.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+BeginInfo
+eJzNU11v2jAUfc+vuI9FylCgtGXRNAlGGkXjo4K0dE/IJIZadezIdkpY1f++axu0SZv2MG3SXuKb+3Gu7zm+ecGH3aturwf5MxoX/qcTLGoq0in0ur1uBFJAOskgpYIqVgTpNFlj5H03CoJc7jnaNzEQ/UxL2EkFBPY+ExQVJVVUhcHIRe9YSzmmVMRASXWhWG0Yol9A/6YTBwDnHsCqmtOKCkNsQugrb31l/ya0qRPZbDkdN7sdVTEcqXbelcGG0nudY5mORyF8klUtNXPdqCBYWMLFA9OGdEKYKHIAI2HNRCkPIZyG101dS2VCsDD3mok99AeIxHHGLTM6hiFOWIZ47BWlwhpb3lAgooQICK+fSPi9NoJRUTRVw91IJ4TII0RnhOh3CJd9mNDaPLlalzO084qC8TF6bCI2aVrGGVFH2DoSvDuCxkrByRHJjtp3u7bjAOTL2dlG79pdB2pOBNVBKg0C/2PBoJD18e+LhDT9sUjXg1+p1Lv2GHieQND6P4Tym8qdFg/JfLJYxvA6Y4WSWu4MEqGQHjfLmyMaU5JlYpN+WOk3X71cZYt57JfeCZat7qajL5DNbxfL2Sh30Vc3E9IBw9CzYQ1HBp6OCYhCfC12/st+CNoPbqPaLScI2XUdP6w/QuKpRtJulRQG/POw0Wk2y/IVNrQ/M9JCTlvTKAor9pXiLaP+4BxJ/NPTkImSFRQV60eD4U/RB6rMKXx1baOjF8K4fWfwwkq8WEUriXpo1yCC2fhoqD7BsKqp4CDVs72raKotVSB3QE/gMVyhdp8DN1jymCdzS6a7fjrdoGOz3StytmvCKS5YuTF+JutfZ/ONPpB688SEQZx0+hg7WVfJErWJgwV+UQ682dlEZWCWzO+t6xsuwMtR
+
+EndInfo

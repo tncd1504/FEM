@@ -1,0 +1,60 @@
+BeginZE D:\Carpeta K\LIBRO_2\Lamina_TCCL_V1.0\hiper4x4_ref.gid\hiper4x4_ref.flavia.vv
+   x -56.5346 156.534
+   y 122.648 -22.6484
+   z -217.945 217.945
+   e 72.6483
+   v -0 -0 -8.74228e-008
+   r -1
+   m 1 -1.74846e-007 0 0 1.74846e-007 1 0 0 0 0 1 0 0 0 0 1
+   c 50 50 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE D:\Carpeta K\LIBRO_2\Lamina_TCCL_V1.0\hiper4x4_ref.gid\hiper4x4_ref.flavia.vv
+
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 0
+  Num sets: 1
+  Num cuts: 0
+  Set: 0
+  State: On
+    Name: "Layer0"
+    IdSet: 1
+    Color Type: 1
+    Color Ambient: 0.12 0.12 0.12 0.498039
+    Color Diffuse: 0.6 0.6 0.6 0.498039
+    Color Specular: 0.8 0.8 0.8 0.498039
+    Color Shininess: 0.3
+    Property Massive: 0
+    Property Transparent: 0
+    Property Style: 14
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 0
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 45} {Contour Fill} Static 1.0 Displacements_(m) Disp_Z 0.0 4 0
+EndPostState
+

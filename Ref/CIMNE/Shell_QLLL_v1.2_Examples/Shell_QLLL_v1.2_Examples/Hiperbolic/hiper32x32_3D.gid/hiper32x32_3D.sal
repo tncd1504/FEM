@@ -1,0 +1,40 @@
+
+
+Leyendo los datos del problema...
+
+     Indicador de escritura ............... IWRIT  =     0
+     Escala de las coordenadas ............ SCALE  =     1.0000    
+     SET NAME 6 CHAR ONLY ................. NAME   = SET1  
+     ELEMENT TYPE ......................... TYPE   = STHE08
+     MATERIAL NUMBER ...................... NUMBER =     1
+     Numero del material .................. NUMBER =     1
+     Modulo de Young  ..................... YOUNG  =     28500.    
+     Modulo de Poisson .................... POISSO =    0.30000    
+     Peso Especifico ....... .............. SPECIF =    0.10000E-01
+Calculando grados de libertad nodales...
+
+Inicializando la matriz de rigidez global...
+
+
+
+     ###################################################################
+
+     >>>> PERMANENT MEMORY INFORMATION FOR:  THERMAL        
+          --------------------------------   
+
+           *** SOLVER TYPE                 : SK_CG METHOD        (DIAG. PREC.) 
+           *** NUMBER OF D.O.F.            :    990735
+           *** NUMBER OF EQUATIONS         :    975375
+           *** KRYLOV DIMENSION            :        50
+           *** NONZERO MATRIX COEFFICIENTS :  68113773
+           *** TOTAL PERMANENT MEMORY      :   845.434 (Mb)
+Calculando y ensamblando las matrices de rigidez elementales ...
+
+Calculando y ensamblando el vector de fuerzas ...
+
+Resolviendo el sistema de ecuaciones ...
+
+Escribiendo los datos de la malla ...
+
+Escribiendo los resultados obtenidos ...
+

@@ -1,0 +1,41 @@
+BOOK: Displacement_Constraints
+NUMBER: 1 CONDITION: Point_Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+QUESTION:Horizontal_Constraint:#CB#(1,0)
+VALUE:1
+DEPENDENCIES: (0,SET,Displacement-X,0.0m)(#DEFAULT#,RESTORE,Displacement-X,0.0m)
+QUESTION:Displacement-X#UNITS#
+VALUE:0.000m
+QUESTION:Vertical_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Y,0.0m)(#DEFAULT#,RESTORE,Displacement-Y,0.0m)
+QUESTION:Displacement-Y#UNITS#
+VALUE:0.000m
+QUESTION:Rotation_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-R,0.0rad)(#DEFAULT#,RESTORE,Displacement-R,0.0rad)
+QUESTION:Displacement-R#UNITS#
+VALUE:0.000rad
+END CONDITION
+BOOK: Point_Loads
+NUMBER: 2 CONDITION: Point_Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+QUESTION: Horizontal-Force:#UNITS#
+VALUE: 0.0N
+QUESTION:Vertical-Force:#UNITS#
+VALUE: 0.0N
+QUESTION: Moment:#UNITS#
+VALUE: 0.0N*m
+END CONDITION
+BOOK: Uniform_Loads
+NUMBER: 3 CONDITION: Uniform_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over elems
+QUESTION:Horizontal-Load:#UNITS#
+VALUE: 0.0N/m
+QUESTION:Vertical-Load:#UNITS#
+VALUE: 0.0N/m
+END CONDITION
+

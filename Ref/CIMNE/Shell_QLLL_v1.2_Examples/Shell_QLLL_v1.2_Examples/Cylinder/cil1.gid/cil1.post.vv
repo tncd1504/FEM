@@ -1,0 +1,60 @@
+BeginZE D:\Carpeta K\LIBRO_2\Lamina_CLLL_V1.0\Examples\Cylinder\cil1.gid\cil1.post.vv
+   x -388.183 688.183
+   y 517.423 -217.423
+   z -1402.27 802.27
+   e 367.423
+   v -0.382746 0.229167 0.239883
+   r 0.862232
+   m 0.779877 -0.589095 0.211561 0 0.238245 0.591923 0.769978 0 -0.578819 -0.550085 0.601976 0 0 0 0 1
+   c 150 150 300
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE D:\Carpeta K\LIBRO_2\Lamina_CLLL_V1.0\Examples\Cylinder\cil1.gid\cil1.post.vv
+
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 0
+  Num sets: 1
+  Num cuts: 0
+  Set: 0
+  State: On
+    Name: "Layer0"
+    IdSet: 1
+    Color Type: 1
+    Color Ambient: 0.12 0.12 0.12 0.498039
+    Color Diffuse: 0.6 0.6 0.6 0.498039
+    Color Specular: 0.8 0.8 0.8 0.498039
+    Color Shininess: 0.3
+    Property Massive: 0
+    Property Transparent: 0
+    Property Style: 14
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 0
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 36} {No results} {} {} {} {} 4 0
+EndPostState
+

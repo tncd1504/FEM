@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cọc D600 có thép đai và thép dọc · FEM</title>
+  <link rel="stylesheet" href="/pipe.css">
+  <script src="/pipe.js" defer></script>
+  <script src="/pipe_rc.js" defer></script>
+</head>
+<body data-solve-url="/api/pipe-rc/solve">
+<header><div><p class="eyebrow">FEM / MẶT CẮT CỌC CÓ THÉP</p><h1>Cọc có thép đai và thép dọc</h1>
+  <p>Bài toán riêng · Bê tông và thép đàn hồi · Bám dính hoàn toàn</p></div>
+  <div><a href="/pipe.html">Đối chiếu bài toán không kể thép ↗</a><br><a href="/pile3d.html">Cọc kê hai gối · khối 3D ↗</a><br><a href="/piles.html">Chọn mô hình cọc ↗</a></div></header>
+<main>
+  <aside>
+    <form id="modelForm">
+      <section><h2>Bộ mặc định · Cọc D600 × 100</h2>
+        <p class="hint">Bê tông B60. Hai lực ép vào tâm, mỗi lực 20 kN/m tại 60° và 120°. Nền cứng tại 270°; hai cọc bên chặn ra ngoài tại 0° và 180°. Góc tính từ +X, ngược chiều kim đồng hồ.</p>
+        <button type="button" id="presetD600" class="secondary">Nạp lại bộ D600 × 100 · B60</button>
+        <p class="hint">Tiếp xúc được quy đổi về ba điểm trên biên ngoài, không ma sát. Giữ giá trị nén trước hữu hiệu đang nhập; 5 MPa ban đầu chỉ là giá trị minh họa.</p>
+      </section>
+      <section><h2>01 <span>Hình học & vật liệu</span></h2>
+        <div class="grid">
+          <label>Bán kính trong r (mm)<input id="ri" type="number" value="200" min="0.001" step="any" required></label>
+          <label>Bán kính ngoài R (mm)<input id="ro" type="number" value="300" min="0.002" step="any" required></label>
+          <label>E bê tông (GPa)<input id="young" type="number" value="39.5" min="0.001" step="any" required></label>
+          <label>Hệ số Poisson ν<input id="nu" type="number" value="0.2" min="0" max="0.489" step="any" required></label>
+          <label class="wide">Nén trước hữu hiệu σp,eff (MPa, nhập số dương)
+            <input id="prestress" type="number" value="5" min="0" step="any" required></label>
+          <label class="wide">Điều kiện dọc khi chịu thêm tải hướng tâm
+            <select id="axial"><option value="constant_force">Giữ tổng lực nén dọc — ΔNz,toàn = 0</option>
+              <option value="fixed_strain">Giữ biến dạng dọc — Δεz = 0</option></select></label>
+        </div>
+        <p class="hint">Hình học và khe hở tính từ trạng thái đã nén trước, đã cân bằng. Không tính lại tổn hao hoặc biến dạng trước đó.</p>
+      </section>
+      <section><h2>Cốt thép <span>Một lồng thép · bộ minh họa</span></h2>
+        <p class="hint">12Ø12 thép dọc CB400-V; đai kín Ø6a100 CB240-T; bảo vệ 30 mm tới mép ngoài đai. Đây là số liệu minh họa, cần thay bằng cấu tạo thực tế.</p>
+        <div class="grid">
+          <label>Số thanh dọc<input id="longCount" type="number" value="12" min="0" max="200" step="1" required></label>
+          <label>Đường kính thép dọc (mm)<input id="longDiameter" type="number" value="12" min="0" step="any" required></label>
+          <label>Cấp thép dọc<select id="longGrade"><option>CB240-T</option><option>CB300-T</option><option>CB300-V</option><option selected>CB400-V</option><option>CB500-V</option></select></label>
+          <label>Góc thanh đầu (°)<input id="longStart" type="number" value="0" step="any" required></label>
+          <label>Đường kính đai kín (mm)<input id="hoopDiameter" type="number" value="6" min="0" step="any" required></label>
+          <label>Bước đai dọc cọc (mm)<input id="hoopPitch" type="number" value="100" min="0.001" step="any" required></label>
+          <label>Cấp thép đai<select id="hoopGrade"><option selected>CB240-T</option><option>CB300-T</option><option>CB300-V</option><option>CB400-V</option><option>CB500-V</option></select></label>
+          <label>Bảo vệ ngoài đai (mm)<input id="steelCover" type="number" value="30" min="0" step="any" required></label>
+          <label>Es (GPa)<input id="steelE" type="number" value="200" min="0.001" step="any" required></label>
+          <label>σ thép dọc ban đầu (MPa)<input id="steelInitial" type="number" value="0" step="any" required></label>
+        </div>
+        <label class="check"><input id="comparePlain" type="checkbox" checked> Giải thêm trường hợp không kể thép để đối chiếu</label>
+        <p id="steelMaterialInfo" class="hint">Đang tra cường độ thép…</p>
+        <p class="hint">Ứng suất thép dọc ban đầu dương khi kéo, nhập riêng từ trạng thái hữu hiệu đã cân bằng. Giá trị 0 là giả thiết minh họa, không tự suy từ 5 MPa nén trước bê tông. Chưa mô phỏng cáp không bám dính.</p>
+        <p class="hint">Đai thêm độ cứng vòng; thép dọc chia sẻ lực dọc qua cùng Δεz. Mô hình bất biến dọc cọc không có uốn dọc. Hình thép nét vàng là vị trí ban đầu.</p>
+      </section>
+      <section><h2>02 <span>Lưới mặt cắt</span></h2><div class="grid">
+        <label>Số phần tử qua thành nr<input id="nr" type="number" value="6" min="1" max="40" step="1" required></label>
+        <label>Số phần tử quanh vòng nθ<input id="nt" type="number" value="96" min="8" max="360" step="1" required></label>
+      </div><button type="button" id="meshButton" class="secondary">Tạo / xem lưới</button>
+      <p class="hint">Phần tử liên tục Q4 trên miền vành khuyên; không phải tấm phẳng chịu uốn. Mọi lực quy về 1 m chiều dài ống.</p></section>
+      <section><h2>03 <span>Áp lực trên biên</span></h2>
+        <p class="hint">Dương: ép vào bê tông. Biên ngoài ép vào tâm; biên trong đẩy ra ngoài. Âm: chiều ngược lại. Cung 0° → 360° là cả vòng; có thể đi qua 0°.</p>
+        <div class="table-wrap"><table><thead><tr><th>Biên</th><th>MPa</th><th>Từ °</th><th>Đến °</th><th></th></tr></thead><tbody id="pressureRows"></tbody></table></div>
+        <button type="button" id="addPressure" class="text-button">+ Thêm áp lực</button>
+      </section>
+      <section><h2>04 <span>Gối & chặn chuyển vị</span></h2>
+        <p class="hint">+r ra ngoài tâm; +t ngược chiều kim đồng hồ. Ví dụ r ≤ 0 cho phép đi vào tâm. Giá trị nhập bằng mm; chọn “=” để đặt chuyển vị cưỡng bức.</p>
+        <div id="supportRows" class="rule-list"></div>
+        <button type="button" id="addSupport" class="text-button">+ Thêm gối / chặn</button>
+        <button type="button" id="supportSelected" class="text-button">+ Chặn r ≤ 0 tại nút đang chọn</button>
+      </section>
+      <section><h2>05 <span>Lực tại nút</span></h2>
+        <p class="hint">Đơn vị kN/m chiều dài ống. +Fr ra ngoài tâm; +Ft ngược chiều kim đồng hồ. Kiểm tra lại vị trí số nút sau khi đổi lưới.</p>
+        <div class="table-wrap"><table><thead><tr><th>Nút</th><th>Fr</th><th>Ft</th><th></th></tr></thead><tbody id="loadRows"></tbody></table></div>
+        <button type="button" id="addLoad" class="text-button">+ Thêm lực tại nút</button>
+      </section>
+      <section><h2>06 <span>Kiểm tra theo TCVN 5574:2018</span></h2>
+        <label class="check"><input id="tcvnEnabled" type="checkbox" checked> Bật kiểm tra bê tông và thép đàn hồi</label>
+        <fieldset id="tcvnFields"><div class="grid">
+          <label>Cấp bê tông nặng<select id="concreteGrade">
+            <option>B15</option><option>B20</option><option>B25</option><option>B30</option><option>B35</option><option>B40</option><option>B45</option><option>B50</option><option>B55</option><option selected>B60</option><option>B70</option><option>B80</option><option>B90</option><option>B100</option>
+          </select></label>
+          <label>Thời hạn tải<select id="tcvnDuration"><option value="short">Ngắn hạn</option><option value="sustained">Có tải dài hạn</option></select></label>
+          <label>Hệ số tải TTGH1<input id="ulsLoadFactor" type="number" min="0" step="any" value="1" required></label>
+          <label>Hệ số nén trước TTGH1<input id="ulsPrestressFactor" type="number" min="0" step="any" value="1" required></label>
+          <label class="wide check"><input id="verticalPour" type="checkbox"> Đổ đứng, chiều cao mỗi lớp đổ &gt; 1,5 m (γb3 = 0,85)</label>
+          <label>Giới hạn |Δur| (mm)<input id="radialLimit" type="number" min="0.000001" step="any" placeholder="Theo nhiệm vụ thiết kế"></label>
+          <label>Giới hạn |ΔD|/D (‰)<input id="diameterLimit" type="number" min="0.000001" step="any" placeholder="Theo nhiệm vụ thiết kế"></label>
+          <label class="wide">Căn cứ giới hạn chuyển vị<input id="limitBasis" type="text" maxlength="500" value="Nhiệm vụ thiết kế — người dùng nhập"></label>
+        </div>
+        <p id="concreteInfo" class="hint">Đang tra thông số vật liệu…</p>
+        <button id="useTableE" type="button" class="text-button">Dùng Eb theo Bảng 10</button>
+        <p class="hint">Tải ở các mục 03–05 là trường hợp sử dụng. Hệ số TTGH1 nhân áp lực và lực nút, không nhân chuyển vị gối; hệ số nén trước áp dụng riêng. Giá trị 1 nghĩa là giữ tải đã nhập, không phải tổ hợp mặc định của TCVN.</p>
+        <p class="hint">Có kể thép: γb2 = 1 khi lồng thép có diện tích khác 0; chưa kiểm tra cốt thép tối thiểu theo cấu tạo. γb1 = 1 (ngắn hạn) hoặc 0,9 (dài hạn). Giới hạn chuyển vị để trống sẽ không được tự gán. Biến dạng dài hạn và sức kháng đa trục chưa được giải.</p>
+        </fieldset>
+      </section>
+      <button type="submit" id="solveButton" class="primary">Tính nội lực & kiểm tra →</button>
+    </form>
+  </aside>
+  <div class="workspace">
+    <div id="message" role="status" aria-live="polite">Cọc D600 × 100, B60: hai lực 20 kN/m ép vào tâm tại 60° và 120°, chặn một chiều ở đáy và hai bên.</div>
+    <section class="viewer"><div class="viewer-heading"><div><h2>Mặt cắt & trường kết quả</h2><p id="meshInfo" class="hint">Chưa tạo lưới</p></div>
+      <label>Hiển thị<select id="field"><option value="u_r">Δur (mm)</option><option value="u_t">Δut (mm)</option>
+        <option value="sigma_theta">σθ tổng (MPa)</option><option value="sigma_r">σr tổng (MPa)</option>
+        <option value="sigma_z">σz tổng (MPa)</option><option value="delta_sigma_z">Δσz (MPa)</option>
+        <option value="tau_rt">τrθ (MPa)</option>
+        <option value="eta_uls_compression" data-tcvn-map disabled>TTGH1 η nén — sàng lọc</option>
+        <option value="eta_uls_tension" data-tcvn-map disabled>TTGH1 η kéo — sàng lọc</option>
+        <option value="eta_sls_cracking" data-tcvn-map disabled>TTGH2 η kéo / Rbt,ser</option></select></label></div>
+      <canvas id="meshCanvas" aria-label="Mặt cắt vành khuyên; nhấn vào nút để chọn" role="img"></canvas>
+      <div class="viewer-controls"><label>Phóng đại biến dạng <input id="deformation" type="number" value="100" min="0" max="100000" step="any"></label>
+        <label class="check"><input id="nodeLabels" type="checkbox"> Số nút</label><span id="selection">Chưa chọn nút</span></div>
+      <p class="hint">Lưới xám: ban đầu · Mũi tên ngọc: áp lực; vàng: lực nút · Chặn xanh: đang tì; xám: đang mở hoặc chưa giải. Bản đồ ứng suất lấy tại tâm; bản đồ tỷ số TCVN lấy cực trị trên 4 điểm Gauss và 4 góc của mỗi phần tử.</p>
+    </section>
+    <section id="summaryPanel" hidden><div class="section-heading"><h2>Kết quả tính toán</h2><span id="staleBadge" hidden>Đầu vào đã đổi — cần tính lại</span></div>
+      <div id="metrics" class="metrics"></div><dl id="diagnostics" class="diagnostics"></dl>
+      <div class="exports"><button type="button" id="jsonExport" class="secondary" disabled>Tải mô hình & kết quả JSON</button>
+        <button type="button" id="nodeExport" class="secondary" disabled>Nút & phản lực CSV</button>
+        <button type="button" id="sectionExport" class="secondary" disabled>Nội lực CSV</button>
+        <button type="button" id="checkExport" class="secondary" disabled>Kiểm tra TCVN CSV</button></div>
+    </section>
+    <section id="steelResultPanel" hidden><h2>Thép và phân chia nội lực</h2>
+      <div id="steelMetrics" class="metrics"></div><p id="steelComparison" class="hint"></p>
+      <p class="hint">Bê tông toàn miền + độ cứng thép nhúng, chưa trừ bê tông bị thép chiếm chỗ. Không tự tăng cường độ bê tông do đai bó. Ở điều kiện giữ biến dạng dọc, Δεz = 0 nên thép dọc không có gia số ứng suất.</p>
+      <h3>Thép dọc</h3><div class="table-wrap results-table"><table><thead><tr><th>Thanh</th><th>θ (°)</th><th>r (mm)</th><th>Δεz</th><th>σ0 (MPa)</th><th>Δσ (MPa)</th><th>σ tổng (MPa)</th><th>Lực/thanh (kN)</th></tr></thead><tbody id="longSteelTable"></tbody></table></div>
+      <h3>Thép đai · điểm tích phân</h3><div class="table-wrap results-table"><table><thead><tr><th>PT bê tông</th><th>Dải góc</th><th>Δε đai</th><th>σ đai (MPa)</th></tr></thead><tbody id="hoopSteelTable"></tbody></table></div>
+      <p id="steelResultNote" class="hint"></p><button id="steelExport" class="secondary" type="button" disabled>Ứng suất & lực thép CSV</button>
+    </section>
+    <section id="tcvnPanel" hidden><h2>TCVN 5574:2018 · Kiểm tra bê tông đàn hồi</h2>
+      <div id="tcvnStatus" class="check-status" role="status"></div>
+      <p id="tcvnMaterial" class="hint"></p>
+      <p id="tcvnCaseInfo" class="hint"></p>
+      <div class="table-wrap check-table"><table><thead><tr><th>Điều kiện</th><th>Giá trị</th><th>Giới hạn</th><th>η</th><th>Kết quả</th><th>Vị trí / điều khoản</th></tr></thead><tbody id="tcvnTable"></tbody></table></div>
+      <p id="tcvnStrains" class="hint"></p><ul id="tcvnWarnings" class="check-notes"></ul>
+      <p class="hint">η ≤ 1: chưa vượt ngưỡng riêng đang xét. Không thay thế kiểm tra sức kháng đa trục, ổn định và tính sau nứt. Với trường hợp đã nứt hoặc có tải dài hạn, chuyển vị đàn hồi chưa đủ để kết luận TTGH2.</p>
+      <a class="hint" href="https://www.rds.com.vn/TCXD1/TCVN5574-2018.pdf" target="_blank" rel="noopener">Tra nguồn TCVN 5574:2018 ↗</a>
+    </section>
+    <section id="sectionPanel" hidden><h2>Nội lực qua thành theo góc</h2>
+      <p class="hint">Kéo dương. Nθ, Nz, Qθ: kN/m; Mθ, Mz: kN·m/m. Nội lực gồm bê tông + thép. Đai tại vị trí thực qua thành; thép dọc quy đổi đều trên chu vi mặt trung bình. Thành phần riêng có trong JSON. Mômen quanh giữa thành. Không có Nzθ và Qz trong mô hình bất biến dọc trục.</p>
+      <div class="table-wrap results-table"><table><thead><tr><th>θ (°)</th><th>Nθ</th><th>Mθ</th><th>Qθ</th><th>Nz ban đầu</th><th>ΔNz</th><th>Nz tổng</th><th>Mz tổng</th></tr></thead><tbody id="sectionTable"></tbody></table></div>
+    </section>
+    <section id="reactionPanel" hidden><h2>Phản lực gối / chặn</h2><p class="hint">Gia số phản lực lên kết cấu, kN/m. Khi chặn mở, phản lực bằng 0 trong dung sai.</p>
+      <div class="table-wrap results-table"><table><thead><tr><th>Nút</th><th>Rr</th><th>Rt</th><th>Phương r</th><th>Phương t</th></tr></thead><tbody id="reactionTable"></tbody></table></div>
+    </section>
+    <details><summary>Giả thiết & cách đọc kết quả</summary>
+      <ul><li>Ống dài, tải/gối bất biến dọc trục; không mô phỏng hai đầu ống hoặc mất ổn định có bước sóng dọc.</li>
+        <li>Bê tông và thép đàn hồi, bám dính hoàn toàn, chưa xét chảy thép, sau nứt hoặc độ cứng hình học. Kiểm tra TCVN chỉ trong phạm vi ghi tại bảng kết quả.</li>
+        <li>Ứng suất nén trước dọc hữu hiệu là trạng thái ban đầu đã cân bằng. Chuyển vị và phản lực hiển thị là phần tăng thêm từ trạng thái đó.</li>
+        <li>Vì chưa xét độ cứng hình học, thay nén trước chỉ thay σz và Nz tổng, không làm tăng độ cứng ngang.</li>
+        <li>Giữ lực dọc toàn hệ: cho phép một gia số biến dạng dọc đồng đều để tổng gia số lực dọc bê tông + thép bằng 0; không ép Δσz = 0 tại từng điểm.</li>
+        <li>Chỉ loại bỏ những chuyển động vật rắn chưa được gối giữ. Nếu tải không thể cân bằng, chương trình báo lỗi và không tự thêm gối chịu lực.</li>
+        <li>Cung áp lực chọn theo giữa cạnh; cung gối chọn theo tọa độ nút. Hãy tinh chỉnh lưới tại các mép cung và vùng đặt lực.</li>
+        <li>Biên tròn được xấp xỉ bằng cạnh thẳng. Cần kiểm tra hội tụ lưới; ứng suất sát lực tập trung/gối điểm có thể kỳ dị.</li></ul>
+    </details>
+  </div>
+</main>
+<footer>FEM bê tông đàn hồi · Nén trước hữu hiệu · Kiểm tra TCVN có ghi rõ phạm vi và dữ liệu còn thiếu</footer>
+</body>
+</html>

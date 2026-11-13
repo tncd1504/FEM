@@ -1,0 +1,2071 @@
+{
+  "scope": "elastic_load_steps_with_contact_and_tensile_screen_not_postcrack",
+  "full_tcvn_verification": false,
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "source_sha256": {
+    "annular_pipe_fem.py": "60682b8e1685386a18b4d5b95cafb4497721abef2debd13e224384c87b4421d9",
+    "annular_pipe_rc.py": "46a9efa9b36e05b824b6edd2d8c1e96c673e90dd22e694f05a5ec9e0dc0c111b",
+    "tcvn5574_checks.py": "4eef9d427540a285fc45fe6181f5ee72e1106caee8e90dacb3fd28ce475e7932",
+    "compare_pipe_load_steps.py": "5cc0d6259b92039f8b96a5837900eb360e4531957bd6e83e5968effb97b99da8"
+  },
+  "study": {
+    "parameters": {
+      "r_inner": 0.2,
+      "r_outer": 0.3,
+      "E": 39500000000.0,
+      "nu": 0.2,
+      "prestress": 5000000.0,
+      "axial_mode": "constant_force",
+      "nr": 6,
+      "ntheta": 96,
+      "pressures": [],
+      "include_check_points": true,
+      "supports": [
+        {
+          "target": "node",
+          "node_id": 577,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        },
+        {
+          "target": "node",
+          "node_id": 625,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        },
+        {
+          "target": "node",
+          "node_id": 649,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        }
+      ],
+      "nodal_loads": [
+        {
+          "node_id": 593,
+          "force_r": 0,
+          "force_t": 0
+        },
+        {
+          "node_id": 609,
+          "force_r": 0,
+          "force_t": 0
+        }
+      ],
+      "reinforcement": {
+        "longitudinal_count": 12,
+        "longitudinal_diameter": 0.012,
+        "longitudinal_grade": "CB400-V",
+        "hoop_diameter": 0.006,
+        "hoop_pitch": 0.1,
+        "hoop_grade": "CB240-T",
+        "cover": 0.03,
+        "E_s": 200000000000.0,
+        "initial_longitudinal_stress": 0
+      }
+    },
+    "requested_loads_kN_per_m_each": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      65,
+      66,
+      66.4,
+      66.5,
+      67,
+      70,
+      80,
+      100,
+      150,
+      200
+    ],
+    "rows": {
+      "plain": [
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 0,
+          "total_force_magnitudes_kN_per_m": 0,
+          "vertical_resultant_kN_per_m": 0.0,
+          "u_max_mm": 0.0,
+          "mean_inward_at_loads_mm": -0.0,
+          "sigma_tensile_max_MPa": 0.0,
+          "sigma_compressive_max_MPa": 5.0,
+          "eta_cracking": 0.0,
+          "eta_compression_linear": 0.1937984496124031,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.0,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 0.0,
+          "moment_balance_error_N": 0.0,
+          "crack_critical_element": 1,
+          "crack_critical_point": "G1",
+          "crack_critical_x_mm": 203.42999492787618,
+          "crack_critical_y_mm": 2.812941262048956
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 10,
+          "total_force_magnitudes_kN_per_m": 20,
+          "vertical_resultant_kN_per_m": 17.32050807568877,
+          "u_max_mm": 0.0049939541842408865,
+          "mean_inward_at_loads_mm": 0.0045924059234500585,
+          "sigma_tensile_max_MPa": 0.4133362505223165,
+          "sigma_compressive_max_MPa": 5.348869215567487,
+          "eta_cracking": 0.15030409109902418,
+          "eta_compression_linear": 0.20732051223129797,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.045924059234498174,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 3.0960984555977686e-10,
+          "moment_balance_error_N": 2.09011302467939e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 20,
+          "total_force_magnitudes_kN_per_m": 40,
+          "vertical_resultant_kN_per_m": 34.64101615137754,
+          "u_max_mm": 0.009987908368481773,
+          "mean_inward_at_loads_mm": 0.009184811846900117,
+          "sigma_tensile_max_MPa": 0.826672501044633,
+          "sigma_compressive_max_MPa": 5.697738431134975,
+          "eta_cracking": 0.30060818219804836,
+          "eta_compression_linear": 0.22084257485019282,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.1836962369379927,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 6.192196911195537e-10,
+          "moment_balance_error_N": 4.18022604935878e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 30,
+          "total_force_magnitudes_kN_per_m": 60,
+          "vertical_resultant_kN_per_m": 51.96152422706631,
+          "u_max_mm": 0.01498186255272267,
+          "mean_inward_at_loads_mm": 0.01377721777035018,
+          "sigma_tensile_max_MPa": 1.2400087515669507,
+          "sigma_compressive_max_MPa": 6.046607646702461,
+          "eta_cracking": 0.450912273297073,
+          "eta_compression_linear": 0.23436463746908764,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.4133165331104756,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.9192879135070253e-10,
+          "moment_balance_error_N": 2.0833189665208225e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 40,
+          "total_force_magnitudes_kN_per_m": 80,
+          "vertical_resultant_kN_per_m": 69.28203230275508,
+          "u_max_mm": 0.019975816736963546,
+          "mean_inward_at_loads_mm": 0.018369623693800234,
+          "sigma_tensile_max_MPa": 1.653345002089266,
+          "sigma_compressive_max_MPa": 6.395476862269949,
+          "eta_cracking": 0.6012163643960967,
+          "eta_compression_linear": 0.24788670008798253,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.7347849477519708,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.2384393822391074e-09,
+          "moment_balance_error_N": 8.36045209871756e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 50,
+          "total_force_magnitudes_kN_per_m": 100,
+          "vertical_resultant_kN_per_m": 86.60254037844386,
+          "u_max_mm": 0.02496977092120443,
+          "mean_inward_at_loads_mm": 0.022962029617250284,
+          "sigma_tensile_max_MPa": 2.066681252611586,
+          "sigma_compressive_max_MPa": 7.239774850232637,
+          "eta_cracking": 0.7515204554951221,
+          "eta_compression_linear": 0.28061142830359054,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.1481014808624568,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 3.047896982476241e-09,
+          "moment_balance_error_N": 2.7616745247650793e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 60,
+          "total_force_magnitudes_kN_per_m": 120,
+          "vertical_resultant_kN_per_m": 103.92304845413263,
+          "u_max_mm": 0.02996372510544534,
+          "mean_inward_at_loads_mm": 0.02755443554070036,
+          "sigma_tensile_max_MPa": 2.4800175031339013,
+          "sigma_compressive_max_MPa": 8.687729820279158,
+          "eta_cracking": 0.901824546594146,
+          "eta_compression_linear": 0.3367337139643084,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.6532661324419025,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 5.838575827014051e-10,
+          "moment_balance_error_N": 4.166637933041645e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 65,
+          "total_force_magnitudes_kN_per_m": 130,
+          "vertical_resultant_kN_per_m": 112.58330249197702,
+          "u_max_mm": 0.032460702197565756,
+          "mean_inward_at_loads_mm": 0.02985063850242537,
+          "sigma_tensile_max_MPa": 2.6866856283950593,
+          "sigma_compressive_max_MPa": 9.411707305302423,
+          "eta_cracking": 0.9769765921436578,
+          "eta_compression_linear": 0.36479485679466755,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.9402915026575998,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 5.700571009704881e-09,
+          "moment_balance_error_N": 1.1571456818408248e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 66,
+          "total_force_magnitudes_kN_per_m": 132,
+          "vertical_resultant_kN_per_m": 114.31535329954589,
+          "u_max_mm": 0.032960097615989885,
+          "mean_inward_at_loads_mm": 0.030309879094770394,
+          "sigma_tensile_max_MPa": 2.7280192534472896,
+          "sigma_compressive_max_MPa": 9.556502802307076,
+          "eta_cracking": 0.9920070012535599,
+          "eta_compression_linear": 0.3704070853607394,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 2.0004520202546856,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.8254515450917353e-09,
+          "moment_balance_error_N": 3.8544005759089077e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 66.4,
+          "total_force_magnitudes_kN_per_m": 132.8,
+          "vertical_resultant_kN_per_m": 115.00817362257345,
+          "u_max_mm": 0.033159855783359504,
+          "mean_inward_at_loads_mm": 0.030493575331708395,
+          "sigma_tensile_max_MPa": 2.744552703468183,
+          "sigma_compressive_max_MPa": 9.61442100110894,
+          "eta_cracking": 0.9980191648975211,
+          "eta_compression_linear": 0.37265197678716827,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 2.0247734020252914,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 8.195278234539502e-10,
+          "moment_balance_error_N": 6.99150438202103e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 66.5,
+          "total_force_magnitudes_kN_per_m": 133.0,
+          "vertical_resultant_kN_per_m": 115.18137870333034,
+          "u_max_mm": 0.0332097953252019,
+          "mean_inward_at_loads_mm": 0.03053949939094288,
+          "sigma_tensile_max_MPa": 2.7486860659734065,
+          "sigma_compressive_max_MPa": 9.628900550809403,
+          "eta_cracking": 0.9995222058085115,
+          "eta_compression_linear": 0.37321319964377536,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 2.0308767094975586,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.9456366795892755e-09,
+          "moment_balance_error_N": 1.0597127412055873e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 66.53178850209565,
+          "total_force_magnitudes_kN_per_m": 133.0635770041913,
+          "vertical_resultant_kN_per_m": 115.23643800405651,
+          "u_max_mm": 0.033225670357507016,
+          "mean_inward_at_loads_mm": 0.030554097961475044,
+          "sigma_tensile_max_MPa": 2.7499999999999973,
+          "sigma_compressive_max_MPa": 9.633503382769376,
+          "eta_cracking": 0.999999999999999,
+          "eta_compression_linear": 0.3733916039833092,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 2.0328187834452094,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.2456871272352006e-08,
+          "moment_balance_error_N": 8.03400492332229e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 67,
+          "total_force_magnitudes_kN_per_m": 134,
+          "vertical_resultant_kN_per_m": 116.04740410711477,
+          "u_max_mm": 0.03345949303441396,
+          "mean_inward_at_loads_mm": 0.030769119687115393,
+          "sigma_tensile_max_MPa": 2.7693528784995203,
+          "sigma_compressive_max_MPa": 9.701298299311718,
+          "eta_cracking": 1.007037410363462,
+          "eta_compression_linear": 0.37601931392681076,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.0615310190366465,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 5.443684498871585e-09,
+          "moment_balance_error_N": 3.7266964488655186e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 70,
+          "total_force_magnitudes_kN_per_m": 140,
+          "vertical_resultant_kN_per_m": 121.2435565298214,
+          "u_max_mm": 0.03495767928968623,
+          "mean_inward_at_loads_mm": 0.032146841464150436,
+          "sigma_tensile_max_MPa": 2.8933537536562195,
+          "sigma_compressive_max_MPa": 10.135684790325696,
+          "eta_cracking": 1.0521286376931709,
+          "eta_compression_linear": 0.392855999625027,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.250278902490467,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 4.891299865389041e-09,
+          "moment_balance_error_N": 4.3093841685641563e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 80,
+          "total_force_magnitudes_kN_per_m": 160,
+          "vertical_resultant_kN_per_m": 138.56406460551017,
+          "u_max_mm": 0.03995163347392709,
+          "mean_inward_at_loads_mm": 0.03673924738760047,
+          "sigma_tensile_max_MPa": 3.306690004178532,
+          "sigma_compressive_max_MPa": 11.583639760372217,
+          "eta_cracking": 1.2024327287921934,
+          "eta_compression_linear": 0.4489782852857448,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.939139791007883,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.476878764478215e-09,
+          "moment_balance_error_N": 1.672090419743512e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 100,
+          "total_force_magnitudes_kN_per_m": 200,
+          "vertical_resultant_kN_per_m": 173.20508075688772,
+          "u_max_mm": 0.04993954184240886,
+          "mean_inward_at_loads_mm": 0.04592405923450057,
+          "sigma_tensile_max_MPa": 4.133362505223172,
+          "sigma_compressive_max_MPa": 14.479549700465274,
+          "eta_cracking": 1.5030409109902443,
+          "eta_compression_linear": 0.5612228566071811,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 4.592405923449827,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 6.095793964952482e-09,
+          "moment_balance_error_N": 5.523349049530159e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 150,
+          "total_force_magnitudes_kN_per_m": 300,
+          "vertical_resultant_kN_per_m": 259.8076211353316,
+          "u_max_mm": 0.07490931276361329,
+          "mean_inward_at_loads_mm": 0.0688860888517509,
+          "sigma_tensile_max_MPa": 6.2000437578347505,
+          "sigma_compressive_max_MPa": 21.71932455069789,
+          "eta_cracking": 2.2545613664853636,
+          "eta_compression_linear": 0.8418342849107711,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 10.332913327762721,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.3946363418157473e-08,
+          "moment_balance_error_N": 4.511792457723431e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 200,
+          "total_force_magnitudes_kN_per_m": 400,
+          "vertical_resultant_kN_per_m": 346.41016151377545,
+          "u_max_mm": 0.09987908368481772,
+          "mean_inward_at_loads_mm": 0.09184811846900114,
+          "sigma_tensile_max_MPa": 8.266725010446343,
+          "sigma_compressive_max_MPa": 28.959099400930548,
+          "eta_cracking": 3.0060818219804886,
+          "eta_compression_linear": 1.1224457132143622,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 18.36962369379931,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.2191587929904963e-08,
+          "moment_balance_error_N": 1.1046698099060317e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        }
+      ],
+      "rc": [
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 0,
+          "total_force_magnitudes_kN_per_m": 0,
+          "vertical_resultant_kN_per_m": 0.0,
+          "u_max_mm": 0.0,
+          "mean_inward_at_loads_mm": -0.0,
+          "sigma_tensile_max_MPa": 0.0,
+          "sigma_compressive_max_MPa": 5.0,
+          "eta_cracking": 0.0,
+          "eta_compression_linear": 0.1937984496124031,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.0,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 0.0,
+          "moment_balance_error_N": 0.0,
+          "crack_critical_element": 1,
+          "crack_critical_point": "G1",
+          "crack_critical_x_mm": 203.42999492787618,
+          "crack_critical_y_mm": 2.812941262048956
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 10,
+          "total_force_magnitudes_kN_per_m": 20,
+          "vertical_resultant_kN_per_m": 17.32050807568877,
+          "u_max_mm": 0.004964346664192798,
+          "mean_inward_at_loads_mm": 0.0045644042806065425,
+          "sigma_tensile_max_MPa": 0.4142859060930973,
+          "sigma_compressive_max_MPa": 5.3494055639203,
+          "eta_cracking": 0.15064942039748994,
+          "eta_compression_linear": 0.2073413009271434,
+          "eta_steel_yield": 0.004113467833292689,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.04564404280607095,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.358827302335707e-09,
+          "moment_balance_error_N": 1.5347527757903582e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 20,
+          "total_force_magnitudes_kN_per_m": 40,
+          "vertical_resultant_kN_per_m": 34.64101615137754,
+          "u_max_mm": 0.009928693328385595,
+          "mean_inward_at_loads_mm": 0.009128808561213085,
+          "sigma_tensile_max_MPa": 0.8285718121861946,
+          "sigma_compressive_max_MPa": 5.698811127840598,
+          "eta_cracking": 0.30129884079497987,
+          "eta_compression_linear": 0.22088415224188365,
+          "eta_steel_yield": 0.008226935666585378,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.1825761712242838,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.717654604671414e-09,
+          "moment_balance_error_N": 3.0695055515807163e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 30,
+          "total_force_magnitudes_kN_per_m": 60,
+          "vertical_resultant_kN_per_m": 51.96152422706631,
+          "u_max_mm": 0.014893039992578384,
+          "mean_inward_at_loads_mm": 0.013693212841819617,
+          "sigma_tensile_max_MPa": 1.2428577182792933,
+          "sigma_compressive_max_MPa": 6.048216691760897,
+          "eta_cracking": 0.4519482611924703,
+          "eta_compression_linear": 0.2344270035566239,
+          "eta_steel_yield": 0.012340403499878035,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.4107963852546414,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 4.2607151059217614e-09,
+          "moment_balance_error_N": 4.694624877300266e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 40,
+          "total_force_magnitudes_kN_per_m": 80,
+          "vertical_resultant_kN_per_m": 69.28203230275508,
+          "u_max_mm": 0.01985738665677119,
+          "mean_inward_at_loads_mm": 0.01825761712242617,
+          "sigma_tensile_max_MPa": 1.6571436243723892,
+          "sigma_compressive_max_MPa": 6.397622255681196,
+          "eta_cracking": 0.6025976815899597,
+          "eta_compression_linear": 0.2479698548713642,
+          "eta_steel_yield": 0.016453871333170757,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.7303046848971352,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 5.435309209342828e-09,
+          "moment_balance_error_N": 6.139011103161433e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 50,
+          "total_force_magnitudes_kN_per_m": 100,
+          "vertical_resultant_kN_per_m": 86.60254037844386,
+          "u_max_mm": 0.024821733320963994,
+          "mean_inward_at_loads_mm": 0.022822021403032716,
+          "sigma_tensile_max_MPa": 2.0714295304654877,
+          "sigma_compressive_max_MPa": 7.231570116630849,
+          "eta_cracking": 0.7532471019874502,
+          "eta_compression_linear": 0.2802934153732887,
+          "eta_steel_yield": 0.020567339166463455,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.141101070151779,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 7.133661040736895e-09,
+          "moment_balance_error_N": 3.1337219343721313e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 60,
+          "total_force_magnitudes_kN_per_m": 120,
+          "vertical_resultant_kN_per_m": 103.92304845413263,
+          "u_max_mm": 0.02978607998515677,
+          "mean_inward_at_loads_mm": 0.027386425683639234,
+          "sigma_tensile_max_MPa": 2.4857154365585865,
+          "sigma_compressive_max_MPa": 8.677884139957014,
+          "eta_cracking": 0.9038965223849406,
+          "eta_compression_linear": 0.3363520984479463,
+          "eta_steel_yield": 0.02468080699975607,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.6431855410185656,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 8.521430211843523e-09,
+          "moment_balance_error_N": 9.389249754600533e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 65,
+          "total_force_magnitudes_kN_per_m": 130,
+          "vertical_resultant_kN_per_m": 112.58330249197702,
+          "u_max_mm": 0.032268253317253165,
+          "mean_inward_at_loads_mm": 0.029668627823942507,
+          "sigma_tensile_max_MPa": 2.6928583896051337,
+          "sigma_compressive_max_MPa": 9.401041151620097,
+          "eta_cracking": 0.979221232583685,
+          "eta_compression_linear": 0.3643814399852751,
+          "eta_steel_yield": 0.02673754091640242,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.9284608085565267,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.130621108324963e-08,
+          "moment_balance_error_N": 1.0705946385028193e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 66,
+          "total_force_magnitudes_kN_per_m": 132,
+          "vertical_resultant_kN_per_m": 114.31535329954589,
+          "u_max_mm": 0.032764687983672464,
+          "mean_inward_at_loads_mm": 0.030125068252003166,
+          "sigma_tensile_max_MPa": 2.734286980214443,
+          "sigma_compressive_max_MPa": 9.545672553952713,
+          "eta_cracking": 0.9942861746234338,
+          "eta_compression_linear": 0.3699873082927408,
+          "eta_steel_yield": 0.02714888769973171,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.9882545046325641,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.6866560936268335e-08,
+          "moment_balance_error_N": 1.6917828163486398e-11,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 66.37927961232705,
+          "total_force_magnitudes_kN_per_m": 132.7585592246541,
+          "vertical_resultant_kN_per_m": 114.97228485837138,
+          "u_max_mm": 0.032952975531497675,
+          "mean_inward_at_loads_mm": 0.030298186800608404,
+          "sigma_tensile_max_MPa": 2.75,
+          "sigma_compressive_max_MPa": 9.600528296159752,
+          "eta_cracking": 1.0,
+          "eta_compression_linear": 0.37211349985115316,
+          "eta_steel_yield": 0.027304903148244845,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 2.011171813384368,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.1790508295694488e-08,
+          "moment_balance_error_N": 2.006106602741219e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 66.4,
+          "total_force_magnitudes_kN_per_m": 132.8,
+          "vertical_resultant_kN_per_m": 115.00817362257345,
+          "u_max_mm": 0.03296326185024017,
+          "mean_inward_at_loads_mm": 0.03030764442322744,
+          "sigma_tensile_max_MPa": 2.750858416458169,
+          "sigma_compressive_max_MPa": 9.603525114885768,
+          "eta_cracking": 1.0003121514393343,
+          "eta_compression_linear": 0.37222965561572746,
+          "eta_steel_yield": 0.027313426413063453,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.012427589702546,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 9.129670720473323e-09,
+          "moment_balance_error_N": 4.734124580219915e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 66.5,
+          "total_force_magnitudes_kN_per_m": 133.0,
+          "vertical_resultant_kN_per_m": 115.18137870333034,
+          "u_max_mm": 0.0330129053168821,
+          "mean_inward_at_loads_mm": 0.030353288466033496,
+          "sigma_tensile_max_MPa": 2.7550012755190947,
+          "sigma_compressive_max_MPa": 9.617988255119023,
+          "eta_cracking": 1.0018186456433071,
+          "eta_compression_linear": 0.3727902424464738,
+          "eta_steel_yield": 0.027354561091396296,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.018493682991453,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 7.591203076130585e-09,
+          "moment_balance_error_N": 3.422973428093511e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 67,
+          "total_force_magnitudes_kN_per_m": 134,
+          "vertical_resultant_kN_per_m": 116.04740410711477,
+          "u_max_mm": 0.03326112265009175,
+          "mean_inward_at_loads_mm": 0.030581508680063835,
+          "sigma_tensile_max_MPa": 2.775715570823754,
+          "sigma_compressive_max_MPa": 9.690303956285339,
+          "eta_cracking": 1.0093511166631834,
+          "eta_compression_linear": 0.3755931766002069,
+          "eta_steel_yield": 0.027560234483061,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.0489610815645274,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 9.56647397730043e-09,
+          "moment_balance_error_N": 6.259895000737188e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 70,
+          "total_force_magnitudes_kN_per_m": 140,
+          "vertical_resultant_kN_per_m": 121.2435565298214,
+          "u_max_mm": 0.03475042664934957,
+          "mean_inward_at_loads_mm": 0.03195082996424578,
+          "sigma_tensile_max_MPa": 2.9000013426516804,
+          "sigma_compressive_max_MPa": 10.124198163283182,
+          "eta_cracking": 1.0545459427824293,
+          "eta_compression_linear": 0.39241078152260395,
+          "eta_steel_yield": 0.028794274833048805,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.2365580974974986,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.3191715185463019e-08,
+          "moment_balance_error_N": 4.72495993274286e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 80,
+          "total_force_magnitudes_kN_per_m": 160,
+          "vertical_resultant_kN_per_m": 138.56406460551017,
+          "u_max_mm": 0.03971477331354238,
+          "mean_inward_at_loads_mm": 0.03651523424485234,
+          "sigma_tensile_max_MPa": 3.3142872487447783,
+          "sigma_compressive_max_MPa": 11.57051218660936,
+          "eta_cracking": 1.2051953631799195,
+          "eta_compression_linear": 0.448469464597262,
+          "eta_steel_yield": 0.03290774266634151,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.9212187395885407,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.0870618418685655e-08,
+          "moment_balance_error_N": 1.2278022206322865e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 100,
+          "total_force_magnitudes_kN_per_m": 200,
+          "vertical_resultant_kN_per_m": 173.20508075688772,
+          "u_max_mm": 0.04964346664192799,
+          "mean_inward_at_loads_mm": 0.04564404280606543,
+          "sigma_tensile_max_MPa": 4.1428590609309754,
+          "sigma_compressive_max_MPa": 14.463140233261697,
+          "eta_cracking": 1.5064942039749003,
+          "eta_compression_linear": 0.5605868307465774,
+          "eta_steel_yield": 0.04113467833292691,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 4.564404280607116,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.426732208147379e-08,
+          "moment_balance_error_N": 6.267443868744263e-10,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 150,
+          "total_force_magnitudes_kN_per_m": 300,
+          "vertical_resultant_kN_per_m": 259.8076211353316,
+          "u_max_mm": 0.07446519996289194,
+          "mean_inward_at_loads_mm": 0.06846606420909808,
+          "sigma_tensile_max_MPa": 6.21428859139646,
+          "sigma_compressive_max_MPa": 21.69471034989252,
+          "eta_cracking": 2.259741305962349,
+          "eta_compression_linear": 0.8408802461198651,
+          "eta_steel_yield": 0.06170201749939023,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 10.26990963136641,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 3.6215233480222565e-08,
+          "moment_balance_error_N": 1.6044085377452208e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 200,
+          "total_force_magnitudes_kN_per_m": 400,
+          "vertical_resultant_kN_per_m": 346.41016151377545,
+          "u_max_mm": 0.09928693328385597,
+          "mean_inward_at_loads_mm": 0.09128808561213086,
+          "sigma_tensile_max_MPa": 8.285718121861951,
+          "sigma_compressive_max_MPa": 28.926280466523394,
+          "eta_cracking": 3.0129884079498006,
+          "eta_compression_linear": 1.121173661493155,
+          "eta_steel_yield": 0.08226935666585382,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 18.257617122428464,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              577,
+              1,
+              0
+            ],
+            [
+              625,
+              1,
+              0
+            ],
+            [
+              649,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.853464416294758e-08,
+          "moment_balance_error_N": 1.2534887737488525e-09,
+          "crack_critical_element": 72,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        }
+      ]
+    },
+    "crack_screen_crossings": {
+      "plain": {
+        "case": "plain",
+        "q_each_kN_per_m": 66.53178850209565,
+        "total_force_magnitudes_kN_per_m": 133.0635770041913,
+        "vertical_resultant_kN_per_m": 115.23643800405651,
+        "u_max_mm": 0.033225670357507016,
+        "mean_inward_at_loads_mm": 0.030554097961475044,
+        "sigma_tensile_max_MPa": 2.7499999999999973,
+        "sigma_compressive_max_MPa": 9.633503382769376,
+        "eta_cracking": 0.999999999999999,
+        "eta_compression_linear": 0.3733916039833092,
+        "eta_steel_yield": 0.0,
+        "within_elastic_screens": true,
+        "strain_energy_J_per_m": 2.0328187834452094,
+        "active_unilateral_dofs": 3,
+        "contact_signature": [
+          [
+            577,
+            1,
+            0
+          ],
+          [
+            625,
+            1,
+            0
+          ],
+          [
+            649,
+            1,
+            0
+          ]
+        ],
+        "force_balance_error_N_per_m": 1.2456871272352006e-08,
+        "moment_balance_error_N": 8.03400492332229e-10,
+        "crack_critical_element": 72,
+        "crack_critical_point": "C4",
+        "crack_critical_x_mm": -3.6739403974420595e-14,
+        "crack_critical_y_mm": -200.0
+      },
+      "rc": {
+        "case": "rc",
+        "q_each_kN_per_m": 66.37927961232705,
+        "total_force_magnitudes_kN_per_m": 132.7585592246541,
+        "vertical_resultant_kN_per_m": 114.97228485837138,
+        "u_max_mm": 0.032952975531497675,
+        "mean_inward_at_loads_mm": 0.030298186800608404,
+        "sigma_tensile_max_MPa": 2.75,
+        "sigma_compressive_max_MPa": 9.600528296159752,
+        "eta_cracking": 1.0,
+        "eta_compression_linear": 0.37211349985115316,
+        "eta_steel_yield": 0.027304903148244845,
+        "within_elastic_screens": true,
+        "strain_energy_J_per_m": 2.011171813384368,
+        "active_unilateral_dofs": 3,
+        "contact_signature": [
+          [
+            577,
+            1,
+            0
+          ],
+          [
+            625,
+            1,
+            0
+          ],
+          [
+            649,
+            1,
+            0
+          ]
+        ],
+        "force_balance_error_N_per_m": 1.1790508295694488e-08,
+        "moment_balance_error_N": 2.006106602741219e-10,
+        "crack_critical_element": 72,
+        "crack_critical_point": "C4",
+        "crack_critical_x_mm": -3.6739403974420595e-14,
+        "crack_critical_y_mm": -200.0
+      }
+    },
+    "verification": {
+      "plain": {
+        "max_relative_displacement_proportionality_error": 1.1102230246251565e-15,
+        "max_relative_energy_scaling_error": 7.172040739078511e-14,
+        "positive_load_contacts_unchanged": true,
+        "u_max_compliance_mm_per_kN_per_m": 0.0004993954184240887
+      },
+      "rc": {
+        "max_relative_displacement_proportionality_error": 6.661338147750939e-16,
+        "max_relative_energy_scaling_error": 5.728750807065808e-14,
+        "positive_load_contacts_unchanged": true,
+        "u_max_compliance_mm_per_kN_per_m": 0.0004964346664192798
+      }
+    }
+  },
+  "fine_mesh_check": {
+    "parameters": {
+      "r_inner": 0.2,
+      "r_outer": 0.3,
+      "E": 39500000000.0,
+      "nu": 0.2,
+      "prestress": 5000000.0,
+      "axial_mode": "constant_force",
+      "nr": 12,
+      "ntheta": 192,
+      "pressures": [],
+      "include_check_points": true,
+      "supports": [
+        {
+          "target": "node",
+          "node_id": 2305,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        },
+        {
+          "target": "node",
+          "node_id": 2401,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        },
+        {
+          "target": "node",
+          "node_id": 2449,
+          "direction": "r",
+          "kind": "upper",
+          "value": 0
+        }
+      ],
+      "nodal_loads": [
+        {
+          "node_id": 2337,
+          "force_r": 0,
+          "force_t": 0
+        },
+        {
+          "node_id": 2369,
+          "force_r": 0,
+          "force_t": 0
+        }
+      ],
+      "reinforcement": {
+        "longitudinal_count": 12,
+        "longitudinal_diameter": 0.012,
+        "longitudinal_grade": "CB400-V",
+        "hoop_diameter": 0.006,
+        "hoop_pitch": 0.1,
+        "hoop_grade": "CB240-T",
+        "cover": 0.03,
+        "E_s": 200000000000.0,
+        "initial_longitudinal_stress": 0
+      }
+    },
+    "requested_loads_kN_per_m_each": [
+      0,
+      20,
+      70
+    ],
+    "rows": {
+      "plain": [
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 0,
+          "total_force_magnitudes_kN_per_m": 0,
+          "vertical_resultant_kN_per_m": 0.0,
+          "u_max_mm": 0.0,
+          "mean_inward_at_loads_mm": -0.0,
+          "sigma_tensile_max_MPa": 0.0,
+          "sigma_compressive_max_MPa": 5.0,
+          "eta_cracking": 0.0,
+          "eta_compression_linear": 0.1937984496124031,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.0,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 0.0,
+          "moment_balance_error_N": 0.0,
+          "crack_critical_element": 1,
+          "crack_critical_point": "G1",
+          "crack_critical_x_mm": 201.73821209448718,
+          "crack_critical_y_mm": 1.395047615558577
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 20,
+          "total_force_magnitudes_kN_per_m": 40,
+          "vertical_resultant_kN_per_m": 34.64101615137754,
+          "u_max_mm": 0.010830234973348816,
+          "mean_inward_at_loads_mm": 0.009965180499049795,
+          "sigma_tensile_max_MPa": 0.8730351073964406,
+          "sigma_compressive_max_MPa": 6.337841525728036,
+          "eta_cracking": 0.31746731178052384,
+          "eta_compression_linear": 0.24565277231504018,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.19930360998080984,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.2083635741002458e-09,
+          "moment_balance_error_N": 8.138915949135201e-10,
+          "crack_critical_element": 144,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 62.99861200773548,
+          "total_force_magnitudes_kN_per_m": 125.99722401547096,
+          "vertical_resultant_kN_per_m": 109.11679680371661,
+          "u_max_mm": 0.034114488551930465,
+          "mean_inward_at_loads_mm": 0.03138962699233451,
+          "sigma_tensile_max_MPa": 2.749999999999997,
+          "sigma_compressive_max_MPa": 17.412684248238012,
+          "eta_cracking": 0.9999999999999988,
+          "eta_compression_linear": 0.6749102421797679,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.9775029319557609,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 6.589873291192965e-09,
+          "moment_balance_error_N": 1.426368593013309e-09,
+          "crack_critical_element": 144,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "plain",
+          "q_each_kN_per_m": 70,
+          "total_force_magnitudes_kN_per_m": 140,
+          "vertical_resultant_kN_per_m": 121.2435565298214,
+          "u_max_mm": 0.03790582240672088,
+          "mean_inward_at_loads_mm": 0.034878131746674305,
+          "sigma_tensile_max_MPa": 3.05562287588754,
+          "sigma_compressive_max_MPa": 19.34785320709919,
+          "eta_cracking": 1.1111355912318326,
+          "eta_compression_linear": 0.7499167909728369,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.441469222265032,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 6.063671395028523e-09,
+          "moment_balance_error_N": 1.2970623819948754e-09,
+          "crack_critical_element": 144,
+          "crack_critical_point": "C4",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        }
+      ],
+      "rc": [
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 0,
+          "total_force_magnitudes_kN_per_m": 0,
+          "vertical_resultant_kN_per_m": 0.0,
+          "u_max_mm": 0.0,
+          "mean_inward_at_loads_mm": -0.0,
+          "sigma_tensile_max_MPa": 0.0,
+          "sigma_compressive_max_MPa": 5.0,
+          "eta_cracking": 0.0,
+          "eta_compression_linear": 0.1937984496124031,
+          "eta_steel_yield": 0.0,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.0,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 0.0,
+          "moment_balance_error_N": 0.0,
+          "crack_critical_element": 1,
+          "crack_critical_point": "G1",
+          "crack_critical_x_mm": 201.73821209448718,
+          "crack_critical_y_mm": 1.395047615558577
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 20,
+          "total_force_magnitudes_kN_per_m": 40,
+          "vertical_resultant_kN_per_m": 34.64101615137754,
+          "u_max_mm": 0.010771174918937872,
+          "mean_inward_at_loads_mm": 0.00990926592369009,
+          "sigma_tensile_max_MPa": 0.8751104819234787,
+          "sigma_compressive_max_MPa": 6.3387702660799725,
+          "eta_cracking": 0.31822199342671953,
+          "eta_compression_linear": 0.24568877000309972,
+          "eta_steel_yield": 0.008157406876898811,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 0.19818531847375123,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 6.892300133629801e-09,
+          "moment_balance_error_N": 2.003955451296527e-10,
+          "crack_critical_element": 145,
+          "crack_critical_point": "C1",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 62.849207198513646,
+          "total_force_magnitudes_kN_per_m": 125.69841439702729,
+          "vertical_resultant_kN_per_m": 108.85802008324924,
+          "u_max_mm": 0.03384799021258802,
+          "mean_inward_at_loads_mm": 0.031139475361158457,
+          "sigma_tensile_max_MPa": 2.75,
+          "sigma_compressive_max_MPa": 17.362459469001756,
+          "eta_cracking": 1.0,
+          "eta_compression_linear": 0.6729635453101456,
+          "eta_steel_yield": 0.02563432775043965,
+          "within_elastic_screens": true,
+          "strain_energy_J_per_m": 1.9570913390260476,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 2.643179404576127e-08,
+          "moment_balance_error_N": 4.0187368125717105e-10,
+          "crack_critical_element": 145,
+          "crack_critical_point": "C1",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        },
+        {
+          "case": "rc",
+          "q_each_kN_per_m": 70,
+          "total_force_magnitudes_kN_per_m": 140,
+          "vertical_resultant_kN_per_m": 121.2435565298214,
+          "u_max_mm": 0.037699112216282575,
+          "mean_inward_at_loads_mm": 0.034682430732915326,
+          "sigma_tensile_max_MPa": 3.062886686732185,
+          "sigma_compressive_max_MPa": 19.337907620557303,
+          "eta_cracking": 1.1137769769935217,
+          "eta_compression_linear": 0.7495313031223761,
+          "eta_steel_yield": 0.028550924069145823,
+          "within_elastic_screens": false,
+          "strain_energy_J_per_m": 2.427770151303402,
+          "active_unilateral_dofs": 3,
+          "contact_signature": [
+            [
+              2305,
+              1,
+              0
+            ],
+            [
+              2401,
+              1,
+              0
+            ],
+            [
+              2449,
+              1,
+              0
+            ]
+          ],
+          "force_balance_error_N_per_m": 1.9278627834032084e-08,
+          "moment_balance_error_N": 2.0732470816360746e-09,
+          "crack_critical_element": 145,
+          "crack_critical_point": "C1",
+          "crack_critical_x_mm": -3.6739403974420595e-14,
+          "crack_critical_y_mm": -200.0
+        }
+      ]
+    },
+    "crack_screen_crossings": {
+      "plain": {
+        "case": "plain",
+        "q_each_kN_per_m": 62.99861200773548,
+        "total_force_magnitudes_kN_per_m": 125.99722401547096,
+        "vertical_resultant_kN_per_m": 109.11679680371661,
+        "u_max_mm": 0.034114488551930465,
+        "mean_inward_at_loads_mm": 0.03138962699233451,
+        "sigma_tensile_max_MPa": 2.749999999999997,
+        "sigma_compressive_max_MPa": 17.412684248238012,
+        "eta_cracking": 0.9999999999999988,
+        "eta_compression_linear": 0.6749102421797679,
+        "eta_steel_yield": 0.0,
+        "within_elastic_screens": true,
+        "strain_energy_J_per_m": 1.9775029319557609,
+        "active_unilateral_dofs": 3,
+        "contact_signature": [
+          [
+            2305,
+            1,
+            0
+          ],
+          [
+            2401,
+            1,
+            0
+          ],
+          [
+            2449,
+            1,
+            0
+          ]
+        ],
+        "force_balance_error_N_per_m": 6.589873291192965e-09,
+        "moment_balance_error_N": 1.426368593013309e-09,
+        "crack_critical_element": 144,
+        "crack_critical_point": "C4",
+        "crack_critical_x_mm": -3.6739403974420595e-14,
+        "crack_critical_y_mm": -200.0
+      },
+      "rc": {
+        "case": "rc",
+        "q_each_kN_per_m": 62.849207198513646,
+        "total_force_magnitudes_kN_per_m": 125.69841439702729,
+        "vertical_resultant_kN_per_m": 108.85802008324924,
+        "u_max_mm": 0.03384799021258802,
+        "mean_inward_at_loads_mm": 0.031139475361158457,
+        "sigma_tensile_max_MPa": 2.75,
+        "sigma_compressive_max_MPa": 17.362459469001756,
+        "eta_cracking": 1.0,
+        "eta_compression_linear": 0.6729635453101456,
+        "eta_steel_yield": 0.02563432775043965,
+        "within_elastic_screens": true,
+        "strain_energy_J_per_m": 1.9570913390260476,
+        "active_unilateral_dofs": 3,
+        "contact_signature": [
+          [
+            2305,
+            1,
+            0
+          ],
+          [
+            2401,
+            1,
+            0
+          ],
+          [
+            2449,
+            1,
+            0
+          ]
+        ],
+        "force_balance_error_N_per_m": 2.643179404576127e-08,
+        "moment_balance_error_N": 4.0187368125717105e-10,
+        "crack_critical_element": 145,
+        "crack_critical_point": "C1",
+        "crack_critical_x_mm": -3.6739403974420595e-14,
+        "crack_critical_y_mm": -200.0
+      }
+    },
+    "verification": {
+      "plain": {
+        "max_relative_displacement_proportionality_error": 4.440892098500626e-16,
+        "max_relative_energy_scaling_error": 4.574118861455645e-14,
+        "positive_load_contacts_unchanged": true,
+        "u_max_compliance_mm_per_kN_per_m": 0.0005415117486674408
+      },
+      "rc": {
+        "max_relative_displacement_proportionality_error": 1.1102230246251565e-15,
+        "max_relative_energy_scaling_error": 4.5075054799781356e-14,
+        "positive_load_contacts_unchanged": true,
+        "u_max_compliance_mm_per_kN_per_m": 0.0005385587459468936
+      }
+    }
+  }
+}

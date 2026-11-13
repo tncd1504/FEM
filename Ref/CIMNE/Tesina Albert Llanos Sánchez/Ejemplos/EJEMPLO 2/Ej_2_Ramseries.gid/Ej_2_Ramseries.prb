@@ -1,0 +1,313 @@
+PROBLEM DATA
+BOOK: Problem data
+TITLE: Units
+QUESTION: Mesh_units#CB#(m,cm,mm)
+VALUE: m
+HELP: Choose the units for the mesh dimensions
+QUESTION: Results_units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm,kN-m-MPa-ton)
+VALUE: N-m-kg
+HELP: Choose the units for the results to postprocess after calculation
+TITLE: Gravity
+QUESTION: Gravity_X:
+VALUE: 0.0
+HELP: Choose the direction of the gravity for problems with Specific Weight != 0
+QUESTION: Gravity_Y:
+VALUE: 0.0
+HELP: Choose the direction of the gravity for problems with Specific Weight != 0
+QUESTION: Gravity_Z:
+VALUE: -1.0
+HELP: Choose the direction of the gravity for problems with Specific Weight != 0
+TITLE: Analysis
+QUESTION: Problem_type#CB#(Beams_and_shells,Plane_strain,Plane_stress,Plates)
+VALUE: Beams_and_shells
+HELP: 'Plane stress' and 'Plates' are particular cases of 'Beams and shells'. Its only advantage is that they are faster. Input data and results are equal than 'Beams and shells'. 'Plane strain' substitutes the stress case for the strain case. In 'Plane strain', the Thickness of the shell is not considered.
+STATE: HIDDEN
+QUESTION: Consider_beam_P-Delta#CB#(0,1)
+VALUE: 0
+HELP: When activated, P-Delta analysis is performed. This analysis considers the second order effects in the beams
+STATE: HIDDEN
+QUESTION: Analysis_Type#CB#(Linear_Static,Linear_Dynamic,Non-Linear_Static,Non-Linear_Dynamic)
+VALUE: Linear_Static
+HELP: Define the type of analysis to perform.Linear_Static
+DEPENDENCIES: (Linear_Static,HIDE,DUMMY_atype,Linear_Static) 	     (Linear_Dynamic,HIDE,DUMMY_atype,Linear_Dynamic) 	     (Non-Linear_Static,HIDE,DUMMY_atype,Non-Linear_Static) 	     (Non-Linear_Dynamic,HIDE,DUMMY_atype,Non-Linear-Dynamic)
+QUESTION: DUMMY_atype
+VALUE: Linear_Static
+TKWIDGET: ProblemDataWidget::Analysis_windows
+STATE: HIDDEN
+QUESTION: Activate_Load_Cases#CB#(none,independent,combined)
+VALUE: none
+STATE: HIDDEN
+QUESTION: Combined_load_cases:(name,isstrength,loads)
+VALUE: #N# 3 Combined_1 1 allone
+STATE: HIDDEN
+BOOK: Linear_Dynamic
+TITLE: General
+QUESTION: Dynamic_Analysis_Type#CB#(Modal_Analysis,Direct_Integration,Spectrum_Analysis)
+VALUE: Modal_Analysis
+HELP: Choose the type of Dynamic Analysis that Ram-Series will perform
+DEPENDENCIES: (Direct_Integration,HIDE,Number_of_Modes,#CURRENT#,		 RESTORE,Damping_Type,Rayleigh_Damping,		 RESTORE,Matrix_storage,#CURRENT#,		 RESTORE,Gamma,#CURRENT#,		 RESTORE,Beta,#CURRENT#,		 RESTORE,DeltaT,#CURRENT#,		 RESTORE,Number_of_steps,#CURRENT#,		 HIDE,Spectrum_Analysis_type,#CURRENT#,		 TITLESTATE,Seismic_data,hidden,		 TITLESTATE,U.D._spectrum,hidden,		 RESTORE,Initial_Conditions:,#CURRENT#,		 HIDE, __DUMMY2_, direct)	     (Modal_Analysis,RESTORE,Number_of_Modes,#CURRENT#,		 HIDE,Gamma,#CURRENT#,		 HIDE,Beta,#CURRENT#,		 RESTORE,Matrix_storage,#CURRENT#,		 RESTORE,Damping_Type,->Damping_Type,		 RESTORE,DeltaT,#CURRENT#,		 RESTORE,Number_of_steps,#CURRENT#,		 HIDE,Spectrum_Analysis_type,#CURRENT#,		 TITLESTATE,Seismic_data,hidden,		 TITLESTATE,U.D._spectrum,hidden,		 RESTORE,Initial_Conditions:,#CURRENT#,		 HIDE, __DUMMY2__, modal)	     (Spectrum_Analysis,RESTORE,Number_of_Modes,#CURRENT#,		 HIDE,Gamma,#CURRENT#,		 HIDE,Beta,#CURRENT#,		 RESTORE,Matrix_storage,#CURRENT#,		 HIDE,Damping_Type,Modal_Damping,		 HIDE,DeltaT,#CURRENT#,		 HIDE,Number_of_steps,#CURRENT#,		 RESTORE,Spectrum_Analysis_type,->Spectrum_Analysis_type,		 HIDE,Initial_Conditions:,#CURRENT#,		 HIDE, __DUMMY2__, spectrum)
+QUESTION: Number_of_Modes
+VALUE: 1
+HELP: Choose the number of modes to consider in the Modal Analysis
+QUESTION: DeltaT
+VALUE: 0.01
+HELP: Time increment for the dynamic analysis
+QUESTION: Number_of_steps
+VALUE: 10
+HELP: Number of steps of the dynamic analysis.\nTotal physical time will be Number_of_Steps X Delta_T.
+QUESTION: Gamma
+VALUE: 0.5
+HELP: Parameter for the direct integration
+QUESTION: Beta
+VALUE: 0.25
+HELP: Parameter for the direct integration
+QUESTION: Matrix_storage#CB#(Lumped,Consistent)
+VALUE: Lumped
+DEPENDENCIES: (Lumped,SET,Alpha_K,0.0)	     (Consistent,RESTORE,Damping_Type,#CURRENT#)
+HELP: Choose the type of storage for the Mass and Damping Matrix. If Lumped Matrix storage is choose, the  part of the Damping Matrix related with the stiffness matrix is neglected  (Alpha_K=0).
+QUESTION: Damping_Type#CB#(Modal_Damping,Rayleigh_Damping)
+VALUE: Modal_Damping
+HELP: Choose the type of damping used in the analysis. There are two types avaible: Modal damping and Rayleigh damping
+DEPENDENCIES: (Modal_Damping,RESTORE,Damping_ratio,#CURRENT#,		 HIDE,Alpha_M,#CURRENT#,		 HIDE,Alpha_K,#CURRENT#)	     (Rayleigh_Damping,HIDE,Damping_ratio,#CURRENT#,		 RESTORE,Alpha_M,#CURRENT#,		 RESTORE,Alpha_K,#CURRENT#)
+QUESTION: Damping_ratio
+VALUE: 0.05
+HELP: Express the damping as a ratio of the critical damping ratio
+QUESTION: Alpha_M
+VALUE: 0.1
+HELP: Coefficient of the Mass Matrix in the Rayleigh Damping
+QUESTION: Alpha_K
+VALUE: 0.1
+HELP: Coefficient of the Stiffness Matrix in the Rayleigh Damping
+QUESTION: Spectrum_Analysis_type#CB#(Seismic_codes,User_defined_spectrum)
+VALUE: Seismic_codes
+HELP: Choose the type of Spectrum Analysis used in the analysis. There are two types avaible: Seismic codes and User define spectrum.
+DEPENDENCIES: (Seismic_codes,TITLESTATE,Seismic_data,normal,		 TITLESTATE,U.D._spectrum,hidden)	     (User_defined_spectrum,TITLESTATE,Seismic_data,hidden,		 TITLESTATE,U.D._spectrum,normal)
+QUESTION: Initial_Conditions:#CB#(None,Comb._Load_1,User_Defined)
+VALUE: None
+HELP: None: No assign any intial conditions \nComb._Load_1: Assign like initial conditions an static combinated load case \nUser_Defined: Assign initial conditions defined by the user
+QUESTION: __DUMMY2__
+VALUE: direct
+STATE: HIDDEN
+DEPENDENCIES: (direct, -)(modal, 		 TITLESTATE,Seismic_data,hidden,		 TITLESTATE,U.D._spectrum,hidden)
+TITLE: Seismic_data
+QUESTION: Code_type#CB#(NCSE-94_Spain_Code,Other)
+VALUE: NCSE-94_Spain_Code
+HELP: Indicate de the seismic code used.
+QUESTION: Design_Seismic_Acceleration
+VALUE: 5.0
+HELP: Indicate de the design seismic acceleration proposed in the code
+QUESTION: Seismic_direction_nx
+VALUE: 1.0
+HELP: Indicate the component of the seismic in the x global direction
+QUESTION: Seismic_direction_ny
+VALUE: 0.0
+HELP: Indicate the component of the seismic in the y global direction
+QUESTION: Seismic_direction_nz
+VALUE: 0.0
+HELP: Indicate the component of the seismic in the z global direction
+QUESTION: Soil_coefficient
+VALUE: 1.0
+HELP: Soil coefficient defined in the code
+QUESTION: Contribution_coefficient
+VALUE: 1.0
+HELP: Contribution coefficient defined in the code
+QUESTION: Ductility
+VALUE: 2.0
+HELP: Structure ductility defined in the code
+TITLE: U.D._spectrum
+QUESTION: Spectrum_Table:(T[seg],Sa[m/seg2])
+VALUE: #N# 2 0.0 0.0
+QUESTION: Spectrum_direction_nx
+VALUE: 1.0
+HELP: Indicate the component of the spectrum in the x global direction
+QUESTION: Spectrum_direction_ny
+VALUE: 0.0
+HELP: Indicate the component of the spectrum in the y global direction
+QUESTION: Spectrum_direction_nz
+VALUE: 0.0
+HELP: Indicate the component of the spectrum in the z global direction
+BOOK: Non-Linear_Static
+TITLE: General
+QUESTION: Delta_Fac
+VALUE: 6.0
+HELP: Is the initial value of the incremetal load factor or displacement factor. If the arc-lenght method is to be adopted       and the "desired lenght",Delta_Ld, for the first increment is input as zero, then Delta_P is       automatically converted to a "length".
+QUESTION: Num_inc
+VALUE: 10
+HELP: Is the desired number of increment.
+QUESTION: Automatic_inc#CB#(Yes,No)
+VALUE: Yes
+HELP: If this parameter is set to "Yes", automatic increment sizes are computed.       Such automatic increments increments must be used with the arc-length method. \n       If is set to "No", equal increments of magnitude Delta_P are adopted.
+DEPENDENCIES: (No,TITLESTATE,Automatic_inc,hidden)	     (Yes,TITLESTATE,Automatic_inc,normal)
+QUESTION: Control#CB#(Load_Control,Disp._Control,Arc-lenght_Control)
+VALUE: Load_Control
+HELP: Define the type of control for the non linear analysis.
+DEPENDENCIES: (Arc-lenght_Control,TITLESTATE,Arc-Length,normal)	     (Load_Control,TITLESTATE,Arc-Length,hidden)	     (Disp._Control,TITLESTATE,Arc-Length,hidden)
+QUESTION: Conv._tolerance_static
+VALUE: 0.001
+HELP: Convergence tolerance factor.
+QUESTION: Iteration_type#CB#(Full_N-R,Modified_N-R)
+VALUE: Full_N-R
+HELP: Indicate if the full or modified Newton Raphson method is choseen.
+QUESTION: Max_iter
+VALUE: 10
+HELP: Define the maximun number of iterations
+QUESTION: Line-Search#CB#(Yes,No)
+VALUE: No
+HELP: Define if line search method are required
+DEPENDENCIES: (No,TITLESTATE,Line-Search,hidden)	     (Yes,TITLESTATE,Line-Search,normal)
+QUESTION: Auto-ARC-switch#CB#(Yes,No)
+VALUE: No
+HELP: Automatic switch to the arc-length method.
+DEPENDENCIES: (No,TITLESTATE,Auto-ARC-switch,hidden)	     (Yes,TITLESTATE,Auto-ARC-switch,normal)
+TITLE: Line-Search
+QUESTION: LS-loops
+VALUE: 10
+HELP: Define the maximun number of Line-Search loops.
+QUESTION: LS-toler
+VALUE: 0.8
+HELP: Tolerance on ratio.
+QUESTION: LS-min
+VALUE: 0.1
+HELP: Define the minim step-length of Line-Search.
+QUESTION: LS-max
+VALUE: 1.5
+HELP: Define the maxim step-length of Line-Search.
+QUESTION: Amp-max
+VALUE: 1.5
+HELP: Define the maxim amplitude of any step.
+TITLE: Automatic_inc
+QUESTION: Num_Iter_d
+VALUE: 3
+HELP: Number of iteration desired.
+QUESTION: DeltaP_max
+VALUE: 1.0
+HELP: Maxim load increment.
+QUESTION: DeltaP_min
+VALUE: 1.0
+HELP: Minim load increment.
+TITLE: Auto-ARC-switch
+QUESTION: C_Stif
+VALUE: 0.3
+HELP: The desired current stiffness parameter for swithching.
+TITLE: Arc-Length
+QUESTION: DeltaL_d
+VALUE: 0.05
+HELP: Desired lenght increment.
+QUESTION: DeltaL_max
+VALUE: 0.05
+HELP: Maxim lenght increment.
+QUESTION: DeltaL_min
+VALUE: 0.05
+HELP: Minim lenght increment.
+BOOK: Non-Linear-Dynamic
+TITLE: General
+QUESTION: Integration_method#CB#(Implicit,Explicit)
+VALUE: Implicit
+HELP: Algorithm of temporal integration
+DEPENDENCIES: (Implicit,TITLESTATE,Integration_Data,normal,		       TITLESTATE,Non-Linear,normal,		       HIDE,Delta_T,#CURRENT#,		       HIDE,Number-of-steps,#CURRENT#,		       RESTORE,DeltaT_variation,#CURRENT#)	     (Explicit,TITLESTATE,Integration_Data,hidden,		       TITLESTATE,Non-Linear,hidden,		       RESTORE,Matrix-storage,Lumped,		       RESTORE,Delta_T,#CURRENT#,		       RESTORE,Number-of-steps,#CURRENT#,		       HIDE,DeltaT_variation,#CURRENT#)
+QUESTION: T_0
+VALUE: 0.0
+HELP: Initial time for the dynamic analysis.
+QUESTION: Delta_T
+VALUE: 0.01
+HELP: Time increment for the dynamic analysis
+QUESTION: Number-of-steps
+VALUE: 10
+HELP: Number of steps of the dynamic analysis.\nTotal physical time will be Number_of_Steps X Delta_T.
+QUESTION: DeltaT_variation:(Amount_of_steps,DeltaT)
+VALUE: #N# 2 10 0.01
+HELP: Time increment variation for certain number of step.
+QUESTION: Matrix-storage#CB#(Lumped,Consistent)
+VALUE: Lumped
+HELP: Choose the type of storage for the Mass and Damping Matrix.
+QUESTION: Initial_Conditions#CB#(None,Comb._Load_1,User_Defined)
+VALUE: None
+HELP: None: No assign any intial conditions \nComb._Load_1: Assign like initial conditions an the static linear elastic state in Combinated Load Case\nUser_Defined: Assign initial conditions defined by the user
+DEPENDENCIES: (None,HIDE,Comb._Load_1_data,#CURRENT#)		          (Comb._Load_1,RESTORE,Comb._Load_1_data,#CURRENT#)		          (User_Defined,HIDE,Comb._Load_1_data,#CURRENT#)
+QUESTION: Comb._Load_1_data#CB#(Only_disp,Disp_and_load)
+VALUE: Disp_and_load
+HELP: This question indicate wich data are pass like initial condition in the Non linear dynamic analysis
+TITLE: Integration_Data
+QUESTION: Gamma:
+VALUE: 0.5
+HELP: Parameter for the direct integration
+QUESTION: Beta:
+VALUE: 0.25
+HELP: Parameter for the direct integration
+TITLE: Damping
+QUESTION: Alpha_M:
+VALUE: 0.1
+QUESTION: Alpha_K:
+VALUE: 0.1
+HELP: Coefficient of the Mass Matrix in the Rayleigh Damping
+TITLE: Non-Linear
+QUESTION: Conv._tolerance_dynamic
+VALUE: 0.001
+HELP: Convergence tolerance factor.
+QUESTION: Iteration-type#CB#(Full_N-R,Modif_1_N-R,Modif_2_N-R,Initial_N-R)
+VALUE: Full_N-R
+HELP: Indicate if the full,modified o intial Newton Raphson method is choseen.
+QUESTION: Max-iter
+VALUE: 10
+HELP: Define the maximun number of iterations
+BOOK: Advanced
+TITLE: Linear_Solver
+QUESTION: Solver_type#CB#(Automatic,SkyLine,Sparse)
+VALUE: Automatic
+DEPENDENCIES: (Sparse,RESTORE,Solver_tolerance,#CURRENT#,		  RESTORE,Solver_tolerance_minimum,#CURRENT#,		  RESTORE,Solver_max_iterations,#CURRENT#)
+DEPENDENCIES: (#DEFAULT#,HIDE,Solver_tolerance,#CURRENT#,		  HIDE,Solver_tolerance_minimum,#CURRENT#,		  HIDE,Solver_max_iterations,#CURRENT#)
+HELP: Permmits to choose the solver to be used:\nAtomatic: Runs a direct solver for small problems and an iterative for big ones.\nSkyLine: Direct solver. It has no convergence problems but needs more RAM memory.\nSparse: Iterative solver. they take much less memory but may not converge. User can choose desired parameters.
+QUESTION: Solver_tolerance
+VALUE: 1.0e-5
+HELP: Tolerance accepted to finish iterations
+QUESTION: Solver_tolerance_minimum
+VALUE: 1.0e-1
+HELP: If solver arrives to Max iterations, then this tolerance is used to accept or not the result.
+QUESTION: Solver_max_iterations
+VALUE: 20000
+HELP: Maximum number of iterations permmited to the solver.
+TITLE: Eigen_Solver
+QUESTION: Eigensolver_max_iterations
+VALUE: 16
+HELP: Maximum number of iterations permmited to the eigensolver.
+TITLE: Dynamic_Output
+QUESTION: Write_Displacements#CB#(yes,no)
+VALUE: yes
+HELP: Indicate if Displacements are required in the postprocess
+QUESTION: Write_Velocities#CB#(yes,no)
+VALUE: no
+HELP: Indicate if Velocities are required in the postprocess
+QUESTION: Write_Accelerations#CB#(yes,no)
+VALUE: no
+HELP: Indicate if Accelerations are required in the postprocess
+QUESTION: Write_Strengths#CB#(yes,no)
+VALUE: yes
+HELP: Indicate if Strengths are required in the postprocess
+QUESTION: Write_Reactions#CB#(yes,no)
+VALUE: yes
+HELP: Indicate if Reactions are required in the postprocess
+QUESTION: Write_ElemDamage#CB#(yes,no)
+VALUE: yes
+HELP: Indicate if the elemental damage are required in the postprocess
+QUESTION: Output_Step
+VALUE: 1
+HELP: Each Output_Step time steps the results will be written.
+QUESTION: Smooth_per_material#CB#(1,0)
+VALUE: 0
+HELP: When there are materials with different rigidity in one model, strengths are not continuus between materials. If this option is set, strengths will be displayed as discontinuus in the material boundaries.\nNote: When set, results mesh will have more nodes than preprocessing mesh.
+TITLE: Yield_Criterion
+QUESTION: Yield_Criterion#CB#(Von_Misses,Rankine)
+VALUE: Von_Misses
+HELP: Indicate the yield criterion to employ
+END PROBLEM DATA
+INTERVAL DATA
+BOOK: interval data
+QUESTION: Interval_name
+VALUE: default
+STATE: HIDDEN
+END INTERVAL DATA
+INTERVAL DATA
+QUESTION: Interval_name
+VALUE: Load_case_1
+STATE: HIDDEN
+END INTERVAL DATA

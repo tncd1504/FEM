@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cọc bê tông rỗng · FEM</title><link rel="stylesheet" href="/pipe.css"><link rel="stylesheet" href="/piles.css"></head>
+<body class="portal"><header><div><p class="eyebrow">FEM / CỌC BÊ TÔNG RỖNG</p><h1>Chọn mô hình tính</h1>
+<p>Mặt cắt vành khuyên · Tải ép hướng tâm · Ứng suất trước hữu hiệu</p></div><a href="/README_PILE3D.md">Hướng dẫn mô hình ↗</a></header>
+<main><p class="intro">Chọn mô hình theo cách đỡ cọc. Mô hình khối xét chiều dài hữu hạn và hai gối kê; mô hình mặt cắt áp dụng khi tải và gối không đổi dọc cọc.</p>
+<div class="model-cards"><section class="model-card"><span class="tag">CHIỀU DÀI HỮU HẠN</span><h2>Cọc kê hai gối · Khối 3D</h2>
+<svg viewBox="0 0 560 210" role="img" aria-label="Cọc rỗng dài 12 m, kê tại 2,4 m và 9,6 m">
+<defs><linearGradient id="pipeBody" x2="0" y2="1"><stop stop-color="#38708b"/><stop offset="1" stop-color="#16364f"/></linearGradient></defs>
+<path d="M60 73 L490 73 Q518 104 490 135 L60 135 Z" fill="url(#pipeBody)" stroke="#73d8d0"/>
+<ellipse cx="60" cy="104" rx="22" ry="31" fill="#172235" stroke="#73d8d0"/><ellipse cx="60" cy="104" rx="14" ry="22" fill="#0d1523" stroke="#468497"/>
+<path d="M145 137 L128 166 H162 Z M405 137 L388 166 H422 Z" fill="#e8b660"/>
+<g stroke="#73d8d0" stroke-width="2"><path d="M100 28 V65 m-5-7 5 7 5-7 M180 28 V65 m-5-7 5 7 5-7 M260 28 V65 m-5-7 5 7 5-7 M340 28 V65 m-5-7 5 7 5-7 M420 28 V65 m-5-7 5 7 5-7"/></g>
+<g fill="#a9b8cc" font-size="13" font-family="Segoe UI, sans-serif"><text x="121" y="188">0,2L</text><text x="385" y="188">0,8L</text><text x="234" y="205">L = 12 m</text></g></svg>
+<p>Xét đồng thời uốn dọc, biến dạng vòng và tiếp xúc một chiều tại hai gối.</p><p class="hint">Mặc định D600 × 100 mm, L = 12 m; gối tại 2,4 m và 9,6 m. Hai lực đường 20 kN/m tại 60° và 120° chạy suốt chiều dài.</p>
+<a class="launch" href="/pile3d.html">Mở bài tính khối 3D <span>→</span></a></section>
+<section class="model-card"><span class="tag">TẢI VÀ GỐI BẤT BIẾN DỌC CỌC</span><h2>Mặt cắt ngang · Vành khuyên</h2>
+<svg viewBox="0 0 560 210" role="img" aria-label="Mặt cắt vành khuyên bị ép hướng tâm">
+<circle cx="280" cy="105" r="76" fill="#234158" stroke="#73d8d0"/><circle cx="280" cy="105" r="50" fill="#0d1523" stroke="#73d8d0"/>
+<g stroke="#73d8d0" stroke-width="3"><path d="M215 2 L242 42 l-12-3 m12 3-1-12 M345 2 L318 42 l12-3 m-12 3 1-12"/></g>
+<g fill="#e8b660"><path d="M204 95 L184 84 V126 L204 115 Z M356 95 L376 84 V126 L356 115 Z M267 181 L253 201 H307 L293 181 Z"/></g>
+<g fill="#a9b8cc" font-size="13" font-family="Segoe UI, sans-serif"><text x="170" y="21">120°</text><text x="362" y="21">60°</text></g></svg>
+<p>Giải biến dạng và nội lực vòng trên một đơn vị chiều dài khi gối đỡ liên tục dọc cọc.</p><p class="hint">Có hai bài tính riêng: bê tông và bê tông có thép đai/thép dọc. Các kiểm tra TCVN hiện có là sàng lọc đàn hồi.</p>
+<a class="launch" href="/pipe.html">Mở mặt cắt không kể thép <span>→</span></a><a class="secondary-link" href="/pipe_rc.html">Mặt cắt có thép đai và thép dọc ↗</a></section></div>
+<section class="related"><h2>Các khảo sát đã thực hiện</h2><a href="/results/load_steps_d600/report.html">Tăng tải theo cấp · D600</a><a href="/results/thickness_d600_d800/report.html">D600 / D800 · Thay đổi chiều dày</a></section>
+<p class="hint">Hai mô hình dùng điều kiện gối khác nhau. Mặt cắt ngang không thay thế được uốn dọc của cọc kê hai gối. Các bài tính hiện tại dùng vật liệu đàn hồi và chưa mô phỏng sau nứt.</p></main>
+<footer>Cọc bê tông rỗng · Phân tích đàn hồi bằng phần tử hữu hạn</footer></body></html>

@@ -1,0 +1,100 @@
+BeginZE C:/Users/Albert/Desktop/ALBERT/CAMINOS/TESINA/Ejemplos Buenos/EJEMPLO_1/TCB/ej1.flavia.vv
+   x -2.6212584972381592 12.621258735656738
+   y 5.9720911979675293 -5.9720911979675293
+   z -16.583124160766602 16.583124160766602
+   e 5.5277080535888672
+   v 0 0 0
+   r 1
+   m 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+   c 5 0 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:/Users/Albert/Desktop/ALBERT/CAMINOS/TESINA/Ejemplos Buenos/EJEMPLO_1/TCB/ej1.flavia.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+BeginInfo
+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
+
+EndInfo
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 0
+  Num sets: 3
+  Num cuts: 0
+  Set: 0
+  State: On
+    Name: "2D_beam 1"
+    IdSet: 1
+    Color Type: 0
+    Color Ambient: 0.2 0.2 0.2 0.5
+    Color Diffuse: 0.6 0.6 0.6 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 0
+    Property Transparent: 0
+    Property Style: 13
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 0
+  Set: 1
+  State: On
+    Name: "2D_beam 2"
+    IdSet: 2
+    Color Type: 0
+    Color Ambient: 0 0 0.3 0.5
+    Color Diffuse: 0 0 1 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 0
+    Property Transparent: 0
+    Property Style: 13
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 1
+  Set: 2
+  State: On
+    Name: "2D_beam 3"
+    IdSet: 3
+    Color Type: 0
+    Color Ambient: 0.3 0 0.3 0.5
+    Color Diffuse: 1 0 1 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 0
+    Property Transparent: 0
+    Property Style: 13
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndSet: 2
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 8} {Contour Fill} Load_Analysis 1.0 Rotation Z-Rot 0.0 4 0
+EndPostState
+

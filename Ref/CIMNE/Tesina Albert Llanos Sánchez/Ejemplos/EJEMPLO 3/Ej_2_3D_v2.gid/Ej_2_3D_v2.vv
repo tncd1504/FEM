@@ -1,0 +1,41 @@
+BeginZE C:\Users\operador\Desktop\Ejemplos Buenos\EJEMPLO_3\Ej_2_3D_v2.gid\Ej_2_3D_v2.vv
+   x -35.361671447753906 42.209892272949219
+   y 34.673988342285156 -21.588756561279297
+   z -138.99749755859375 258.99749755859375
+   e 66.332496643066406
+   v -0.022875403985381126 -0.231474369764328 0.038383074104785919
+   r -0.97181427478790283
+   m 0.88989269733428955 0.085192583501338959 0.44814413785934448 0 -0.064012303948402405 0.99600690603256226 -0.062230687588453293 0 -0.45165625214576721 0.026691893115639687 0.8917926549911499 0 0 0 0 1
+   c 1 5 -60
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 1
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:\Users\operador\Desktop\Ejemplos Buenos\EJEMPLO_3\Ej_2_3D_v2.gid\Ej_2_3D_v2.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+BeginInfo
+eJzNU8tu2zAQvOsr9hgDiiE/khpCUcCuFUOoH4HtOOnJoKW1Q4QiBZKK5Qb59y4pGz206KFogV6k1T5mOTPUOhOD9k2704H1CwVXzUcrCNbqIKDT/hADMy+Yw15pYHBAiZpnoFHmqFGHwdBX73mNgloKZiFHk2leWq4kXEGvFQcAMDkP8qIUWKC0zNXDZvCuGeyFrnOsqp3AUbXfo47hhMZnV5bWqSbrE8vJaBjCZ1WUynC/CyWjwRyuNtxY1gphrNkRrIJHLnN1DGFRopxMwVRlqbQNwcE8GC4P0O0TkiCGO25NDAPil4f0OmhE6YKdqBCYzCECJspnFv6YjWCYZVVRCc/ojBA1CNEFIfodQq8LYyzts5/1PQPHV2ZcjCjjGmlJVXPBmT7BzovQpCOonBGCnUjqqL7e1y0PoF4vyTq6rvctKAWTaIKJsgT8T+2CTJWnv28RifTHFt32f+VR57bBoPcZhKL/w6bA6yC8FZtkPl4sY3ib8Uwro/aWhNAkj+fy7oWmlmSZuKbJOL2Y995ML1fpYk5s25125A1LV/fT4VdI53eL5Wy49tU3z4nkgEHYqOECLwa9vRIQhXRXHP9eNwTTEHdV439NkKrtN358/ARJIzWJdqeVtNBcD1edprN0vaKF7mPGalhjbSuNsOLfkE4ZdfuXStLcPAOpzHmG5Fg36g9+qm5Q23P55tZVh6+MC3fP4JXndLACC0V+GL8ggtnoZNGcYXhRFXBU+sWdVVbFDjWoPeAZPIYb8u5L4IklT+tk7sT0x59Mt5TY7g6aXeKSCaTfK9/ahpPLP6bzrTmycvvMpSWcyfQp9raukiV5EwcLepIddLJLSM7ALJk/uNR3z5fAHw==
+
+EndInfo

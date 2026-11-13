@@ -1,0 +1,29 @@
+BEGIN TABLE
+ LOAD : N {reference}, 1e-1 kgf, 1e-4 ton, 1e-3 kN, 1e-6 MN, 0.2248090247 lbf
+ MOMENT : N*m {reference}, 1e-1 kgf*m, 1e-4 ton*m, 1e-3 kN*m, 1e-6 MN*m, 8.850749004 lbf*in
+ UNIFORM_LOAD : N/m {reference}, 1e-1 kgf/m, 1e-4 ton/m, 1e-3 kN/m, 1e-6 MN/m, 0.571015e-2 lbf/in
+ LENGTH : m {reference}, 1e+2 cm, 1e+3 mm, 39.3700787 in
+ SELF_WEIGHT : N/m^3 {reference}, 1e-1 kgf/m^3, 1e-4 ton/m^3, 1e-3 kN/m^3, 1e-6 MN/m^3, 0.3683959876e-5 lbf/in^3
+END
+
+BEGIN SYSTEM(INTERNATIONAL)
+ ANGLE :  rad
+ UNIFORM_LOAD : N/m
+ PRESSURE : N/m^2
+ LOAD : N
+ MOMENT : N*m
+ SELF_WEIGHT : N/m^3
+ LENGTH : m
+END
+
+USER DEFINED: DISABLED
+
+
+
+
+
+
+
+
+
+

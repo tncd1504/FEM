@@ -1,0 +1,55 @@
+
+
+
+ ******************************************************************************
+
+
+
+              .oooooo.             oooo                      .o88o.
+             d8P    Y8b             888                      888   
+            888           .oooo.    888   .oooo.o  .ooooo.  o888oo 
+            888           P  )88b   888  d88(   8 d88   88b  888   
+            888           .oP 888   888    Y88b   888ooo888  888   
+             88b    ooo  d8(  888   888  o.  )88b 888    .o  888   
+              Y8bood8P    Y888  8o o888o 888888P   Y8bod8P  o888o  
+
+                        ----- C A L S E F v. 5.1.5  -----
+
+
+               Centro Internacional de Metodos Numericos en Ingenieria
+               Escuela de Ingenieria Civil, Universidad de Guanajuato
+               Centro de Investigacion en Matematicas A.C.
+
+
+                                                  Salvador Botello Rionda
+                                                  Jose Francisco Zarate
+                                                  Eugenio Oñate Ibañez de Navarra
+                                                  Juan Miquel Canet
+                                                            MARZO DE 1999
+          HORA: 10/26/22/296
+          DIA : 22/ 7/ 2011
+
+
+
+ ******************************************************************************
+
+
+ TITULO= Titulo del problema                                                    
+                                                                        
+    NUMERO DE PUNTOS NODALES                 ...............     1088 (NPNOD)
+    IND. TIPO DE  COOR. 1-PLOAR 2-ESFERIC.   ...............        0 (NRADS)
+    NUMERO DE APOYOS INCLINADOS              ...............        0 (MAPOY)
+    NUMERO DE APOYOS ELASTICOS               ...............        0 (MRESO)
+    NUMERO DE GRADOS DE LIBERTAD LIGADOS     ...............        0 (MGDLL)
+
+     INPEST: VERSION ACADEMICA **************
+
+
+
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+                         SE HA DETECTADO UN ERROR   
+
+     ULTIMA TARJETA LEIDA : NUMERO_DE_NODOS: NPNODS= 1088                                                                                                                         
+
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 

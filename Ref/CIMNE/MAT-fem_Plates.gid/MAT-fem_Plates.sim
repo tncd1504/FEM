@@ -1,0 +1,140 @@
+cond Point_Constraints
+7
+global
+cond(int,1) && cond(int,3) && cond(int,5)
+1
+0
+0
+pl_ap_111.geo
+global
+cond(int,1) && cond(int,3)
+1
+0
+0
+pl_ap_110.geo
+global
+cond(int,1) && cond(int,5)
+1
+0
+0
+pl_ap_101.geo
+global
+cond(int,3) && cond(int,5)
+1
+0
+0
+pl_ap_011.geo
+global
+cond(int,1)
+1
+0
+0
+pl_ap_100.geo
+global
+cond(int,3)
+1
+0
+0
+pl_ap_010.geo
+global
+cond(int,5)
+1
+0
+0
+pl_ap_001.geo
+cond Point_Load
+7
+global
+cond(int,1) && cond(int,2) && cond(int,3)
+1
+0
+0
+pl_lo_111.geo
+global
+cond(int,1)&& cond(int,2)
+1
+0
+0
+pl_lo_110.geo
+global
+cond(int,1)&& cond(int,3)
+1
+0
+0
+pl_lo_101.geo
+global
+cond(int,2)&& cond(int,3)
+1
+0
+0
+pl_lo_011.geo
+global
+cond(int,1)
+1
+0
+0
+pl_lo_100.geo
+global
+cond(int,2)
+1
+0
+0
+pl_lo_010.geo
+global
+cond(int,3)
+1
+0
+0
+pl_lo_001.geo
+cond Uniform_Load
+1
+global
+1
+cond(int,1)
+0
+0
+ul_flechas.geo
+cond Line_Constraints
+7
+global
+cond(int,1) && cond(int,3) && cond(int,5)
+1
+0
+0
+pl_ap_111.geo
+global
+cond(int,1) && cond(int,3)
+1
+0
+0
+pl_ap_110.geo
+global
+cond(int,1) && cond(int,5)
+1
+0
+0
+pl_ap_101.geo
+global
+cond(int,3) && cond(int,5)
+1
+0
+0
+pl_ap_011.geo
+global
+cond(int,1)
+1
+0
+0
+pl_ap_100.geo
+global
+cond(int,3)
+1
+0
+0
+pl_ap_010.geo
+global
+cond(int,5)
+1
+0
+0
+pl_ap_001.geo

@@ -1,0 +1,212 @@
+BOOK:Displacement_Constraints
+NUMBER: 1 CONDITION: Point-Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement of selected points.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacementfor that degree.\nUnits in International System for values are:\n\t (m) for the displacements.
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-X,0.0m)(#DEFAULT#,RESTORE,Displacement-X,0.0m)
+QUESTION: Displacement-X#UNITS#
+VALUE: 0.000m
+QUESTION: Y_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Y,0.0m)(#DEFAULT#,RESTORE,Displacement-Y,0.0m)
+QUESTION: Displacement-Y#UNITS#
+VALUE: 0.000m
+QUESTION: Z_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Z,0.0m)(#DEFAULT#,RESTORE,Displacement-Z,0.0m)
+QUESTION: Displacement-Z#UNITS#
+VALUE: 0.000m
+END CONDITION
+NUMBER: 2 CONDITION: Linear-Constraints
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement of all the nodes that belong to the line.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement for that degree.\nUnits in International System for values are:\n\t (m) for the displacements.
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-X,0.0m)(#DEFAULT#,RESTORE,Displacement-X,0.0m)
+QUESTION: Displacement-X#UNITS#
+VALUE: 0.000m
+QUESTION: Y_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Y,0.0m)(#DEFAULT#,RESTORE,Displacement-Y,0.0m)
+QUESTION: Displacement-Y#UNITS#
+VALUE: 0.000m
+QUESTION: Z_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Z,0.0m)(#DEFAULT#,RESTORE,Displacement-Z,0.0m)
+QUESTION: Displacement-Z#UNITS#
+VALUE: 0.000m
+END CONDITION
+NUMBER: 3 CONDITION: Surface-Constraints
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-X,0.0m)(#DEFAULT#,RESTORE,Displacement-X,0.0m)
+QUESTION: Displacement-X#UNITS#
+VALUE: 0.000m
+QUESTION: Y_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Y,0.0m)(#DEFAULT#,RESTORE,Displacement-Y,0.0m)
+QUESTION: Displacement-Y#UNITS#
+VALUE: 0.000m
+QUESTION: Z_Constraint:#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Displacement-Z,0.0m)(#DEFAULT#,RESTORE,Displacement-Z,0.0m)
+QUESTION: Displacement-Z#UNITS#
+VALUE: 0.000m
+END CONDITION
+BOOK:Elastic_Constraints
+NUMBER: 4 CONDITION: Point-Elast._Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+CANREPEAT: yes
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: Kx:#UNITS#
+VALUE: 0.000N/m
+QUESTION: Ky:#UNITS#
+VALUE: 0.000N/m
+QUESTION: Kz:#UNITS#
+VALUE: 0.000N/m
+END CONDITION
+NUMBER: 5 CONDITION: Linear-Elast._Constraints
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: Kx:#UNITS#
+VALUE: 0.000N/m^2
+QUESTION: Ky:#UNITS#
+VALUE: 0.000N/m^2
+QUESTION: Kz:#UNITS#
+VALUE: 0.000N/m^2
+END CONDITION
+NUMBER: 6 CONDITION: Surface-Elast._Constraints
+CONDTYPE: over surfaces
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: Kx:#UNITS#
+VALUE: 0.000N/m^3
+QUESTION: Ky:#UNITS#
+VALUE: 0.000N/m^3
+QUESTION: Kz:#UNITS#
+VALUE: 0.000N/m^3
+END CONDITION
+BOOK:Loads
+NUMBER: 7 CONDITION: Point-Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: A force applied to the selected points of the model. Units in International System for values are:\n\t (N) for the forces.
+QUESTION: X-Force#UNITS#
+VALUE: 0.0N
+QUESTION: Y-Force#UNITS#
+VALUE: 0.0N
+QUESTION: Z-Force#UNITS#
+VALUE: 0.0N
+END CONDITION
+NUMBER: 8 CONDITION: Global_Proyected_Pressure
+CONDTYPE: over surfaces
+HELP: A pressure load over the contour of the solid given in global axes and projected as if the area of the contour was the projected area over the pressure vector. Units in International System for values are:\n\t (N/m2) for the pressures.
+QUESTION: X_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z_Pressure#UNITS#
+VALUE: 0.0N/m^2
+END CONDITION
+NUMBER: 9 CONDITION: Uniform_Pressure
+CONDTYPE: over surfaces
+HELP: HELP: A pressure load over the contour of the solid given in global axes. Units in International System for values are:\n\t (N/m2) for the pressures.
+QUESTION: Local_Axes#LA#(GLOBAL,Automatic)
+VALUE: GLOBAL
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+DEPENDENCIES: (GLOBAL,RESTORE,X_Pressure,0.0N/m^2,RESTORE,Y_Pressure,0.0N/m^2,RESTORE,Z_Pressure,0.0N/m^2,HIDE,X'_Pressure,0.0N/m^2,HIDE,Tangential_x,0.0N/m^2,HIDE,Y'_Pressure,0.0N/m^2,HIDE,Tangential_y,0.0N/m^2,HIDE,Z'_Pressure,0.0N/m^2,HIDE,Normal_z,0.0N/m^2) (Automatic,RESTORE,Tangential_x,0.0N/m^2,RESTORE,Tangential_y,0.0N/m^2,RESTORE,Normal_z,0.0N/m^2,HIDE,X_Pressure,0.0N/m^2,HIDE,X'_Pressure,0.0N/m^2,HIDE,Y_Pressure,0.0N/m^2,HIDE,Y'_Pressure,0.0N/m^2,HIDE,Z'_Pressure,0.0N/m^2,HIDE,Z_Pressure,0.0N/m^2)(#DEFAULT#,RESTORE,X'_Pressure,0.0N/m^2,RESTORE,Y'_Pressure,0.0N/m^2,RESTORE,Z'_Pressure,0.0N/m^2,HIDE,Tangential_x,0.0N/m^2,HIDE,X_Pressure,0.0N/m^2,HIDE,Tangential_y,0.0N/m^2,HIDE,Y_Pressure,0.0N/m^2,HIDE,Normal_z,0.0N/m^2,HIDE,Z_Pressure,0.0N/m^2)
+QUESTION: X_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Tangential_x#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Tangential_y#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Normal_z#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: X'_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y'_Pressure#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z'_Pressure#UNITS#
+VALUE: 0.0N/m^2
+END CONDITION
+NUMBER: 10 CONDITION: Trapezoidal-Pressure
+CONDTYPE: over surfaces
+HELP: This load is similar to that of 'Uniform_Pressure' but its intensity changes depending on the point where it is applied. The two points define an imaginary line in the space. For every point of the volume contour  where the load is applied, it is possible to project this point on the imaginary line and interpolate the values related to these points depending on where it is projected. \nUnits in International System for values are:\n\t (m) for the points\n\t(N/m2) for the pressures.
+TITLE: Position
+QUESTION: X_point_1#UNITS#
+VALUE: 0.0m
+QUESTION: Y_point_1#UNITS#
+VALUE: 0.0m
+QUESTION: Z_point_1#UNITS#
+VALUE: 0.0m
+QUESTION: X_point_2#UNITS#
+VALUE: 0.0m
+QUESTION: Y_point_2#UNITS#
+VALUE: 0.0m
+QUESTION: Z_point_2#UNITS#
+VALUE: 0.0m
+TITLE: Pressures
+QUESTION: Local_Axes#LA#(GLOBAL,Automatic)
+VALUE: GLOBAL
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+DEPENDENCIES: (GLOBAL,RESTORE,X_Pressure_1,0.0N/m^2,RESTORE,X_Pressure_2,0.0N/m^2,RESTORE,Y_Pressure_1,0.0N/m^2,RESTORE,Y_Pressure_2,0.0N/m^2,RESTORE,Z_Pressure_1,0.0N/m^2,RESTORE,Z_Pressure_2,0.0N/m^2,HIDE,X'_Pressure_1,0.0N/m^2,HIDE,X'_Pressure_2,0.0N/m^2,HIDE,Y'_Pressure_1,0.0N/m^2,HIDE,Y'_Pressure_2,0.0N/m^2,HIDE,Z'_Pressure_1,0.0N/m^2,HIDE,Z'_Pressure_2,0.0N/m^2)(#DEFAULT#,RESTORE,X'_Pressure_1,0.0N/m^2,RESTORE,X'_Pressure_2,0.0N/m^2,RESTORE,Y'_Pressure_1,0.0N/m^2,RESTORE,Y'_Pressure_2,0.0N/m^2,RESTORE,Z'_Pressure_1,0.0N/m^2,RESTORe,Z'_Pressure_2,0.0N/m^2,HIDE,X_Pressure_1,0.0N/m^2,HIDE,X_Pressure_2,0.0N/m^2,HIDE,Y_Pressure_1,0.0N/m^2,HIDE,Y_Pressure_2,0.0N/m^2,HIDE,Z_Pressure_1,0.0N/m^2,HIDE,Z_Pressure_2,0.0N/m^2)
+QUESTION: X_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: X_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: X'_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y'_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z'_Pressure_1#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: X'_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Y'_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+QUESTION: Z'_Pressure_2#UNITS#
+VALUE: 0.0N/m^2
+END CONDITION
+NUMBER: 11 CONDITION: Hidrostatic-Pressure
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: This is a triangular load that has value 0.0 at the reference coordinate (in the sense of the gravity) and gives an hydrostatic pressure that depends on the self-weight of the water or terrain. \nUnits in International System for values are:\n\t (m) for the coordinates\n\t(N/m3) for the self-weight.
+QUESTION: Reference_z_coordinate:#UNITS#
+VALUE: 0.0m
+QUESTION: Water_Specific_Weigth:#UNITS#
+VALUE: 10000N/m^3
+END CONDITION

@@ -1,0 +1,89 @@
+Number of total nodes in model: 27709
+Just before filling global stiffness matrix for static analysis
+Stiffness matrix filled
+Load vector constructed
+Beginning to apply constraints
+
+INFORMATION ABOUT STIFFNESS MATRIX
+Sparse matrix storage with Conjugate gradients Toni
+Degrees of freedom= 83127
+Total number of positions= 1664615
+Amount of memory= 19.4Mb
+
+Just before Solver
+iteration number 0 resid=0 tol=1e-005
+iteration number 50 resid=5.1955 tol=1e-005
+iteration number 100 resid=6.92406 tol=1e-005
+iteration number 150 resid=9.37314 tol=1e-005
+iteration number 200 resid=10.3047 tol=1e-005
+iteration number 250 resid=12.035 tol=1e-005
+iteration number 300 resid=12.5554 tol=1e-005
+iteration number 350 resid=13.886 tol=1e-005
+iteration number 400 resid=15.4331 tol=1e-005
+iteration number 450 resid=18.5901 tol=1e-005
+iteration number 500 resid=22.8045 tol=1e-005
+iteration number 550 resid=21.7744 tol=1e-005
+iteration number 600 resid=19.0768 tol=1e-005
+iteration number 650 resid=26.2244 tol=1e-005
+iteration number 700 resid=9.42411 tol=1e-005
+iteration number 750 resid=8.08198 tol=1e-005
+iteration number 800 resid=50.4895 tol=1e-005
+iteration number 850 resid=126.841 tol=1e-005
+iteration number 900 resid=49.9231 tol=1e-005
+iteration number 950 resid=28.9243 tol=1e-005
+iteration number 1000 resid=10.4413 tol=1e-005
+iteration number 1050 resid=5.20098 tol=1e-005
+iteration number 1100 resid=2.11809 tol=1e-005
+iteration number 1150 resid=2.06041 tol=1e-005
+iteration number 1200 resid=1.57578 tol=1e-005
+iteration number 1250 resid=1.05699 tol=1e-005
+iteration number 1300 resid=0.874508 tol=1e-005
+iteration number 1350 resid=0.704802 tol=1e-005
+iteration number 1400 resid=0.559629 tol=1e-005
+iteration number 1450 resid=0.563498 tol=1e-005
+iteration number 1500 resid=0.523833 tol=1e-005
+iteration number 1550 resid=0.373926 tol=1e-005
+iteration number 1600 resid=0.17201 tol=1e-005
+iteration number 1650 resid=0.0901601 tol=1e-005
+iteration number 1700 resid=0.0694726 tol=1e-005
+iteration number 1750 resid=0.0338102 tol=1e-005
+iteration number 1800 resid=0.0218474 tol=1e-005
+iteration number 1850 resid=0.0199838 tol=1e-005
+iteration number 1900 resid=0.0125825 tol=1e-005
+iteration number 1950 resid=0.0232372 tol=1e-005
+iteration number 2000 resid=0.0126597 tol=1e-005
+iteration number 2050 resid=0.0154487 tol=1e-005
+iteration number 2100 resid=0.0191909 tol=1e-005
+iteration number 2150 resid=0.0138711 tol=1e-005
+iteration number 2200 resid=0.0116838 tol=1e-005
+iteration number 2250 resid=0.0054488 tol=1e-005
+iteration number 2300 resid=0.0208805 tol=1e-005
+iteration number 2350 resid=0.00457903 tol=1e-005
+iteration number 2400 resid=0.00202355 tol=1e-005
+iteration number 2450 resid=0.00546097 tol=1e-005
+iteration number 2500 resid=0.0136326 tol=1e-005
+iteration number 2550 resid=0.00343193 tol=1e-005
+iteration number 2600 resid=0.00480013 tol=1e-005
+iteration number 2650 resid=0.00553335 tol=1e-005
+iteration number 2700 resid=0.000814412 tol=1e-005
+iteration number 2750 resid=0.000420437 tol=1e-005
+iteration number 2800 resid=0.00367713 tol=1e-005
+iteration number 2850 resid=0.00378131 tol=1e-005
+iteration number 2900 resid=0.00020114 tol=1e-005
+iteration number 2950 resid=2.38935e-005 tol=1e-005
+iteration number 3000 resid=0.000159407 tol=1e-005
+iteration number 3050 resid=0.00177079 tol=1e-005
+iteration number 3100 resid=0.00146972 tol=1e-005
+iteration number 3150 resid=0.000171352 tol=1e-005
+iteration number 3200 resid=0.000124848 tol=1e-005
+iteration number 3250 resid=1.5431e-005 tol=1e-005
+iteration number 3300 resid=1.55353e-005 tol=1e-005
+finished solver iteration number 3312 resid=9.67926e-006 tol=1e-005
+Solved after 3312 iterations
+Solver finished
+Beginning calc strengths and reactions
+End of calc strengths and reactions
+Beginning smooth of the gaussian variables
+Transfering results
+
+Total time = 1.8 min. = 1.1e+002 seg.

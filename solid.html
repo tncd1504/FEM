@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FEM khối vành khuyên chịu nén</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      --panel: #1e293b;
+      --card: #26334d;
+      --border: #334155;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; }
+    header {
+      padding: 18px max(20px, calc((100% - 1180px) / 2));
+      background: linear-gradient(90deg, #0f172a, #1e3a8a);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    h1 { margin: 0; font-size: 1.2rem; }
+    a { color: #7dd3fc; }
+    main { max-width: 1180px; margin: 24px auto; padding: 0 20px; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 360px) 1fr; gap: 18px; }
+    section { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+    h2 { font-size: 1rem; margin: 0 0 14px; color: var(--accent); }
+    .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { color: var(--muted); font-size: .82rem; display: grid; gap: 5px; }
+    input { width: 100%; padding: 9px; color: #f8fafc; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; }
+    input:focus { outline: 1px solid var(--accent); }
+    .wide { grid-column: 1 / -1; }
+    button { width: 100%; margin-top: 16px; padding: 11px; border: 0; border-radius: 7px; color: #082f49; background: var(--accent); font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    .note, .subtle { color: var(--muted); font-size: .82rem; line-height: 1.5; }
+    .note { margin: 14px 0 0; }
+    .error { color: #fecaca; background: #7f1d1d66; border: 1px solid #ef4444; padding: 10px; border-radius: 6px; margin-bottom: 12px; }
+    .hidden { display: none; }
+    .empty { color: var(--muted); padding: 28px 8px; text-align: center; }
+    .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .metric { background: var(--card); border: 1px solid var(--border); border-radius: 7px; padding: 11px; min-width: 0; }
+    .metric span { display: block; color: var(--muted); font-size: .76rem; }
+    .metric strong { display: block; margin-top: 5px; font-size: 1.05rem; overflow-wrap: anywhere; }
+    .status { padding: 11px; border-radius: 7px; margin-bottom: 12px; font-weight: 700; }
+    .status.ok { background: #14532d; color: #bbf7d0; }
+    .status.fail { background: #7f1d1d; color: #fecaca; }
+    .stress-views { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr); gap: 12px; }
+    .stress-view { min-width: 0; }
+    .stress-view canvas { width: 100%; height: 300px; background: #0b1120; border: 1px solid var(--border); border-radius: 7px; margin-top: 12px; }
+    .stress-view h3 { margin: 14px 0 0; font-size: .9rem; color: #e2e8f0; }
+    .stress { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: .84rem; }
+    .stress th, .stress td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+    .stress th { color: var(--muted); font-weight: 500; }
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      .results { grid-template-columns: repeat(2, 1fr); }
+      .stress-views { grid-template-columns: 1fr; }
+      header { align-items: flex-start; }
+    }
+    @media (max-width: 440px) {
+      .results { grid-template-columns: 1fr; }
+      header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FEM khối vành khuyên chịu nén — trục đối xứng</h1>
+    <a href="/">← Trở về bài toán tấm Mindlin</a>
+  </header>
+  <main>
+    <div class="layout">
+      <section>
+        <h2>Thông số đầu vào</h2>
+        <div id="error" class="error hidden" role="alert"></div>
+        <form id="solveForm">
+          <div class="inputs">
+            <label>Bán kính trong Rᵢ (mm)
+              <input id="r_inner" type="number" value="50" min="0.001" step="any" required />
+            </label>
+            <label>Bán kính ngoài Rₒ (mm)
+              <input id="r_outer" type="number" value="100" min="0.002" step="any" required />
+            </label>
+            <label>Chiều cao tiết diện h (mm)
+              <input id="height" type="number" value="80" min="0.001" step="any" required />
+            </label>
+            <label>Tải nén tổng F (kN)
+              <input id="force" type="number" value="100" min="0.001" step="any" required />
+            </label>
+            <label>Mô đun đàn hồi E (GPa)
+              <input id="E" type="number" value="200" min="0.001" step="any" required />
+            </label>
+            <label>Hệ số Poisson ν
+              <input id="nu" type="number" value="0.3" min="-0.99" max="0.499" step="0.01" required />
+            </label>
+            <label>Giới hạn chảy fᵧ (MPa)
+              <input id="yield_strength" type="number" value="250" min="0.001" step="any" required />
+            </label>
+            <label>Số phần tử theo R / h
+              <input id="mesh" type="number" value="12" min="1" max="80" step="1" required />
+            </label>
+          </div>
+          <button id="solveButton" type="submit">Tính nội lực và kiểm tra bền</button>
+        </form>
+        <p class="note">
+          Tải được phân bố đều trên mặt trên. Mặt đáy, thành trong và thành ngoài là gối cứng không ma sát:
+          chỉ cản chuyển vị theo pháp tuyến hướng ra khỏi vật thể; chuyển vị hướng vào trong được phép.
+        </p>
+        <p class="note">
+          Mô hình đàn hồi tuyến tính trục đối xứng, phần tử tứ giác 4 nút; kiểm tra chảy theo Von Mises.
+          Kết quả phụ thuộc lưới và không bao gồm mất ổn định, biến dạng lớn, ma sát hoặc phi tuyến vật liệu.
+        </p>
+        <p class="note">
+          Để chạy bộ giải: mở Terminal tại thư mục FEM, chạy <code>py app.py</code>,
+          rồi truy cập <code>http://127.0.0.1:8080/solid.html</code>. Không mở tệp HTML trực tiếp.
+        </p>
+      </section>
+      <section>
+        <h2>Kết quả</h2>
+        <div id="empty" class="empty">Nhập thông số rồi chọn “Tính nội lực và kiểm tra bền”.</div>
+        <div id="output" class="hidden">
+          <div id="strengthStatus" class="status"></div>
+          <div class="results" id="metrics"></div>
+          <div class="stress-views">
+            <div class="stress-view">
+              <h3>Mặt cắt trục đối xứng (r–z)</h3>
+              <canvas id="stressPlot" aria-label="Bản đồ ứng suất Von Mises trên mặt cắt r z"></canvas>
+              <p class="subtle">Mặt cắt này có dạng chữ nhật; khi quay quanh trục z sẽ tạo thành khối vành khuyên.</p>
+            </div>
+            <div class="stress-view">
+              <h3>Hình chiếu mặt bằng (vành khuyên)</h3>
+              <canvas id="annulusPlot" aria-label="Hình chiếu mặt bằng tiết diện vành khuyên theo ứng suất"></canvas>
+              <p class="subtle">Màu thể hiện ứng suất Von Mises lớn nhất theo chiều cao tại từng bán kính; trường trục đối xứng không đổi theo góc.</p>
+            </div>
+          </div>
+          <table class="stress">
+            <tbody id="stressDetails"></tbody>
+          </table>
+          <p id="meshInfo" class="subtle"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const form = document.getElementById("solveForm");
+    const errorBox = document.getElementById("error");
+    const button = document.getElementById("solveButton");
+    let currentResult = null;
+
+    function numberValue(id) {
+      const value = Number(document.getElementById(id).value);
+      if (!Number.isFinite(value)) throw new Error("Hãy nhập đầy đủ các thông số hợp lệ.");
+      return value;
+    }
+
+    function collectPayload() {
+      const mesh = Math.trunc(numberValue("mesh"));
+      return {
+        r_inner: numberValue("r_inner") / 1000,
+        r_outer: numberValue("r_outer") / 1000,
+        height: numberValue("height") / 1000,
+        force: numberValue("force") * 1000,
+        E: numberValue("E") * 1e9,
+        nu: numberValue("nu"),
+        yield_strength: numberValue("yield_strength") * 1e6,
+        nr: mesh,
+        nz: mesh
+      };
+    }
+
+    function format(value, digits = 3) {
+      return Number(value).toLocaleString("vi-VN", {
+        maximumFractionDigits: digits,
+        minimumFractionDigits: digits
+      });
+    }
+
+    function addMetric(label, value) {
+      return `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`;
+    }
+
+    function drawStressMap(elements, summary) {
+      const canvas = document.getElementById("stressPlot");
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(rect.width * ratio));
+      canvas.height = Math.max(1, Math.round(rect.height * ratio));
+      const ctx = canvas.getContext("2d");
+      ctx.scale(ratio, ratio);
+      const width = rect.width;
+      const height = rect.height;
+      const pad = 32;
+      const plotWidth = width - 2 * pad;
+      const plotHeight = height - 2 * pad;
+      const rSpan = summary.r_outer - summary.r_inner;
+      const maxStress = Math.max(summary.sigma_vm_max, 1);
+      const xOf = r => pad + (r - summary.r_inner) / rSpan * plotWidth;
+      const yOf = z => height - pad - z / summary.height * plotHeight;
+      for (const element of elements) {
+        const ratioStress = Math.min(1, element.sigma_vm / maxStress);
+        const hue = 220 * (1 - ratioStress);
+        ctx.fillStyle = `hsl(${hue}, 85%, 52%)`;
+        const x = xOf(element.r_inner);
+        const y = yOf(element.z_top);
+        ctx.fillRect(
+          x,
+          y,
+          Math.max(1, xOf(element.r_outer) - x),
+          Math.max(1, yOf(element.z_bottom) - y)
+        );
+      }
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(pad, pad, plotWidth, plotHeight);
+      ctx.fillStyle = "#cbd5e1";
+      ctx.font = "12px Segoe UI, sans-serif";
+      ctx.fillText("Rᵢ", pad - 3, height - 8);
+      ctx.fillText("Rₒ", width - pad - 18, height - 8);
+      ctx.fillText("z = h", 4, pad + 4);
+      ctx.fillText("z = 0", 4, height - pad);
+    }
+
+    function drawAnnulusStressMap(elements, summary) {
+      const canvas = document.getElementById("annulusPlot");
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(rect.width * ratio));
+      canvas.height = Math.max(1, Math.round(rect.height * ratio));
+      const ctx = canvas.getContext("2d");
+      ctx.scale(ratio, ratio);
+
+      const width = rect.width;
+      const height = rect.height;
+      const centerX = width / 2;
+      const centerY = height / 2 - 8;
+      const outerRadius = Math.min(width * 0.4, height * 0.38);
+      const innerRadius = outerRadius * summary.r_inner / summary.r_outer;
+      const maxStress = Math.max(summary.sigma_vm_max, 1);
+      const radialStress = Array(summary.nr).fill(0);
+
+      for (const element of elements) {
+        const radialIndex = Math.min(
+          summary.nr - 1,
+          Math.max(0, Math.round(
+            (element.r_inner - summary.r_inner) /
+            (summary.r_outer - summary.r_inner) * summary.nr
+          ))
+        );
+        radialStress[radialIndex] = Math.max(radialStress[radialIndex], element.sigma_vm);
+      }
+
+      for (let index = 0; index < summary.nr; index++) {
+        const outer = outerRadius * (
+          summary.r_inner + (summary.r_outer - summary.r_inner) * (index + 1) / summary.nr
+        ) / summary.r_outer;
+        const inner = outerRadius * (
+          summary.r_inner + (summary.r_outer - summary.r_inner) * index / summary.nr
+        ) / summary.r_outer;
+        const stressRatio = Math.min(1, radialStress[index] / maxStress);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outer, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, inner, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = `hsl(${220 * (1 - stressRatio)}, 85%, 52%)`;
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#cbd5e1";
+      ctx.font = "12px Segoe UI, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`Rᵢ = ${format(summary.r_inner * 1000, 1)} mm`, centerX, centerY + 4);
+      ctx.fillText(`Rₒ = ${format(summary.r_outer * 1000, 1)} mm`, centerX, height - 12);
+      ctx.textAlign = "start";
+    }
+
+    function showResult(result) {
+      currentResult = result;
+      const s = result.summary;
+      document.getElementById("empty").classList.add("hidden");
+      document.getElementById("output").classList.remove("hidden");
+      const status = document.getElementById("strengthStatus");
+      status.className = `status ${s.strength_ok ? "ok" : "fail"}`;
+      status.textContent = s.strength_ok
+        ? `ĐẠT bền tĩnh: σVM / fᵧ = ${format(s.utilization * 100, 2)}%`
+        : `KHÔNG ĐẠT bền tĩnh: σVM / fᵧ = ${format(s.utilization * 100, 2)}%`;
+
+      document.getElementById("metrics").innerHTML = [
+        addMetric("Ứng suất Von Mises lớn nhất", `${format(s.sigma_vm_max / 1e6)} MPa`),
+        addMetric("Giới hạn chảy fᵧ", `${format(s.yield_strength / 1e6)} MPa`),
+        addMetric("Hệ số an toàn fᵧ / σVM", format(s.safety_factor, 2)),
+        addMetric("Lún lớn nhất |u_z|", `${format(s.max_abs_uz * 1000, 5)} mm`),
+        addMetric("Dịch chuyển hướng kính lớn nhất |u_r|", `${format(s.max_abs_ur * 1000, 5)} mm`),
+        addMetric("Áp lực đều trên mặt trên", `${format(s.pressure / 1e6)} MPa`),
+        addMetric("Phản lực mặt đáy", `${format(s.bottom_reaction / 1000, 4)} kN`),
+        addMetric("Phản lực thành trong", `${format(s.inner_wall_reaction / 1000, 4)} kN`),
+        addMetric("Phản lực thành ngoài", `${format(s.outer_wall_reaction / 1000, 4)} kN`)
+      ].join("");
+
+      const stressRows = [
+        ["Vị trí ứng suất lớn nhất (r, z)", `${format(s.sigma_vm_max_r * 1000, 3)} mm; ${format(s.sigma_vm_max_z * 1000, 3)} mm`],
+        ["Tại điểm đó: σᵣ / σz / σθ", `${format(s.sigma_r_at_max / 1e6)} / ${format(s.sigma_z_at_max / 1e6)} / ${format(s.sigma_theta_at_max / 1e6)} MPa`],
+        ["Tại điểm đó: τᵣz", `${format(s.tau_rz_at_max / 1e6)} MPa`],
+        ["Sai số cân bằng lực đứng", `${format(s.vertical_force_balance_error, 6)} N`],
+        ["Chuyển vị xuyên qua gối lớn nhất", `${format(s.max_outward_penetration * 1e9, 3)} nm`]
+      ];
+      document.getElementById("stressDetails").innerHTML = stressRows
+        .map(([label, value]) => `<tr><th>${label}</th><td>${value}</td></tr>`)
+        .join("");
+      document.getElementById("meshInfo").textContent =
+        `Lưới ${s.nr} × ${s.nz} = ${s.nel} phần tử; ${s.nnode} nút; ` +
+        `${s.contact_iterations} vòng lặp tiếp xúc; thời gian giải ${s.solve_time_ms} ms. ` +
+        `Ứng suất cực đại được lấy tại điểm Gauss, không làm trơn.`;
+      drawStressMap(result.elements, s);
+      drawAnnulusStressMap(result.elements, s);
+    }
+
+    function describeConnectionError(error) {
+      if (window.location.protocol === "file:") {
+        return "Trang đang được mở trực tiếp từ tệp HTML nên không thể gọi bộ giải. " +
+          "Mở Terminal tại thư mục FEM, chạy `py app.py`, rồi truy cập " +
+          "http://127.0.0.1:8080/solid.html.";
+      }
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        return "Không kết nối được máy chủ FEM. Kiểm tra máy chủ còn chạy không; " +
+          "mở Terminal tại thư mục FEM, chạy `py app.py`, rồi truy cập " +
+          "http://127.0.0.1:8080/solid.html.";
+      }
+      return error.message || "Không thể giải bài toán.";
+    }
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      errorBox.classList.add("hidden");
+      if (!form.reportValidity()) return;
+      button.disabled = true;
+      button.textContent = "Đang tính...";
+      try {
+        const response = await fetch("/api/solve_solid", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(collectPayload())
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || `Máy chủ trả về lỗi HTTP ${response.status}.`);
+        }
+        showResult(data.result);
+      } catch (error) {
+        errorBox.textContent = describeConnectionError(error);
+        errorBox.classList.remove("hidden");
+      } finally {
+        button.disabled = false;
+        button.textContent = "Tính nội lực và kiểm tra bền";
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (currentResult) {
+        drawStressMap(currentResult.elements, currentResult.summary);
+        drawAnnulusStressMap(currentResult.elements, currentResult.summary);
+      }
+    });
+  </script>
+</body>
+</html>

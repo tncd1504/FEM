@@ -1,0 +1,48 @@
+cond Point_Constraints
+3
+global
+cond(int,1) && cond(int,3)
+1
+0
+0
+pc_emp.geo
+global
+cond(int,1)
+1
+0
+0
+pc_ss.geo
+global
+cond(int,3)
+1
+0
+0
+pc_sim.geo
+cond Point_Load
+3
+global
+cond(int,1) && cond(int,2)
+cond(int,1)
+0
+0
+pl_fl_m.geo
+global
+cond(int,1)
+0
+cond(int,1)
+0
+pl_flecha.geo
+global
+cond(int,2)
+cond(int,2)
+0
+0
+pl_mom.geo
+cond Uniform_Load
+1
+global
+1
+cond(int,1)
+0
+0
+ul_flechas.geo

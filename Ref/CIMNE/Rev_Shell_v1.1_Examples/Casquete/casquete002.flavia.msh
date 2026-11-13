@@ -1,0 +1,16 @@
+### 
+# MAT-fem Rev Shell v1.1 
+# 
+MESH dimension   2   Elemtype Linear   Nnode  2 
+ 
+coordinates 
+     1        00000        00090 
+     2 2.70635e+001 8.58345e+001 
+     3 5.16219e+001 7.37237e+001 
+end coordinates 
+ 
+elements 
+     1      1      2 
+     2      2      3 
+end elements 
+ 

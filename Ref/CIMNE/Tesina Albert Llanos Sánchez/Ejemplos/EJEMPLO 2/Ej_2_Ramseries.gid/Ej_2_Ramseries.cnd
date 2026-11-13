@@ -1,0 +1,484 @@
+BOOK:Constraints
+NUMBER: 1 CONDITION: Point_Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement of selected points.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacementfor that degree.\nUnits in International System for values are:\n\t (m) for the displacements.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 2 CONDITION: Line_Constraints
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement of all the nodes that belong to the line.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement for that degree.\nUnits in International System for values are:\n\t (m) for the displacements.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 3 CONDITION: Surface_Constraints
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement of all the nodes that belong to the surface.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement for that degree.\nUnits in International System for values are:\n\t (m) for the displacements.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 4 CONDITION: Surface_Elastic_Constraints
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: Use this condition to apply an elastic spring to the displacement of all nodes that belong to the surface.\nEvery marked flag will prescribe the spring for that degree of freedom.\nEnter the stiffness constant for every actived degree of freedom in the values fields.\nUnits in International System for stiffness constants are:\n\t (N/m3) for the displacements.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+END CONDITION
+BOOK:Static Loads
+NUMBER: 5 CONDITION: Punctual_Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: A force applied to the selected points of the model. Units in International System for values are:\n\t (N) for the forces.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Force
+VALUE: 0.0
+QUESTION: Y_Force
+VALUE: 0.0
+QUESTION: Z_Force
+VALUE: 0.0
+END CONDITION
+NUMBER: 6 CONDITION: Self_weight_solid
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+HELP: If this condition is applied to solids, a load is calculated and assigned, depending on the self-weight of the material, the volume of the solid and the direction of the gravity.
+QUESTION: Self_weight_load#CB#(.)
+VALUE: -
+END CONDITION
+NUMBER: 7 CONDITION: Global_Pressure_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: A pressure load over the contour of the solid given in global axes. Units in International System for values are:\n\t (N/m2) for the pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 8 CONDITION: Global_Projected_Pressure_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: A pressure load over the contour of the solid given in global axes and projected as if the area of the contour was the projected area over the pressure vector. Units in International System for values are:\n\t (N/m2) for the pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 9 CONDITION: Local_Pressure_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: A pressure load over the contour of the solid orthogonal to this contour. Positive pressures point indwards the solid. Units in International System for values are:\n\t (N/m2) for the pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Normal_inwards
+VALUE: 0.0
+END CONDITION
+NUMBER: 10 CONDITION: Solid_triangular_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: This load is similar to that of 'Global_Pressure__Load' but its intensity changes depending on the point where it is applied. The two points define an imaginary line in the space. For every point of the volume contour  where the load is applied, it is possible to project this point on the imaginary line and interpolate the values related to these points depending on where it is projected. \nUnits in International System for values are:\n\t (m) for the points\n\t(N/m2) for the pressures.
+TITLE: Position
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_point_1
+VALUE: 0.0
+QUESTION: Y_point_1
+VALUE: 0.0
+QUESTION: Z_point_1
+VALUE: 0.0
+QUESTION: X_point_2
+VALUE: 0.0
+QUESTION: Y_point_2
+VALUE: 0.0
+QUESTION: Z_point_2
+VALUE: 0.0
+TITLE: Pressures
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-)
+VALUE: -GLOBAL-
+QUESTION: X_pressure_1
+VALUE: 0.0
+QUESTION: Y_pressure_1
+VALUE: 0.0
+QUESTION: Z_pressure_1
+VALUE: 0.0
+QUESTION: X_pressure_2
+VALUE: 0.0
+QUESTION: Y_pressure_2
+VALUE: 0.0
+QUESTION: Z_pressure_2
+VALUE: 0.0
+END CONDITION
+NUMBER: 11 CONDITION: Solid_hydrostatic_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: This is a triangular load that has value 0.0 at the reference coordinate (in the sense of the gravity) and gives an hydrostatic pressure that depends on the self-weight of the water or terrain. \nUnits in International System for values are:\n\t (m) for the coordinates\n\t(N/m3) for the self-weight.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Reference_coordinate:
+VALUE: 0.0
+QUESTION: Self_weight_water:
+VALUE: 10000
+END CONDITION
+NUMBER: 12 CONDITION: Temperature
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+HELP: This condition considers the deformation supported by the solid when there is a uniform temperature change in all the solid.
+QUESTION: \u03B1 (1/\u00B0C)
+VALUE: 0.000012
+QUESTION: \u0394T (\u00B0C)
+VALUE: 0.0
+END CONDITION
+NUMBER: 13 CONDITION: Tdyn_Strain
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+HELP: This condition considers the deformation supported by the solid when there is a change of temperature in all the solid imported from the thermal module Tdyn.
+QUESTION: Noop
+VALUE: -
+STATE: HIDDEN
+END CONDITION
+BOOK:Properties
+NUMBER: 14 CONDITION: Solid
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to volumes. 'E' is the Young Modulus and 'nu' is the Poisson coefficient. \nUnits in International System for values are:\n\t(N/m2) for 'E'\n\t(adimensional) nu\n\t(N/m3) for the Specific_weight.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: E
+VALUE: 2.1e11
+QUESTION: nu
+VALUE: 0.3
+QUESTION: Specific_weight
+VALUE: 0.0
+END CONDITION
+BOOK:Special properties
+NUMBER: 15 CONDITION: Non_analysis_triangles
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to triangles that will not be read but are only for decoration.TEXT: Decorative elements
+QUESTION: Noop
+VALUE: -
+STATE: HIDDEN
+END CONDITION
+BOOK:Detailed results
+NUMBER: 16 CONDITION: Detailed_results
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: If this condition is applied to points, an additional file is created: PROJECT.detailed.xml with detailed result information in the selected nodes.
+QUESTION: Id
+VALUE: pointA
+END CONDITION
+BOOK:Dynamic Loads
+NUMBER: 17 CONDITION: Dynamic-Point_Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: A dynamic force applied to the selected points of the model. Units in International System for values are:\n\t (N) for the forces.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Force
+VALUE: 0.0
+QUESTION: Y_Force
+VALUE: 0.0
+QUESTION: Z_Force
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 18 CONDITION: Dyn._Global_Pressure_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: A dynamic pressure load over the contour of the solid given in global axes. Units in International System for values are:\n\t (N/m2) for the pressures.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 19 CONDITION: Dyn._Local_Pressure_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: A dynamic pressure load over the contour of the solid orthogonal to this contour. Positive pressures point indwards the solid. Units in International System for values are:\n\t (N/m2) for the pressures.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m
+QUESTION: Normal_inwards
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+BOOK:Masses
+NUMBER: 20 CONDITION: Point-Mass
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to assign translational masses to points.\nUnits in International System for values are:\n\t (kg) for the transalational masses.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Mass_x
+VALUE: 0.0
+QUESTION: Mass_y
+VALUE: 0.0
+QUESTION: Mass_z
+VALUE: 0.0
+QUESTION: Mom_iner_x
+VALUE: 0.0
+QUESTION: Mom_iner_y
+VALUE: 0.0
+QUESTION: Mom_iner_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 21 CONDITION: Surface-Solid-Mass
+CONDTYPE: over surfaces
+CONDMESHTYPE: over face elements
+HELP: Use this condition to assign surface masses to a solid.\nUnits in International System for values are:\n\t (kg/m^2)
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Surface_mass
+VALUE: 0.0
+END CONDITION
+BOOK:Contact
+NUMBER: 22 CONDITION: Line-Contacts
+CONDTYPE: over lines
+HELP: Use this condition to prescribe the contact between selected points.
+QUESTION: Penalty
+VALUE: 1.0e10
+END CONDITION
+NUMBER: 23 CONDITION: Surface-Contacts
+CONDTYPE: over surfaces
+HELP: Use this condition to prescribe the contact between selected points.
+QUESTION: Penalty
+VALUE: 1.0e10
+END CONDITION
+NUMBER: 24 CONDITION: Volume-Contacts
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+HELP: Use this condition to prescribe the contact between selected points.
+QUESTION: Penalty
+VALUE: 1.0e10
+END CONDITION
+BOOK:Initial_Conditions
+NUMBER: 25 CONDITION: Volumes_Initial_Conditions
+CONDTYPE: over volumes
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 26 CONDITION: Surfaces_Initial_Conditions
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 27 CONDITION: Lines_Initial_Conditions
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 28 CONDITION: Points_Initial_Conditions
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION

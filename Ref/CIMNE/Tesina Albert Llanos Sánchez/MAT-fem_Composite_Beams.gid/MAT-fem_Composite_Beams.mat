@@ -1,0 +1,15 @@
+NUMBER: 1 MATERIAL: Composite_Section
+QUESTION: LAYER
+VALUE: 3
+QUESTION: YOUNG(LAYER,______E___N/m^2____)
+VALUE: #N# 6 1 2.1e11 2 3.0e10 3 3.0e10
+QUESTION: POISSON(LAYER,______poiss________)
+VALUE: #N# 6 1 0.2 2 0.2 3 0.2 
+QUESTION: SELF-WEIGHT(LAYER,_______dens___N/m^3)
+VALUE: #N# 6 1 78000 2 25000 3 78000  
+QUESTION: THICKNESS(LAYER,______h___m________)
+VALUE: #N# 6 1 2 2 16 3 2 
+QUESTION: WIDTH(LAYER,______b___m________)
+VALUE: #N# 6 1 10 2 10 3 10 
+END MATERIAL
+

@@ -1,0 +1,8 @@
+PROBLEM DATA
+TITLE:General_Data
+QUESTION:Problem_Title
+VALUE:Untitled
+HELP: The title of the problem
+QUESTION:Consider_Self_weight#CB#(Yes,No)
+VALUE:No
+END PROBLEM DATA

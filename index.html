@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FEM Tấm Dày Hình Vành Khuyên (Mindlin-Reissner Plate)</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-panel: #1e293b;
+      --bg-card: #26334d;
+      --bg-input: #0f172a;
+      --border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .section-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .section-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 6px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 10px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-group.full {
+      grid-column: span 2;
+    }
+    label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    input, select {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 8px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      width: 100%;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0f172a;
+    }
+    .btn-primary:hover {
+      background: #7dd3fc;
+    }
+    .btn-solve {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .btn-solve:hover {
+      filter: brightness(1.1);
+    }
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 0.74rem;
+      background: #334155;
+      color: var(--text-main);
+    }
+    .btn-sm:hover {
+      background: #475569;
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 3px 7px;
+      font-size: 0.72rem;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.4);
+    }
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 210px;
+      overflow-y: auto;
+      margin-top: 6px;
+    }
+    .item-row {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: grid;
+      grid-template-columns: 78px 1fr 1fr 88px 26px;
+      gap: 5px;
+      align-items: center;
+    }
+    .item-row-load {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: grid;
+      grid-template-columns: 78px 1fr 1fr 1fr 26px;
+      gap: 5px;
+      align-items: center;
+    }
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #0b1120;
+    }
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .kpi-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .kpi-val {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .kpi-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px 16px 0;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      border-radius: 6px 6px 0 0;
+      padding: 8px 14px;
+      font-size: 0.83rem;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .tab-content {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(30, 41, 59, 0.85);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mode-pill {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+    .mode-pill.active-view {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.15);
+    }
+    .mode-pill.active-support {
+      border-color: var(--success);
+      color: #4ade80;
+      background: rgba(34, 197, 94, 0.15);
+    }
+    .mode-pill.active-load {
+      border-color: var(--danger);
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.15);
+    }
+    .canvas-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      overflow: hidden;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .tooltip-box {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.76rem;
+      line-height: 1.4;
+      color: #f8fafc;
+      display: none;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .legend-overlay {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .scroll-pane {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      background: var(--bg-panel);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    table.data-table th, table.data-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+    }
+    table.data-table th:first-child, table.data-table td:first-child,
+    table.data-table th:nth-child(2), table.data-table td:nth-child(2) {
+      text-align: left;
+    }
+    table.data-table th {
+      background: var(--bg-card);
+      color: var(--accent);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      height: 100%;
+    }
+    .chart-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+    .status-banner {
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: none;
+    }
+    .status-banner.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid var(--danger);
+      color: #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <span>⚙️ FEM TẤM DÀY HÌNH VÀNH KHUYÊN (MINDLIN-REISSNER)</span>
+      <span class="badge">MITC4 • CS-DSG3 • DSG3 • MIN3 • CS-MIN3 • Q4-R</span>
+      <span id="backendBadge" class="badge" style="background:rgba(34,197,94,0.18);color:#4ade80;border-color:rgba(34,197,94,0.4);">Python FEM Engine</span>
+    </h1>
+    <div class="header-actions">
+      <a href="/pipe.html" class="btn-sm" style="text-decoration:none;">Ống dài chịu ép hướng tâm →</a>
+      <a href="/solid.html" class="btn-sm" style="text-decoration:none;">Tính khối vành khuyên →</a>
+      <label for="presetSelect" style="color:#cbd5e1;font-size:0.8rem;">Bài toán mẫu:</label>
+      <select id="presetSelect" style="width:290px;" onchange="applyPreset(this.value)">
+        <option value="preset_4supports_4loads">1. Vành khuyên trên 4 gối điểm chịu 4 lực tập trung</option>
+        <option value="preset_3clamped_3inner">2. Vành khuyên 3 gối ngàm điểm chịu 3 lực tại biên trong</option>
+        <option value="preset_outer_clamped_eccentric">3. Ngàm biên ngoài, tự do biên trong, chịu lực lệch tâm</option>
+        <option value="preset_inner_clamped_cantilever">4. Ngàm biên trong (console vành khuyên) chịu 2 lực biên ngoài</option>
+      </select>
+      <button class="btn-sm" onclick="exportCSV()">⬇ Xuất CSV Kết quả</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- SIDEBAR NHẬP THÔNG SỐ -->
+    <aside class="sidebar">
+      <div id="errorBanner" class="status-banner"></div>
+
+      <button class="btn-solve" onclick="solveFEM()">▶ GIẢI BÀI TOÁN PHẦN TỬ HỮU HẠN (SOLVE)</button>
+
+      <!-- 1. HÌNH HỌC & LƯỚI PHẦN TỬ -->
+      <div class="section-box">
+        <div class="section-title">
+          <span>1. Hình học Vành khuyên & Chia lưới</span>
+          <button class="btn-sm" onclick="previewMeshOnly()">Cập nhật lưới</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Bán kính trong R_in (m)</label>
+            <input type="number" id="r_inner" value="0.3" step="0.05" min="0.01" onchange="previewMeshOnly()" />
+          </div>
+          <div class="form-group">
+            <label>Bán kính ngoài R_out (m)</label>
+            <input type="number" id="r_outer" value="1.0" step="0.05" min="0.05" onchange="previewMeshOnly()" />
+          </div>
+          <div class="form-group">
+            <label>Chiều dày tấm t (m)</label>
+            <input type="number" id="thickness" value="0.10" step="0.01" min="0.0001" />
+          </div>
+          <div class="form-group">
+            <label>Góc mở từ θ₁ đến θ₂ (độ)</label>
+            <div style="display:flex;gap:4px;">
+              <input type="number" id="theta_start_deg" value="0" step="15" onchange="previewMeshOnly()" />
+              <input type="number" id="theta_end_deg" value="360" step="15" onchange="previewMeshOnly()" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Số phần tử bán kính (nr)</label>
+            <input type="number" id="nr" value="10" step="1" min="2" max="50" onchange="previewMeshOnly()" />
+          </div>
+          <div class="form-group">
+            <label>Số phần tử chu vi (nθ)</label>
+            <input type="number" id="ntheta" value="36" step="4" min="6" max="120" onchange="previewMeshOnly()" />
+          </div>
+          <div class="form-group full">
+            <label>Phương pháp Phần tử hữu hạn (trong thư mục Lý thuyết tấm)</label>
+            <select id="element_type" onchange="previewMeshOnly()">
+              <option value="MITC4">MITC4 - Tứ giác 4 nút Bathe (Khử khóa cắt - Khuyên dùng)</option>
+              <option value="CS_DSG3">CS-DSG3 - Tam giác 3 nút làm trơn trên ô (Cell-Smoothed DSG3)</option>
+              <option value="DSG3">DSG3 - Tam giác 3 nút Discrete Shear Gap</option>
+              <option value="MIN3">MIN3 - Tam giác 3 nút Mindlin của Hughes</option>
+              <option value="CS_MIN3">CS-MIN3 - Tam giác 3 nút làm trơn CS-MIN3</option>
+              <option value="Q4_REDUCED">Q4-Reduced - Tứ giác Mindlin tích phân suy giảm (2x2 + 1x1)</option>
+              <option value="Q4_FULL">Q4-Full - Tứ giác Mindlin tích phân đầy đủ (2x2)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. VẬT LIỆU -->
+      <div class="section-box">
+        <div class="section-title">
+          <span>2. Đặc trưng Vật liệu & Tải phân bố</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Mô đun đàn hồi E (Pa)</label>
+            <input type="number" id="E" value="200000000000" step="1e9" />
+          </div>
+          <div class="form-group">
+            <label>Hệ số Poisson ν</label>
+            <input type="number" id="nu" value="0.3" step="0.01" min="0.0" max="0.49" />
+          </div>
+          <div class="form-group">
+            <label>Hệ số cắt Mindlin κ</label>
+            <input type="number" id="kappa" value="0.833333" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Tải phân bố đều q (N/m²)</label>
+            <input type="number" id="q_uniform" value="0" step="100" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. ĐIỂM ĐẶT GỐI & ĐIỀU KIỆN BIÊN -->
+      <div class="section-box">
+        <div class="section-title">
+          <span>3. Điểm đặt Gối đỡ (Supports)</span>
+          <div style="display:flex;gap:4px;">
+            <button class="btn-sm" onclick="addSupportRow()">+ Thêm gối</button>
+            <button class="btn-sm" onclick="clearSupports()">Xóa hết</button>
+          </div>
+        </div>
+        <div class="form-grid" style="margin-bottom:8px;">
+          <div class="form-group">
+            <label>Biên trong (r = R_in)</label>
+            <select id="bc_inner">
+              <option value="free">Tự do (Free)</option>
+              <option value="simply_supported">Gối tựa đơn (w = 0)</option>
+              <option value="clamped">Ngàm (w = θx = θy = 0)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Biên ngoài (r = R_out)</label>
+            <select id="bc_outer">
+              <option value="free">Tự do (Free)</option>
+              <option value="simply_supported">Gối tựa đơn (w = 0)</option>
+              <option value="clamped">Ngàm (w = θx = θy = 0)</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size:0.73rem;color:var(--text-muted);margin-bottom:4px;">
+          Danh sách gối điểm (nhập tọa độ cực r, θ° hoặc Descartes x, y hoặc click trực tiếp lên lưới):
+        </div>
+        <div id="supportsList" class="item-list"></div>
+      </div>
+
+      <!-- 4. ĐIỂM ĐẶT LỰC TẬP TRUNG -->
+      <div class="section-box">
+        <div class="section-title">
+          <span>4. Điểm đặt Lực tập trung (Point Loads)</span>
+          <div style="display:flex;gap:4px;">
+            <button class="btn-sm" onclick="addLoadRow()">+ Thêm lực</button>
+            <button class="btn-sm" onclick="clearLoads()">Xóa hết</button>
+          </div>
+        </div>
+        <div class="form-grid" style="margin-bottom:6px;">
+          <div class="form-group">
+            <label>Quy đổi lực điểm về nút</label>
+            <select id="load_distribution_mode">
+              <option value="element">Nội suy hàm dạng phần tử chứa điểm</option>
+              <option value="nearest">Gán vào nút lưới gần nhất</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Lực mặc định khi Click (N)</label>
+            <input type="number" id="default_click_fz" value="-10000" step="1000" />
+          </div>
+        </div>
+        <div style="font-size:0.73rem;color:var(--text-muted);margin-bottom:4px;">
+          Danh sách lực tập trung [Hệ tọa độ | r hoặc x | θ° hoặc y | Lực Pz (N)]:
+        </div>
+        <div id="loadsList" class="item-list"></div>
+      </div>
+    </aside>
+
+    <!-- KHU VỰC HIỂN THỊ KẾT QUẢ -->
+    <main class="workspace">
+      <!-- KPI BAR -->
+      <div class="kpi-bar">
+        <div class="kpi-card">
+          <div class="kpi-label">Độ võng lớn nhất |w|_max</div>
+          <div class="kpi-val" id="kpi_wmax">—</div>
+          <div class="kpi-sub" id="kpi_wmax_loc">Chưa giải</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Ứng suất Von Mises σ_vm,max</div>
+          <div class="kpi-val" id="kpi_vm">—</div>
+          <div class="kpi-sub" id="kpi_vm_loc">Mặt tấm z = ±t/2</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Mô men hướng kính |M_r|_max</div>
+          <div class="kpi-val" id="kpi_mr">—</div>
+          <div class="kpi-sub">N·m/m</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Mô men vòng |M_θ|_max</div>
+          <div class="kpi-val" id="kpi_mtheta">—</div>
+          <div class="kpi-sub">N·m/m</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Năng lượng biến dạng U</div>
+          <div class="kpi-val" id="kpi_energy">—</div>
+          <div class="kpi-sub">J (N·m)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Kiểm tra cân bằng ΣFz + ΣRz</div>
+          <div class="kpi-val" id="kpi_balance">—</div>
+          <div class="kpi-sub" id="kpi_mesh_info">—</div>
+        </div>
+      </div>
+
+      <!-- TABS NAVIGATION -->
+      <div class="tabs-bar">
+        <button class="tab-btn active" onclick="switchTab('tab2d', this)">🗺️ 1. Bản đồ màu 2D & Tương tác Lưới</button>
+        <button class="tab-btn" onclick="switchTab('tab3d', this)">🧊 2. Mặt võng 3D Tương tác</button>
+        <button class="tab-btn" onclick="switchTab('tabCharts', this)">📈 3. Đồ thị Mặt cắt (r & θ)</button>
+        <button class="tab-btn" onclick="switchTab('tabCompare', this)">⚖️ 4. So sánh 7 Lý thuyết Phần tử</button>
+        <button class="tab-btn" onclick="switchTab('tabTables', this)">📋 5. Bảng Phản lực Gối & Số liệu Nút</button>
+      </div>
+
+      <!-- TAB 1: 2D CONTOUR & INTERACTIVE MESH -->
+      <div id="tab2d" class="tab-content active">
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <span>Trường kết quả:</span>
+            <select id="fieldSelect" style="width:235px;" onchange="render2D()">
+              <option value="w">Chuyển vị đứng w (mm)</option>
+              <option value="sigma_vm">Ứng suất Von Mises σ_vm (MPa)</option>
+              <option value="Mr">Mô men uốn hướng kính M_r (N·m/m)</option>
+              <option value="Mtheta">Mô men uốn vòng M_θ (N·m/m)</option>
+              <option value="Mrtheta">Mô men xoắn cực M_rθ (N·m/m)</option>
+              <option value="Mx">Mô men uốn M_x (N·m/m)</option>
+              <option value="My">Mô men uốn M_y (N·m/m)</option>
+              <option value="Mxy">Mô men xoắn M_xy (N·m/m)</option>
+              <option value="Qr">Lực cắt hướng kính Q_r (N/m)</option>
+              <option value="Qtheta">Lực cắt vòng Q_θ (N/m)</option>
+              <option value="theta_x">Góc xoay θ_x (rad)</option>
+              <option value="theta_y">Góc xoay θ_y (rad)</option>
+            </select>
+          </div>
+          <div class="toolbar-group">
+            <span>Thang màu:</span>
+            <select id="colormapSelect" style="width:110px;" onchange="render2D()">
+              <option value="jet">Jet (Cầu vồng)</option>
+              <option value="coolwarm">Cool-Warm</option>
+              <option value="viridis">Viridis</option>
+            </select>
+          </div>
+          <div class="toolbar-group">
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#e2e8f0;">
+              <input type="checkbox" id="chkShowMesh" checked onchange="render2D()" style="width:auto;" /> Hiện lưới
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#e2e8f0;">
+              <input type="checkbox" id="chkShowNodes" onchange="render2D()" style="width:auto;" /> Số hiệu nút
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#e2e8f0;">
+              <input type="checkbox" id="chkShowSupports" checked onchange="render2D()" style="width:auto;" /> Hiện gối đỡ
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#e2e8f0;">
+              <input type="checkbox" id="chkShowLoads" checked onchange="render2D()" style="width:auto;" /> Hiện lực
+            </label>
+          </div>
+          <div class="toolbar-group" style="margin-left:auto;">
+            <span>Chế độ Click trên hình:</span>
+            <button id="modeViewBtn" class="mode-pill active-view" onclick="setClickMode('view')">🔍 Xem / Tra cứu</button>
+            <button id="modeSupBtn" class="mode-pill" onclick="setClickMode('support')">▲ Click thêm Gối đỡ</button>
+            <button id="modeLoadBtn" class="mode-pill" onclick="setClickMode('load')">⬇ Click thêm Lực</button>
+          </div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="canvas2d"></canvas>
+          <div id="tooltip2d" class="tooltip-box"></div>
+          <div class="legend-overlay">
+            <div class="legend-item"><span style="color:#4ade80;font-size:1rem;">▲</span> Gối bản lề (w=0)</div>
+            <div class="legend-item"><span style="color:#f59e0b;font-size:1rem;">■</span> Ngàm (w=θx=θy=0)</div>
+            <div class="legend-item"><span style="color:#ef4444;font-size:1rem;">⊕</span> Điểm đặt lực tập trung Pz</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: 3D DEFORMED SURFACE -->
+      <div id="tab3d" class="tab-content">
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <span>Hệ số phóng đại biến dạng 3D:</span>
+            <input type="range" id="deformScale" min="0" max="200" value="60" style="width:160px;" oninput="render3D()" />
+            <span id="deformScaleVal" style="color:var(--accent);font-weight:700;">60%</span>
+          </div>
+          <div class="toolbar-group">
+            <button class="btn-sm" onclick="reset3DCamera()">Đặt lại góc nhìn 3D</button>
+          </div>
+          <div style="color:var(--text-muted);font-size:0.78rem;">
+            💡 Giữ chuột trái kéo để xoay 3D, lăn chuột để phóng to/thu nhỏ.
+          </div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="canvas3d"></canvas>
+        </div>
+      </div>
+
+      <!-- TAB 3: RADIAL & CIRCUMFERENTIAL CHARTS -->
+      <div id="tabCharts" class="tab-content">
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <span>Góc mặt cắt hướng kính θ (độ):</span>
+            <input type="number" id="sliceTheta" value="0" step="15" style="width:85px;" onchange="renderCharts()" />
+          </div>
+          <div class="toolbar-group">
+            <span>Bán kính mặt cắt chu vi r (m):</span>
+            <input type="number" id="sliceRadius" value="0.65" step="0.05" style="width:85px;" onchange="renderCharts()" />
+          </div>
+          <button class="btn-sm" onclick="renderCharts()">Vẽ lại mặt cắt</button>
+        </div>
+        <div class="scroll-pane">
+          <div class="charts-grid">
+            <div class="chart-box">
+              <div class="section-title">Độ võng w(r) theo Bán kính r</div>
+              <div style="flex:1;position:relative;"><canvas id="chartRadialW"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="section-title">Độ võng w(θ) theo Chu vi θ (0° → 360°)</div>
+              <div style="flex:1;position:relative;"><canvas id="chartCircumW"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="section-title">Mô men uốn M_r(r) & M_θ(r) theo Bán kính r</div>
+              <div style="flex:1;position:relative;"><canvas id="chartRadialM"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="section-title">Ứng suất Von Mises σ_vm(θ) theo Chu vi θ</div>
+              <div style="flex:1;position:relative;"><canvas id="chartCircumVM"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: COMPARE ALL 7 ELEMENT FORMULATIONS -->
+      <div id="tabCompare" class="tab-content">
+        <div class="toolbar">
+          <button class="btn-primary" onclick="runElementComparison()">
+            ⚡ Chạy So sánh tất cả 7 Phương pháp Phần tử (MITC4, CS-DSG3, DSG3, MIN3, CS-MIN3, Q4-R, Q4-Full)
+          </button>
+          <span style="color:var(--text-muted);font-size:0.78rem;">
+            So sánh trực tiếp trên cùng thông số hình học, vật liệu, gối đỡ và điểm đặt lực hiện tại.
+          </span>
+        </div>
+        <div class="scroll-pane">
+          <table class="data-table" id="compareTable">
+            <thead>
+              <tr>
+                <th>Phương pháp Phần tử</th>
+                <th>Loại lưới</th>
+                <th>Số phần tử</th>
+                <th>|w|_max (mm)</th>
+                <th>σ_vm,max (MPa)</th>
+                <th>|M_r|_max (N·m/m)</th>
+                <th>|M_θ|_max (N·m/m)</th>
+                <th>Năng lượng U (J)</th>
+                <th>Sai số cân bằng (N)</th>
+                <th>Thời gian (ms)</th>
+              </tr>
+            </thead>
+            <tbody id="compareTbody">
+              <tr><td colspan="10" style="text-align:center;color:var(--text-muted);padding:24px;">Nhấn nút "Chạy So sánh tất cả 7 Phương pháp Phần tử" ở trên để xem bảng đối chiếu.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 5: REACTIONS & NODAL DATA TABLES -->
+      <div id="tabTables" class="tab-content">
+        <div class="scroll-pane" style="display:flex;flex-direction:column;gap:20px;">
+          <div>
+            <div class="section-title">Bảng 1: Phản lực tại các Gối đỡ (Support Reactions)</div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nút (Node ID)</th>
+                  <th>Nhãn gối / Loại liên kết</th>
+                  <th>Bán kính r (m)</th>
+                  <th>Góc θ (độ)</th>
+                  <th>Tọa độ x (m)</th>
+                  <th>Tọa độ y (m)</th>
+                  <th>Phản lực đứng Rz (N)</th>
+                  <th>Mô men phản lực Mrx (N·m)</th>
+                  <th>Mô men phản lực Mry (N·m)</th>
+                </tr>
+              </thead>
+              <tbody id="reactionsTbody"></tbody>
+            </table>
+          </div>
+
+          <div>
+            <div class="section-title">Bảng 2: Chuyển vị và Nội lực tại các Nút tiêu biểu (Top 100 nút theo |w|)</div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nút ID</th>
+                  <th>r (m)</th>
+                  <th>θ (độ)</th>
+                  <th>x (m)</th>
+                  <th>y (m)</th>
+                  <th>w (mm)</th>
+                  <th>θ_x (rad)</th>
+                  <th>θ_y (rad)</th>
+                  <th>M_r (N·m/m)</th>
+                  <th>M_θ (N·m/m)</th>
+                  <th>Q_r (N/m)</th>
+                  <th>σ_vm (MPa)</th>
+                </tr>
+              </thead>
+              <tbody id="nodesTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // STATE QUẢN LÝ DỮ LIỆU BÀI TOÁN
+    // =========================================================================
+    let supportsData = [];
+    let loadsData = [];
+    let currentMesh = null;
+    let currentResult = null;
+    let clickMode = "view"; // 'view' | 'support' | 'load'
+
+    // Camera 3D
+    let cam3D = { yaw: -0.65, pitch: 0.65, zoom: 1.0, dragging: false, lastX: 0, lastY: 0 };
+
+    // =========================================================================
+    // QUẢN LÝ DANH SÁCH GỐI ĐỠ & LỰC TẬP TRUNG DO NGƯỜI DÙNG NHẬP
+    // =========================================================================
+    function renderSupportsEditor() {
+      const container = document.getElementById("supportsList");
+      container.innerHTML = "";
+      supportsData.forEach((sup, idx) => {
+        const row = document.createElement("div");
+        row.className = "item-row";
+        const isPolar = sup.coord_type === "polar";
+        const isCart = sup.coord_type === "cartesian";
+        const v1 = isPolar ? sup.r : (isCart ? sup.x : sup.node_id);
+        const v2 = isPolar ? sup.theta : (isCart ? sup.y : 0);
+
+        row.innerHTML = `
+          <select onchange="updateSupportCoordType(${idx}, this.value)" title="Hệ tọa độ">
+            <option value="polar" ${isPolar ? "selected" : ""}>Cực (r,θ)</option>
+            <option value="cartesian" ${isCart ? "selected" : ""}>XY (x,y)</option>
+            <option value="node" ${sup.coord_type === "node" ? "selected" : ""}>Nút ID</option>
+          </select>
+          <input type="number" step="0.05" value="${v1}" title="${isPolar ? 'Bán kính r (m)' : (isCart ? 'Tọa độ x (m)' : 'Node ID')}"
+            onchange="updateSupportVal1(${idx}, this.value)" />
+          <input type="number" step="5" value="${v2}" ${sup.coord_type === "node" ? "disabled" : ""}
+            title="${isPolar ? 'Góc θ (độ)' : 'Tọa độ y (m)'}"
+            onchange="updateSupportVal2(${idx}, this.value)" />
+          <select onchange="supportsData[${idx}].type = this.value; render2D();" title="Loại gối đỡ">
+            <option value="pinned" ${sup.type === "pinned" ? "selected" : ""}>Gối (w=0)</option>
+            <option value="clamped" ${sup.type === "clamped" ? "selected" : ""}>Ngàm</option>
+            <option value="roller_x" ${sup.type === "roller_x" ? "selected" : ""}>Khóa w,θx</option>
+            <option value="roller_y" ${sup.type === "roller_y" ? "selected" : ""}>Khóa w,θy</option>
+          </select>
+          <button class="btn-danger" onclick="removeSupportRow(${idx})" title="Xóa gối này">✕</button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function updateSupportCoordType(idx, newType) {
+      const s = supportsData[idx];
+      if (newType === "polar") {
+        const r = s.r !== undefined ? s.r : Math.hypot(s.x || 0.5, s.y || 0);
+        const th = s.theta !== undefined ? s.theta : ((Math.atan2(s.y || 0, s.x || 0.5) * 180 / Math.PI + 360) % 360);
+        supportsData[idx] = { ...s, coord_type: "polar", r: Number(r.toFixed(3)), theta: Number(th.toFixed(1)) };
+      } else if (newType === "cartesian") {
+        const rad = ((s.theta || 0) * Math.PI) / 180;
+        const x = s.x !== undefined ? s.x : (s.r || 0.5) * Math.cos(rad);
+        const y = s.y !== undefined ? s.y : (s.r || 0.5) * Math.sin(rad);
+        supportsData[idx] = { ...s, coord_type: "cartesian", x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) };
+      } else {
+        supportsData[idx] = { ...s, coord_type: "node", node_id: s.node_id || 1 };
+      }
+      renderSupportsEditor();
+      render2D();
+    }
+
+    function updateSupportVal1(idx, val) {
+      const s = supportsData[idx];
+      const num = parseFloat(val) || 0;
+      if (s.coord_type === "polar") s.r = num;
+      else if (s.coord_type === "cartesian") s.x = num;
+      else s.node_id = Math.max(1, Math.round(num));
+      render2D();
+    }
+
+    function updateSupportVal2(idx, val) {
+      const s = supportsData[idx];
+      const num = parseFloat(val) || 0;
+      if (s.coord_type === "polar") s.theta = num;
+      else if (s.coord_type === "cartesian") s.y = num;
+      render2D();
+    }
+
+    function addSupportRow(customObj) {
+      const rOut = parseFloat(document.getElementById("r_outer").value) || 1.0;
+      supportsData.push(customObj || {
+        coord_type: "polar",
+        r: rOut,
+        theta: (supportsData.length * 90) % 360,
+        type: "pinned"
+      });
+      renderSupportsEditor();
+      render2D();
+    }
+
+    function removeSupportRow(idx) {
+      supportsData.splice(idx, 1);
+      renderSupportsEditor();
+      render2D();
+    }
+
+    function clearSupports() {
+      supportsData = [];
+      renderSupportsEditor();
+      render2D();
+    }
+
+    // --- LOADS EDITOR ---
+    function renderLoadsEditor() {
+      const container = document.getElementById("loadsList");
+      container.innerHTML = "";
+      loadsData.forEach((ld, idx) => {
+        const row = document.createElement("div");
+        row.className = "item-row-load";
+        const isPolar = ld.coord_type === "polar";
+        const isCart = ld.coord_type === "cartesian";
+        const v1 = isPolar ? ld.r : (isCart ? ld.x : ld.node_id);
+        const v2 = isPolar ? ld.theta : (isCart ? ld.y : 0);
+
+        row.innerHTML = `
+          <select onchange="updateLoadCoordType(${idx}, this.value)" title="Hệ tọa độ">
+            <option value="polar" ${isPolar ? "selected" : ""}>Cực (r,θ)</option>
+            <option value="cartesian" ${isCart ? "selected" : ""}>XY (x,y)</option>
+            <option value="node" ${ld.coord_type === "node" ? "selected" : ""}>Nút ID</option>
+          </select>
+          <input type="number" step="0.05" value="${v1}" title="${isPolar ? 'Bán kính r (m)' : (isCart ? 'Tọa độ x (m)' : 'Node ID')}"
+            onchange="updateLoadVal1(${idx}, this.value)" />
+          <input type="number" step="5" value="${v2}" ${ld.coord_type === "node" ? "disabled" : ""}
+            title="${isPolar ? 'Góc θ (độ)' : 'Tọa độ y (m)'}"
+            onchange="updateLoadVal2(${idx}, this.value)" />
+          <input type="number" step="500" value="${ld.fz}" title="Lực tập trung Pz (N)"
+            onchange="loadsData[${idx}].fz = parseFloat(this.value)||0; render2D();" />
+          <button class="btn-danger" onclick="removeLoadRow(${idx})" title="Xóa lực này">✕</button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function updateLoadCoordType(idx, newType) {
+      const ld = loadsData[idx];
+      if (newType === "polar") {
+        const r = ld.r !== undefined ? ld.r : Math.hypot(ld.x || 0.5, ld.y || 0);
+        const th = ld.theta !== undefined ? ld.theta : ((Math.atan2(ld.y || 0, ld.x || 0.5) * 180 / Math.PI + 360) % 360);
+        loadsData[idx] = { ...ld, coord_type: "polar", r: Number(r.toFixed(3)), theta: Number(th.toFixed(1)) };
+      } else if (newType === "cartesian") {
+        const rad = ((ld.theta || 0) * Math.PI) / 180;
+        const x = ld.x !== undefined ? ld.x : (ld.r || 0.5) * Math.cos(rad);
+        const y = ld.y !== undefined ? ld.y : (ld.r || 0.5) * Math.sin(rad);
+        loadsData[idx] = { ...ld, coord_type: "cartesian", x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) };
+      } else {
+        loadsData[idx] = { ...ld, coord_type: "node", node_id: ld.node_id || 1 };
+      }
+      renderLoadsEditor();
+      render2D();
+    }
+
+    function updateLoadVal1(idx, val) {
+      const ld = loadsData[idx];
+      const num = parseFloat(val) || 0;
+      if (ld.coord_type === "polar") ld.r = num;
+      else if (ld.coord_type === "cartesian") ld.x = num;
+      else ld.node_id = Math.max(1, Math.round(num));
+      render2D();
+    }
+
+    function updateLoadVal2(idx, val) {
+      const ld = loadsData[idx];
+      const num = parseFloat(val) || 0;
+      if (ld.coord_type === "polar") ld.theta = num;
+      else if (ld.coord_type === "cartesian") ld.y = num;
+      render2D();
+    }
+
+    function addLoadRow(customObj) {
+      const rIn = parseFloat(document.getElementById("r_inner").value) || 0.3;
+      const rOut = parseFloat(document.getElementById("r_outer").value) || 1.0;
+      const fzDef = parseFloat(document.getElementById("default_click_fz").value) || -10000;
+      loadsData.push(customObj || {
+        coord_type: "polar",
+        r: Number(((rIn + rOut) / 2).toFixed(3)),
+        theta: (loadsData.length * 90 + 45) % 360,
+        fz: fzDef
+      });
+      renderLoadsEditor();
+      render2D();
+    }
+
+    function removeLoadRow(idx) {
+      loadsData.splice(idx, 1);
+      renderLoadsEditor();
+      render2D();
+    }
+
+    function clearLoads() {
+      loadsData = [];
+      renderLoadsEditor();
+      render2D();
+    }
+
+    // =========================================================================
+    // CÁC BÀI TOÁN MẪU (PRESETS)
+    // =========================================================================
+    function applyPreset(presetName) {
+      document.getElementById("r_inner").value = 0.3;
+      document.getElementById("r_outer").value = 1.0;
+      document.getElementById("thickness").value = 0.10;
+      document.getElementById("theta_start_deg").value = 0;
+      document.getElementById("theta_end_deg").value = 360;
+      document.getElementById("nr").value = 10;
+      document.getElementById("ntheta").value = 36;
+      document.getElementById("q_uniform").value = 0;
+
+      if (presetName === "preset_4supports_4loads") {
+        document.getElementById("bc_inner").value = "free";
+        document.getElementById("bc_outer").value = "free";
+        supportsData = [
+          { coord_type: "polar", r: 1.0, theta: 0, type: "pinned" },
+          { coord_type: "polar", r: 1.0, theta: 90, type: "pinned" },
+          { coord_type: "polar", r: 1.0, theta: 180, type: "pinned" },
+          { coord_type: "polar", r: 1.0, theta: 270, type: "pinned" }
+        ];
+        loadsData = [
+          { coord_type: "polar", r: 0.65, theta: 45, fz: -10000 },
+          { coord_type: "polar", r: 0.65, theta: 135, fz: -10000 },
+          { coord_type: "polar", r: 0.65, theta: 225, fz: -10000 },
+          { coord_type: "polar", r: 0.65, theta: 315, fz: -10000 }
+        ];
+      } else if (presetName === "preset_3clamped_3inner") {
+        document.getElementById("bc_inner").value = "free";
+        document.getElementById("bc_outer").value = "free";
+        supportsData = [
+          { coord_type: "polar", r: 1.0, theta: 0, type: "clamped" },
+          { coord_type: "polar", r: 1.0, theta: 120, type: "clamped" },
+          { coord_type: "polar", r: 1.0, theta: 240, type: "clamped" }
+        ];
+        loadsData = [
+          { coord_type: "polar", r: 0.3, theta: 60, fz: -15000 },
+          { coord_type: "polar", r: 0.3, theta: 180, fz: -15000 },
+          { coord_type: "polar", r: 0.3, theta: 300, fz: -15000 }
+        ];
+      } else if (presetName === "preset_outer_clamped_eccentric") {
+        document.getElementById("bc_inner").value = "free";
+        document.getElementById("bc_outer").value = "clamped";
+        supportsData = [];
+        loadsData = [
+          { coord_type: "polar", r: 0.45, theta: 0, fz: -25000 },
+          { coord_type: "polar", r: 0.45, theta: 180, fz: -10000 }
+        ];
+      } else if (presetName === "preset_inner_clamped_cantilever") {
+        document.getElementById("bc_inner").value = "clamped";
+        document.getElementById("bc_outer").value = "free";
+        supportsData = [];
+        loadsData = [
+          { coord_type: "polar", r: 1.0, theta: 0, fz: -12000 },
+          { coord_type: "polar", r: 1.0, theta: 180, fz: -12000 }
+        ];
+      }
+
+      renderSupportsEditor();
+      renderLoadsEditor();
+      solveFEM();
+    }
+
+    // =========================================================================
+    // THU THẬP THÔNG SỐ & GỌI API PYTHON
+    // =========================================================================
+    function collectPayload() {
+      return {
+        r_inner: parseFloat(document.getElementById("r_inner").value),
+        r_outer: parseFloat(document.getElementById("r_outer").value),
+        thickness: parseFloat(document.getElementById("thickness").value),
+        theta_start_deg: parseFloat(document.getElementById("theta_start_deg").value),
+        theta_end_deg: parseFloat(document.getElementById("theta_end_deg").value),
+        nr: parseInt(document.getElementById("nr").value, 10),
+        ntheta: parseInt(document.getElementById("ntheta").value, 10),
+        element_type: document.getElementById("element_type").value,
+        E: parseFloat(document.getElementById("E").value),
+        nu: parseFloat(document.getElementById("nu").value),
+        kappa: parseFloat(document.getElementById("kappa").value),
+        q_uniform: parseFloat(document.getElementById("q_uniform").value),
+        bc_inner: document.getElementById("bc_inner").value,
+        bc_outer: document.getElementById("bc_outer").value,
+        load_distribution_mode: document.getElementById("load_distribution_mode").value,
+        point_supports: supportsData,
+        point_loads: loadsData
+      };
+    }
+
+    function showError(msg) {
+      const b = document.getElementById("errorBanner");
+      if (!msg) {
+        b.style.display = "none";
+        b.textContent = "";
+      } else {
+        b.style.display = "block";
+        b.className = "status-banner error";
+        b.textContent = "⚠️ " + msg;
+      }
+    }
+
+    // =========================================================================
+    // FALLBACK SOLVER TRÊN TRÌNH DUYỆT (NẾU MỞ TRỰC TIẾP FILE .HTML KHÔNG QUA APP.PY)
+    // =========================================================================
+    function localGenerateMesh(p) {
+      const rIn = p.r_inner || 0.3, rOut = p.r_outer || 1.0;
+      const nr = Math.max(1, p.nr || 10), nth = Math.max(3, p.ntheta || 36);
+      const thStart = p.theta_start_deg || 0, thEnd = p.theta_end_deg || 360;
+      const isFull = Math.abs((thEnd - thStart) - 360) < 1e-5 || (thEnd - thStart) >= 360;
+      const nAng = isFull ? nth : nth + 1;
+      const gcoord = [], polar_coord = [], inner_nodes = [], outer_nodes = [];
+      let idx = 0;
+      for (let ir = 0; ir <= nr; ir++) {
+        const r = rIn + (ir / nr) * (rOut - rIn);
+        for (let jt = 0; jt < nAng; jt++) {
+          const thDeg = isFull ? (thStart + (jt / nth) * 360) : (thStart + (jt / nth) * (thEnd - thStart));
+          const rad = (thDeg * Math.PI) / 180;
+          gcoord.push([r * Math.cos(rad), r * Math.sin(rad)]);
+          polar_coord.push([r, isFull ? ((thDeg % 360 + 360) % 360) : thDeg]);
+          if (ir === 0) inner_nodes.push(idx + 1);
+          if (ir === nr) outer_nodes.push(idx + 1);
+          idx++;
+        }
+      }
+      const isTri = ["DSG3", "CS_DSG3", "MIN3", "CS_MIN3"].includes((p.element_type || "MITC4").toUpperCase());
+      const nodes = [], quad_grid = [];
+      for (let ir = 0; ir < nr; ir++) {
+        for (let jt = 0; jt < nth; jt++) {
+          const jn = isFull ? ((jt + 1) % nAng) : (jt + 1);
+          const n1 = ir * nAng + jt, n2 = (ir + 1) * nAng + jt;
+          const n3 = (ir + 1) * nAng + jn, n4 = ir * nAng + jn;
+          quad_grid.push([n1, n2, n3, n4]);
+          if (isTri) {
+            nodes.push([n1, n2, n3]);
+            nodes.push([n1, n3, n4]);
+          } else {
+            nodes.push([n1, n2, n3, n4]);
+          }
+        }
+      }
+      return { gcoord, polar_coord, nodes, quad_grid, inner_nodes, outer_nodes, is_triangle: isTri, nnode: gcoord.length, nel: nodes.length, nr, ntheta: nth };
+    }
+
+    function solveLinearDense(K, F, sdof) {
+      const A = new Float64Array(sdof * sdof);
+      const b = new Float64Array(sdof);
+      for (let i = 0; i < sdof; i++) {
+        b[i] = F[i];
+        const row = K[i];
+        for (let j = 0; j < sdof; j++) A[i * sdof + j] = row[j];
+      }
+      for (let k = 0; k < sdof; k++) {
+        let maxRow = k, maxVal = Math.abs(A[k * sdof + k]);
+        for (let i = k + 1; i < sdof; i++) {
+          const v = Math.abs(A[i * sdof + k]);
+          if (v > maxVal) { maxVal = v; maxRow = i; }
+        }
+        if (maxRow !== k) {
+          for (let j = k; j < sdof; j++) {
+            const tmp = A[k * sdof + j]; A[k * sdof + j] = A[maxRow * sdof + j]; A[maxRow * sdof + j] = tmp;
+          }
+          const tb = b[k]; b[k] = b[maxRow]; b[maxRow] = tb;
+        }
+        const piv = A[k * sdof + k] || 1e-12;
+        for (let i = k + 1; i < sdof; i++) {
+          const factor = A[i * sdof + k] / piv;
+          if (factor === 0) continue;
+          for (let j = k + 1; j < sdof; j++) A[i * sdof + j] -= factor * A[k * sdof + j];
+          b[i] -= factor * b[k];
+        }
+      }
+      const x = new Float64Array(sdof);
+      for (let i = sdof - 1; i >= 0; i--) {
+        let s = b[i];
+        for (let j = i + 1; j < sdof; j++) s -= A[i * sdof + j] * x[j];
+        x[i] = s / (A[i * sdof + i] || 1e-12);
+      }
+      return x;
+    }
+
+    function localSolveFEM(p) {
+      const t0 = performance.now();
+      const mesh = localGenerateMesh(p);
+      const gcoord = mesh.gcoord, polar = mesh.polar_coord, nodes = mesh.nodes;
+      const nnode = mesh.nnode, nel = mesh.nel, isTri = mesh.is_triangle;
+      const nnel = isTri ? 3 : 4, sdof = nnode * 3;
+      const E = p.E || 2e11, nu = p.nu || 0.3, t = p.thickness || 0.1, kappa = p.kappa || 5/6, q = p.q_uniform || 0;
+      const Dflex = (E * Math.pow(t, 3)) / (12 * (1 - nu * nu));
+      const G = E / (2 * (1 + nu));
+      const dsVal = kappa * G * t;
+
+      const K = Array.from({ length: sdof }, () => new Float64Array(sdof));
+      const F = new Float64Array(sdof);
+      const elemBbs = [], elemBss = [], elemAreas = [], elemDsVal = [];
+
+      for (let iel = 0; iel < nel; iel++) {
+        const nd = nodes[iel];
+        const x = nd.map(i => gcoord[i][0]), y = nd.map(i => gcoord[i][1]);
+        let area = 0;
+        for (let k = 0; k < nnel; k++) {
+          const kn = (k + 1) % nnel;
+          area += 0.5 * (x[k] * y[kn] - x[kn] * y[k]);
+        }
+        area = Math.abs(area);
+        elemAreas.push(area);
+        const edof = nnel * 3;
+        const ke = Array.from({ length: edof }, () => new Float64Array(edof));
+
+        if (!isTri) {
+          const gp = [-1 / Math.sqrt(3), 1 / Math.sqrt(3)];
+          const xiN = [-1, 1, 1, -1], etaN = [-1, -1, 1, 1];
+          const a1 = [-0.25, 0.25, 0.25, -0.25], a2 = [-0.25, -0.25, 0.25, 0.25], h = [0.25, -0.25, 0.25, -0.25];
+          const dot4 = (u, v) => u[0]*v[0] + u[1]*v[1] + u[2]*v[2] + u[3]*v[3];
+          const dxxi = [dot4(x, [0,0.5,0,-0.5]), dot4(x, [-0.5,0.5,0,0]), dot4(x, [0,0,0.5,-0.5]), dot4(x, [0,0,0.5,-0.5])];
+          // MITC4 exact dxxi/dyxi/dxeta/dyeta from Bs_Natural_MITC4.m:
+          const a1m = [-0.5, 0.5, 0, 0], a1p = [0, 0, 0.5, -0.5];
+          const a2m = [-0.5, 0, 0, 0.5], a2p = [0, -0.5, 0.5, 0];
+          const dxx = [dot4(x,a1m), dot4(x,a1m), dot4(x,a1p), dot4(x,a1p)];
+          const dyx = [dot4(y,a1m), dot4(y,a1m), dot4(y,a1p), dot4(y,a1p)];
+          const dxe = [dot4(x,a2m), dot4(x,a2p), dot4(x,a2p), dot4(x,a2m)];
+          const dye = [dot4(y,a2m), dot4(y,a2p), dot4(y,a2p), dot4(y,a2m)];
+
+          const evalQ4 = (r, s) => {
+            const N = [0.25*(1-r)*(1-s), 0.25*(1+r)*(1-s), 0.25*(1+r)*(1+s), 0.25*(1-r)*(1+s)];
+            const dxi = [-0.25*(1-s), 0.25*(1-s), 0.25*(1+s), -0.25*(1+s)];
+            const deta = [-0.25*(1-r), -0.25*(1+r), 0.25*(1+r), 0.25*(1-r)];
+            const J00 = dot4(dxi, x), J01 = dot4(dxi, y), J10 = dot4(deta, x), J11 = dot4(deta, y);
+            const detJ = J00 * J11 - J01 * J10;
+            const iJ00 = J11 / detJ, iJ01 = -J01 / detJ, iJ10 = -J10 / detJ, iJ11 = J00 / detJ;
+            const dNdx = dxi.map((v, i) => iJ00 * v + iJ01 * deta[i]);
+            const dNdy = dxi.map((v, i) => iJ10 * v + iJ11 * deta[i]);
+            const Bb = Array.from({ length: 3 }, () => new Float64Array(12));
+            const Bs = Array.from({ length: 2 }, () => new Float64Array(12));
+            for (let i = 0; i < 4; i++) {
+              Bb[0][3*i+2] = dNdx[i];
+              Bb[1][3*i+1] = -dNdy[i];
+              Bb[2][3*i+1] = -dNdx[i];
+              Bb[2][3*i+2] = dNdy[i];
+              const bsn00 = dxi[i], bsn01 = xiN[i]*dyx[i]*dxi[i], bsn02 = -xiN[i]*dxx[i]*dxi[i];
+              const bsn10 = deta[i], bsn11 = etaN[i]*dye[i]*deta[i], bsn12 = -etaN[i]*dxe[i]*deta[i];
+              Bs[0][3*i] = iJ00*bsn00 + iJ01*bsn10;
+              Bs[0][3*i+1] = iJ00*bsn01 + iJ01*bsn11;
+              Bs[0][3*i+2] = iJ00*bsn02 + iJ01*bsn12;
+              Bs[1][3*i] = iJ10*bsn00 + iJ11*bsn10;
+              Bs[1][3*i+1] = iJ10*bsn01 + iJ11*bsn11;
+              Bs[1][3*i+2] = iJ10*bsn02 + iJ11*bsn12;
+            }
+            return { N, detJ, Bb, Bs };
+          };
+
+          for (let ix = 0; ix < 2; ix++) {
+            for (let iy = 0; iy < 2; iy++) {
+              const { N, detJ, Bb, Bs } = evalQ4(gp[ix], gp[iy]);
+              for (let m = 0; m < 12; m++) {
+                const db0 = Dflex * (Bb[0][m] + nu * Bb[1][m]);
+                const db1 = Dflex * (nu * Bb[0][m] + Bb[1][m]);
+                const db2 = Dflex * 0.5 * (1 - nu) * Bb[2][m];
+                const ds0 = dsVal * Bs[0][m], ds1 = dsVal * Bs[1][m];
+                for (let n = 0; n < 12; n++) {
+                  ke[m][n] += (db0 * Bb[0][n] + db1 * Bb[1][n] + db2 * Bb[2][n] + ds0 * Bs[0][n] + ds1 * Bs[1][n]) * detJ;
+                }
+              }
+              if (q !== 0) {
+                for (let i = 0; i < 4; i++) F[3 * nd[i]] += q * N[i] * detJ;
+              }
+            }
+          }
+          const c0 = evalQ4(0, 0);
+          elemBbs.push(c0.Bb);
+          elemBss.push(c0.Bs);
+          elemDsVal.push(dsVal);
+        } else {
+          // DSG3 triangle
+          const detJ = 2 * area;
+          const a = x[1] - x[0], b = y[1] - y[0], c = y[2] - y[0], d = x[2] - x[0];
+          const Lmax = Math.max(Math.hypot(x[1]-x[0], y[1]-y[0]), Math.hypot(x[2]-x[1], y[2]-y[1]), Math.hypot(x[0]-x[2], y[0]-y[2]));
+          const dsT = (G * kappa * Math.pow(t, 3)) / (t * t + 0.1 * Lmax * Lmax);
+          const dNdx = [(b - c) / detJ, c / detJ, -b / detJ];
+          const dNdy = [(d - a) / detJ, -d / detJ, a / detJ];
+          const Bb = Array.from({ length: 3 }, () => new Float64Array(9));
+          for (let i = 0; i < 3; i++) {
+            Bb[0][3*i+2] = dNdx[i];
+            Bb[1][3*i+1] = -dNdy[i];
+            Bb[2][3*i+1] = -dNdx[i];
+            Bb[2][3*i+2] = dNdy[i];
+          }
+          const Bs = Array.from({ length: 2 }, () => new Float64Array(9));
+          // Bs_raw * T_T3: (w, theta_x, theta_y) -> col1 = w, col2 = -col3_raw, col3 = col2_raw
+          Bs[0][0] = (b-c)/detJ; Bs[0][1] = 0; Bs[0][2] = 0.5;
+          Bs[0][3] = c/detJ;     Bs[0][4] = -0.5*b*c/detJ; Bs[0][5] = 0.5*a*c/detJ;
+          Bs[0][6] = -b/detJ;    Bs[0][7] = 0.5*b*c/detJ;  Bs[0][8] = -0.5*b*d/detJ;
+          Bs[1][0] = (d-a)/detJ; Bs[1][1] = -0.5; Bs[1][2] = 0;
+          Bs[1][3] = -d/detJ;    Bs[1][4] = 0.5*b*d/detJ;  Bs[1][5] = -0.5*a*d/detJ;
+          Bs[1][6] = a/detJ;     Bs[1][7] = -0.5*a*c/detJ; Bs[1][8] = 0.5*a*d/detJ;
+
+          for (let m = 0; m < 9; m++) {
+            const db0 = Dflex * (Bb[0][m] + nu * Bb[1][m]);
+            const db1 = Dflex * (nu * Bb[0][m] + Bb[1][m]);
+            const db2 = Dflex * 0.5 * (1 - nu) * Bb[2][m];
+            const ds0 = dsT * Bs[0][m], ds1 = dsT * Bs[1][m];
+            for (let n = 0; n < 9; n++) {
+              ke[m][n] = (db0 * Bb[0][n] + db1 * Bb[1][n] + db2 * Bb[2][n] + ds0 * Bs[0][n] + ds1 * Bs[1][n]) * area;
+            }
+          }
+          if (q !== 0) {
+            for (let i = 0; i < 3; i++) F[3 * nd[i]] += (q * area) / 3;
+          }
+          elemBbs.push(Bb);
+          elemBss.push(Bs);
+          elemDsVal.push(dsT);
+        }
+
+        for (let a = 0; a < nnel; a++) {
+          for (let b = 0; b < nnel; b++) {
+            for (let da = 0; da < 3; da++) {
+              for (let db = 0; db < 3; db++) {
+                K[3 * nd[a] + da][3 * nd[b] + db] += ke[3 * a + da][3 * b + db];
+              }
+            }
+          }
+        }
+      }
+
+      // Point loads
+      const resolved_loads = [];
+      (p.point_loads || []).forEach((ld, idx) => {
+        const [px, py] = getLocalPointXY(ld, gcoord);
+        let bestN = 0, bestD = 1e9;
+        for (let i = 0; i < nnode; i++) {
+          const d = Math.hypot(gcoord[i][0] - px, gcoord[i][1] - py);
+          if (d < bestD) { bestD = d; bestN = i; }
+        }
+        const fz = parseFloat(ld.fz) || 0;
+        F[3 * bestN] += fz;
+        resolved_loads.push({
+          id: idx + 1, label: `Lực P${idx + 1}`,
+          applied_x: gcoord[bestN][0], applied_y: gcoord[bestN][1],
+          nearest_node_id: bestN + 1, fz
+        });
+      });
+
+      const F_orig = new Float64Array(F);
+      const K_orig = K.map(row => new Float64Array(row));
+
+      // Supports
+      const constrained = new Map();
+      const supMeta = new Map();
+      const addSup = (nid0, type, label) => {
+        const fw = true, ftx = (type === "clamped" || type === "roller_x"), fty = (type === "clamped" || type === "roller_y");
+        if (fw) constrained.set(3 * nid0, 0);
+        if (ftx) constrained.set(3 * nid0 + 1, 0);
+        if (fty) constrained.set(3 * nid0 + 2, 0);
+        supMeta.set(nid0, {
+          node_id: nid0 + 1, x: gcoord[nid0][0], y: gcoord[nid0][1],
+          r: polar[nid0][0], theta: polar[nid0][1], type, label,
+          fix_w: fw, fix_theta_x: ftx, fix_theta_y: fty
+        });
+      };
+      if (p.bc_inner && p.bc_inner !== "free") mesh.inner_nodes.forEach(id1 => addSup(id1 - 1, p.bc_inner, "Biên trong"));
+      if (p.bc_outer && p.bc_outer !== "free") mesh.outer_nodes.forEach(id1 => addSup(id1 - 1, p.bc_outer, "Biên ngoài"));
+      (p.point_supports || []).forEach((s, idx) => {
+        const [sx, sy] = getLocalPointXY(s, gcoord);
+        let bestN = 0, bestD = 1e9;
+        for (let i = 0; i < nnode; i++) {
+          const d = Math.hypot(gcoord[i][0] - sx, gcoord[i][1] - sy);
+          if (d < bestD) { bestD = d; bestN = i; }
+        }
+        addSup(bestN, s.type || "pinned", `Gối S${idx + 1}`);
+      });
+
+      if (constrained.size === 0) throw new Error("Chưa có điều kiện gối đỡ nào!");
+
+      constrained.forEach((val, dof) => {
+        for (let j = 0; j < sdof; j++) { K[dof][j] = 0; K[j][dof] = 0; }
+        K[dof][dof] = 1;
+        F[dof] = val;
+      });
+
+      const U = solveLinearDense(K, F, sdof);
+      const R_full = new Float64Array(sdof);
+      let strain_energy = 0;
+      for (let i = 0; i < sdof; i++) {
+        let ku = 0;
+        for (let j = 0; j < sdof; j++) ku += K_orig[i][j] * U[j];
+        R_full[i] = ku - F_orig[i];
+        strain_energy += 0.5 * U[i] * ku;
+      }
+
+      const w = [], theta_x = [], theta_y = [], Mx = new Array(nnode).fill(0), My = new Array(nnode).fill(0), Mxy = new Array(nnode).fill(0);
+      const Qx = new Array(nnode).fill(0), Qy = new Array(nnode).fill(0), nArea = new Array(nnode).fill(0);
+      for (let i = 0; i < nnode; i++) {
+        w.push(U[3 * i]); theta_x.push(U[3 * i + 1]); theta_y.push(U[3 * i + 2]);
+      }
+
+      for (let iel = 0; iel < nel; iel++) {
+        const nd = nodes[iel], edisp = [];
+        nd.forEach(n => edisp.push(U[3*n], U[3*n+1], U[3*n+2]));
+        const Bb = elemBbs[iel], Bs = elemBss[iel], area = elemAreas[iel], dsE = elemDsVal[iel];
+        const kap = [0, 0, 0], gam = [0, 0];
+        for (let j = 0; j < edisp.length; j++) {
+          kap[0] += Bb[0][j] * edisp[j]; kap[1] += Bb[1][j] * edisp[j]; kap[2] += Bb[2][j] * edisp[j];
+          gam[0] += Bs[0][j] * edisp[j]; gam[1] += Bs[1][j] * edisp[j];
+        }
+        const mx = Dflex * (kap[0] + nu * kap[1]), my = Dflex * (nu * kap[0] + kap[1]), mxy = Dflex * 0.5 * (1 - nu) * kap[2];
+        const qx = dsE * gam[0], qy = dsE * gam[1];
+        nd.forEach(n => {
+          Mx[n] += mx * area; My[n] += my * area; Mxy[n] += mxy * area;
+          Qx[n] += qx * area; Qy[n] += qy * area; nArea[n] += area;
+        });
+      }
+
+      const Mr = [], Mtheta = [], Mrtheta = [], Qr = [], Qtheta = [], sigma_vm = [];
+      for (let i = 0; i < nnode; i++) {
+        const a = nArea[i] || 1;
+        Mx[i] /= a; My[i] /= a; Mxy[i] /= a; Qx[i] /= a; Qy[i] /= a;
+        const rad = (polar[i][1] * Math.PI) / 180, c = Math.cos(rad), s = Math.sin(rad), c2 = c*c, s2 = s*s, sc = s*c;
+        Mr.push(Mx[i]*c2 + My[i]*s2 + 2*Mxy[i]*sc);
+        Mtheta.push(Mx[i]*s2 + My[i]*c2 - 2*Mxy[i]*sc);
+        Mrtheta.push((My[i]-Mx[i])*sc + Mxy[i]*(c2-s2));
+        Qr.push(Qx[i]*c + Qy[i]*s);
+        Qtheta.push(-Qx[i]*s + Qy[i]*c);
+        const sxx = 6*Mx[i]/(t*t), syy = 6*My[i]/(t*t), txy = 6*Mxy[i]/(t*t), txz = 1.5*Qx[i]/t, tyz = 1.5*Qy[i]/t;
+        sigma_vm.push(Math.sqrt(sxx*sxx + syy*syy - sxx*syy + 3*(txy*txy + txz*txz + tyz*tyz)));
+      }
+
+      const reactions = [];
+      let totalRz = 0;
+      Array.from(supMeta.keys()).sort((a,b) => a-b).forEach(nid0 => {
+        const m = supMeta.get(nid0);
+        const Rz = m.fix_w ? R_full[3*nid0] : 0;
+        const Mrx = m.fix_theta_x ? R_full[3*nid0+1] : 0;
+        const Mry = m.fix_theta_y ? R_full[3*nid0+2] : 0;
+        totalRz += Rz;
+        reactions.push({ ...m, Rz, Mrx, Mry });
+      });
+
+      let totalFz = 0;
+      for (let i = 0; i < nnode; i++) totalFz += F_orig[3*i];
+      let wMaxIdx = 0, vmMaxIdx = 0;
+      for (let i = 0; i < nnode; i++) {
+        if (Math.abs(w[i]) > Math.abs(w[wMaxIdx])) wMaxIdx = i;
+        if (sigma_vm[i] > sigma_vm[vmMaxIdx]) vmMaxIdx = i;
+      }
+
+      return {
+        summary: {
+          element_type: p.element_type, nnode, nel, sdof,
+          r_inner: p.r_inner, r_outer: p.r_outer, thickness: t,
+          w_max_abs: Math.abs(w[wMaxIdx]), w_min: Math.min(...w), w_max: Math.max(...w),
+          w_max_node_id: wMaxIdx + 1, w_max_r: polar[wMaxIdx][0], w_max_theta: polar[wMaxIdx][1],
+          sigma_vm_max: sigma_vm[vmMaxIdx], sigma_vm_max_node_id: vmMaxIdx + 1,
+          Mr_max_abs: Math.max(...Mr.map(Math.abs)), Mtheta_max_abs: Math.max(...Mtheta.map(Math.abs)),
+          strain_energy, total_applied_fz: totalFz, total_reaction_rz: totalRz,
+          force_balance_error: Math.abs(totalFz + totalRz),
+          solve_time_ms: Math.round(performance.now() - t0)
+        },
+        mesh,
+        fields: { w, theta_x, theta_y, Mx, My, Mxy, Mr, Mtheta, Mrtheta, Qx, Qy, Qr, Qtheta, sigma_vm },
+        resolved_loads,
+        reactions
+      };
+    }
+
+    async function previewMeshOnly() {
+      showError("");
+      const payload = collectPayload();
+      try {
+        if (window.location.protocol === "file:") throw new Error("local_mode");
+        const res = await fetch("/api/mesh", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          showError(data.error);
+          return;
+        }
+        currentMesh = data.mesh;
+        render2D();
+      } catch (err) {
+        try {
+          currentMesh = localGenerateMesh(payload);
+          render2D();
+        } catch (e2) {
+          showError(e2.message);
+        }
+      }
+    }
+
+    async function solveFEM() {
+      showError("");
+      const payload = collectPayload();
+      try {
+        if (window.location.protocol === "file:") throw new Error("local_mode");
+        const res = await fetch("/api/solve", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          showError(data.error);
+          return;
+        }
+        document.getElementById("backendBadge").textContent = "Python (scipy.sparse) Engine";
+        currentResult = data.result;
+        currentMesh = data.result.mesh;
+        updateKPIs(currentResult.summary);
+        render2D();
+        render3D();
+        renderCharts();
+        populateTables(currentResult);
+      } catch (err) {
+        try {
+          document.getElementById("backendBadge").textContent = "Standalone Browser FEM Engine";
+          currentResult = localSolveFEM(payload);
+          currentMesh = currentResult.mesh;
+          updateKPIs(currentResult.summary);
+          render2D();
+          render3D();
+          renderCharts();
+          populateTables(currentResult);
+        } catch (e2) {
+          showError(e2.message);
+        }
+      }
+    }
+
+    function updateKPIs(s) {
+      document.getElementById("kpi_wmax").textContent = (s.w_max_abs * 1e3).toFixed(4) + " mm";
+      document.getElementById("kpi_wmax_loc").textContent = `Tại Nút #${s.w_max_node_id} (r=${s.w_max_r.toFixed(2)}m, θ=${s.w_max_theta.toFixed(0)}°)`;
+      document.getElementById("kpi_vm").textContent = (s.sigma_vm_max * 1e-6).toFixed(3) + " MPa";
+      document.getElementById("kpi_vm_loc").textContent = `Tại Nút #${s.sigma_vm_max_node_id}`;
+      document.getElementById("kpi_mr").textContent = s.Mr_max_abs.toFixed(2);
+      document.getElementById("kpi_mtheta").textContent = s.Mtheta_max_abs.toFixed(2);
+      document.getElementById("kpi_energy").textContent = s.strain_energy.toExponential(4);
+      document.getElementById("kpi_balance").textContent = s.force_balance_error.toExponential(2) + " N";
+      document.getElementById("kpi_mesh_info").textContent = `${s.element_type}: ${s.nel} phần tử, ${s.nnode} nút (${s.solve_time_ms || 0} ms)`;
+    }
+
+    // =========================================================================
+    // THANG MÀU (COLORMAP) & TIỆN ÍCH VẼ 2D / 3D
+    // =========================================================================
+    function getColor(t, mapName = "jet") {
+      t = Math.max(0, Math.min(1, isNaN(t) ? 0.5 : t));
+      let r = 0, g = 0, b = 0;
+      if (mapName === "coolwarm") {
+        r = Math.round(255 * Math.min(1, Math.max(0, 1.5 - Math.abs(2 * t - 1.5))));
+        b = Math.round(255 * Math.min(1, Math.max(0, 1.5 - Math.abs(2 * t - 0.5))));
+        g = Math.round(255 * (1 - Math.abs(2 * t - 1) * 0.75));
+      } else if (mapName === "viridis") {
+        r = Math.round(255 * Math.pow(t, 1.3));
+        g = Math.round(255 * (0.15 + 0.8 * t));
+        b = Math.round(255 * (0.35 + 0.5 * Math.sin(t * Math.PI) - 0.2 * t));
+      } else {
+        // Jet
+        r = Math.round(255 * Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 3))));
+        g = Math.round(255 * Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 2))));
+        b = Math.round(255 * Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 1))));
+      }
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function getFieldValuesAndUnit(fieldName) {
+      if (!currentResult || !currentResult.fields[fieldName]) return { vals: null, unit: "", label: fieldName };
+      const raw = currentResult.fields[fieldName];
+      if (fieldName === "w") return { vals: raw.map(v => v * 1e3), unit: "mm", label: "Độ võng w (mm)" };
+      if (fieldName === "sigma_vm") return { vals: raw.map(v => v * 1e-6), unit: "MPa", label: "Ứng suất Von Mises σ_vm (MPa)" };
+      const unitMap = {
+        Mr: "N·m/m", Mtheta: "N·m/m", Mrtheta: "N·m/m",
+        Mx: "N·m/m", My: "N·m/m", Mxy: "N·m/m",
+        Qr: "N/m", Qtheta: "N/m", Qx: "N/m", Qy: "N/m",
+        theta_x: "rad", theta_y: "rad"
+      };
+      return { vals: raw, unit: unitMap[fieldName] || "", label: fieldName };
+    }
+
+    // =========================================================================
+    // VẼ BẢN ĐỒ MÀU 2D & TƯƠNG TÁC CLICK CHUỘT
+    // =========================================================================
+    let transform2D = { cx: 0, cy: 0, scale: 1 };
+
+    function render2D() {
+      const canvas = document.getElementById("canvas2d");
+      const rect = canvas.parentElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const W = rect.width;
+      const H = rect.height;
+      ctx.fillStyle = "#0b1120";
+      ctx.fillRect(0, 0, W, H);
+
+      const mesh = currentMesh || (currentResult ? currentResult.mesh : null);
+      if (!mesh) {
+        ctx.restore();
+        return;
+      }
+
+      const rOut = parseFloat(document.getElementById("r_outer").value) || 1.0;
+      const pad = 55;
+      const availW = W - 110 - pad * 2;
+      const availH = H - pad * 2;
+      const scale = Math.min(availW, availH) / (2 * rOut);
+      const cx = (W - 90) / 2;
+      const cy = H / 2;
+      transform2D = { cx, cy, scale };
+
+      const toScreen = (x, y) => [cx + x * scale, cy - y * scale];
+
+      // Trục tọa độ mờ
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.2)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - rOut * scale * 1.12, cy);
+      ctx.lineTo(cx + rOut * scale * 1.12, cy);
+      ctx.moveTo(cx, cy - rOut * scale * 1.12);
+      ctx.lineTo(cx, cy + rOut * scale * 1.12);
+      ctx.stroke();
+
+      const fieldName = document.getElementById("fieldSelect").value;
+      const cmap = document.getElementById("colormapSelect").value;
+      const { vals, unit, label } = getFieldValuesAndUnit(fieldName);
+
+      let vmin = 0, vmax = 1;
+      if (vals && vals.length > 0) {
+        vmin = Math.min(...vals);
+        vmax = Math.max(...vals);
+        if (Math.abs(vmax - vmin) < 1e-12) {
+          vmin -= 0.5;
+          vmax += 0.5;
+        }
+      }
+
+      const gcoord = mesh.gcoord;
+      const nodes = mesh.nodes;
+      const showMesh = document.getElementById("chkShowMesh").checked;
+
+      // Vẽ các phần tử (chia tam giác nhỏ màu mượt theo nội suy 3 đỉnh)
+      for (let iel = 0; iel < nodes.length; iel++) {
+        const nd = nodes[iel];
+        if (vals) {
+          // Vẽ quạt tam giác từ tâm phần tử để màu mịn hơn
+          let xc = 0, yc = 0, vc = 0;
+          for (let k = 0; k < nd.length; k++) {
+            xc += gcoord[nd[k]][0];
+            yc += gcoord[nd[k]][1];
+            vc += vals[nd[k]];
+          }
+          xc /= nd.length; yc /= nd.length; vc /= nd.length;
+
+          for (let k = 0; k < nd.length; k++) {
+            const nA = nd[k];
+            const nB = nd[(k + 1) % nd.length];
+            const vMean = (vals[nA] + vals[nB] + vc) / 3;
+            const norm = (vMean - vmin) / (vmax - vmin);
+            const [sx1, sy1] = toScreen(gcoord[nA][0], gcoord[nA][1]);
+            const [sx2, sy2] = toScreen(gcoord[nB][0], gcoord[nB][1]);
+            const [sxc, syc] = toScreen(xc, yc);
+
+            ctx.beginPath();
+            ctx.moveTo(sx1, sy1);
+            ctx.lineTo(sx2, sy2);
+            ctx.lineTo(sxc, syc);
+            ctx.closePath();
+            ctx.fillStyle = getColor(norm, cmap);
+            ctx.fill();
+          }
+        } else {
+          ctx.beginPath();
+          for (let k = 0; k < nd.length; k++) {
+            const [sx, sy] = toScreen(gcoord[nd[k]][0], gcoord[nd[k]][1]);
+            if (k === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          ctx.closePath();
+          ctx.fillStyle = "rgba(30, 58, 138, 0.35)";
+          ctx.fill();
+        }
+
+        if (showMesh) {
+          ctx.beginPath();
+          for (let k = 0; k < nd.length; k++) {
+            const [sx, sy] = toScreen(gcoord[nd[k]][0], gcoord[nd[k]][1]);
+            if (k === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = "rgba(15, 23, 42, 0.45)";
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+
+      // Hiện số hiệu nút nếu bật
+      if (document.getElementById("chkShowNodes").checked) {
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "10px Segoe UI";
+        for (let i = 0; i < gcoord.length; i++) {
+          const [sx, sy] = toScreen(gcoord[i][0], gcoord[i][1]);
+          ctx.fillText(String(i + 1), sx + 3, sy - 3);
+        }
+      }
+
+      // Vẽ điều kiện biên liên tục (nếu có) và các gối điểm
+      if (document.getElementById("chkShowSupports").checked) {
+        const bcIn = document.getElementById("bc_inner").value;
+        const bcOut = document.getElementById("bc_outer").value;
+        if (bcIn !== "free" && mesh.inner_nodes) {
+          mesh.inner_nodes.forEach(nid => {
+            const [sx, sy] = toScreen(gcoord[nid - 1][0], gcoord[nid - 1][1]);
+            drawSupportSymbol(ctx, sx, sy, bcIn);
+          });
+        }
+        if (bcOut !== "free" && mesh.outer_nodes) {
+          mesh.outer_nodes.forEach(nid => {
+            const [sx, sy] = toScreen(gcoord[nid - 1][0], gcoord[nid - 1][1]);
+            drawSupportSymbol(ctx, sx, sy, bcOut);
+          });
+        }
+
+        supportsData.forEach(sup => {
+          const [px, py] = getLocalPointXY(sup, gcoord);
+          const [sx, sy] = toScreen(px, py);
+          drawSupportSymbol(ctx, sx, sy, sup.type, true);
+        });
+      }
+
+      // Vẽ các điểm đặt lực tập trung
+      if (document.getElementById("chkShowLoads").checked) {
+        loadsData.forEach((ld, i) => {
+          const [px, py] = getLocalPointXY(ld, gcoord);
+          const [sx, sy] = toScreen(px, py);
+          drawLoadSymbol(ctx, sx, sy, ld.fz, `P${i + 1}`);
+        });
+      }
+
+      // Vẽ thanh thang màu (Colorbar)
+      if (vals) {
+        const cbX = W - 75;
+        const cbY = 50;
+        const cbW = 18;
+        const cbH = H - 100;
+        for (let iy = 0; iy < cbH; iy++) {
+          const t = 1 - iy / cbH;
+          ctx.fillStyle = getColor(t, cmap);
+          ctx.fillRect(cbX, cbY + iy, cbW, 1.5);
+        }
+        ctx.strokeStyle = "#64748b";
+        ctx.strokeRect(cbX, cbY, cbW, cbH);
+
+        ctx.fillStyle = "#e2e8f0";
+        ctx.font = "11px Segoe UI";
+        const nTicks = 6;
+        for (let k = 0; k <= nTicks; k++) {
+          const frac = k / nTicks;
+          const v = vmax - frac * (vmax - vmin);
+          const yPos = cbY + frac * cbH;
+          ctx.fillText(formatNum(v), cbX + cbW + 6, yPos + 4);
+        }
+        ctx.font = "bold 11px Segoe UI";
+        ctx.fillText(unit, cbX, cbY - 10);
+      }
+
+      ctx.restore();
+    }
+
+    function getLocalPointXY(spec, gcoord) {
+      if (spec.coord_type === "node") {
+        const idx = Math.max(0, Math.min(gcoord.length - 1, (spec.node_id || 1) - 1));
+        return [gcoord[idx][0], gcoord[idx][1]];
+      }
+      if (spec.coord_type === "cartesian") {
+        return [parseFloat(spec.x) || 0, parseFloat(spec.y) || 0];
+      }
+      const r = parseFloat(spec.r) || 0;
+      const th = ((parseFloat(spec.theta) || 0) * Math.PI) / 180;
+      return [r * Math.cos(th), r * Math.sin(th)];
+    }
+
+    function drawSupportSymbol(ctx, sx, sy, type, isPoint = false) {
+      ctx.save();
+      const sz = isPoint ? 7 : 4.5;
+      if (type === "clamped") {
+        ctx.fillStyle = "#f59e0b";
+        ctx.strokeStyle = "#0f172a";
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(sx - sz, sy - sz, sz * 2, sz * 2);
+        ctx.strokeRect(sx - sz, sy - sz, sz * 2, sz * 2);
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(sx, sy - sz - 1);
+        ctx.lineTo(sx - sz, sy + sz);
+        ctx.lineTo(sx + sz, sy + sz);
+        ctx.closePath();
+        ctx.fillStyle = "#22c55e";
+        ctx.fill();
+        ctx.strokeStyle = "#0f172a";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawLoadSymbol(ctx, sx, sy, fz, label) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(sx, sy, 8, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(239, 68, 68, 0.9)";
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      // Dấu X hoặc chấm ở tâm tượng trưng cho phương z
+      ctx.beginPath();
+      if (fz <= 0) {
+        ctx.moveTo(sx - 4, sy - 4); ctx.lineTo(sx + 4, sy + 4);
+        ctx.moveTo(sx + 4, sy - 4); ctx.lineTo(sx - 4, sy + 4);
+      } else {
+        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+      }
+      ctx.strokeStyle = "#ffffff";
+      ctx.stroke();
+
+      ctx.fillStyle = "#fecaca";
+      ctx.font = "bold 11px Segoe UI";
+      ctx.fillText(`${label} (${fz}N)`, sx + 10, sy + 4);
+      ctx.restore();
+    }
+
+    function formatNum(v) {
+      if (Math.abs(v) >= 1000 || (Math.abs(v) > 0 && Math.abs(v) < 0.001)) return v.toExponential(2);
+      return v.toFixed(3);
+    }
+
+    // Chế độ Click chuột trên Canvas 2D
+    function setClickMode(mode) {
+      clickMode = mode;
+      document.getElementById("modeViewBtn").className = "mode-pill" + (mode === "view" ? " active-view" : "");
+      document.getElementById("modeSupBtn").className = "mode-pill" + (mode === "support" ? " active-support" : "");
+      document.getElementById("modeLoadBtn").className = "mode-pill" + (mode === "load" ? " active-load" : "");
+    }
+
+    const canvas2dEl = document.getElementById("canvas2d");
+    canvas2dEl.addEventListener("mousemove", (e) => {
+      const mesh = currentMesh || (currentResult ? currentResult.mesh : null);
+      if (!mesh) return;
+      const rect = canvas2dEl.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const wx = (mx - transform2D.cx) / transform2D.scale;
+      const wy = (transform2D.cy - my) / transform2D.scale;
+
+      // Tìm nút gần nhất
+      let bestIdx = -1;
+      let bestDist = 1e9;
+      for (let i = 0; i < mesh.gcoord.length; i++) {
+        const d = Math.hypot(mesh.gcoord[i][0] - wx, mesh.gcoord[i][1] - wy);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = i;
+        }
+      }
+
+      const tt = document.getElementById("tooltip2d");
+      const rMouse = Math.hypot(wx, wy);
+      const thMouse = ((Math.atan2(wy, wx) * 180) / Math.PI + 360) % 360;
+      const rIn = parseFloat(document.getElementById("r_inner").value) || 0.3;
+      const rOut = parseFloat(document.getElementById("r_outer").value) || 1.0;
+
+      if (rMouse >= rIn * 0.85 && rMouse <= rOut * 1.15 && bestIdx >= 0) {
+        tt.style.display = "block";
+        tt.style.left = Math.min(rect.width - 230, mx + 14) + "px";
+        tt.style.top = Math.max(10, my - 20) + "px";
+        let html = `<b>Tọa độ con trỏ:</b> r=${rMouse.toFixed(3)}m, θ=${thMouse.toFixed(1)}°<br/>`;
+        html += `<b>Nút gần nhất:</b> #${bestIdx + 1} (x=${mesh.gcoord[bestIdx][0].toFixed(3)}, y=${mesh.gcoord[bestIdx][1].toFixed(3)})`;
+        if (currentResult) {
+          const wVal = (currentResult.fields.w[bestIdx] * 1e3).toFixed(4);
+          const vmVal = (currentResult.fields.sigma_vm[bestIdx] * 1e-6).toFixed(3);
+          const mrVal = currentResult.fields.Mr[bestIdx].toFixed(2);
+          html += `<br/>• w = <b>${wVal} mm</b><br/>• σ_vm = <b>${vmVal} MPa</b><br/>• M_r = <b>${mrVal} N·m/m</b>`;
+        }
+        tt.innerHTML = html;
+      } else {
+        tt.style.display = "none";
+      }
+    });
+
+    canvas2dEl.addEventListener("mouseleave", () => {
+      document.getElementById("tooltip2d").style.display = "none";
+    });
+
+    canvas2dEl.addEventListener("click", (e) => {
+      if (clickMode === "view") return;
+      const rect = canvas2dEl.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const wx = (mx - transform2D.cx) / transform2D.scale;
+      const wy = (transform2D.cy - my) / transform2D.scale;
+      const rIn = parseFloat(document.getElementById("r_inner").value) || 0.3;
+      const rOut = parseFloat(document.getElementById("r_outer").value) || 1.0;
+      const rClick = Math.max(rIn, Math.min(rOut, Math.hypot(wx, wy)));
+      const thClick = ((Math.atan2(wy, wx) * 180) / Math.PI + 360) % 360;
+
+      if (clickMode === "support") {
+        addSupportRow({
+          coord_type: "polar",
+          r: Number(rClick.toFixed(3)),
+          theta: Number(thClick.toFixed(1)),
+          type: "pinned"
+        });
+      } else if (clickMode === "load") {
+        const fzDef = parseFloat(document.getElementById("default_click_fz").value) || -10000;
+        addLoadRow({
+          coord_type: "polar",
+          r: Number(rClick.toFixed(3)),
+          theta: Number(thClick.toFixed(1)),
+          fz: fzDef
+        });
+      }
+    });
+
+    // =========================================================================
+    // VẼ MÔ HÌNH BIẾN DẠNG 3D TƯƠNG TÁC (TAB 2)
+    // =========================================================================
+    function render3D() {
+      const canvas = document.getElementById("canvas3d");
+      const rect = canvas.parentElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const W = rect.width;
+      const H = rect.height;
+      ctx.fillStyle = "#0b1120";
+      ctx.fillRect(0, 0, W, H);
+
+      if (!currentResult) {
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "14px Segoe UI";
+        ctx.fillText("Nhấn 'GIẢI BÀI TOÁN' để hiển thị mặt võng 3D.", W / 2 - 140, H / 2);
+        ctx.restore();
+        return;
+      }
+
+      const scaleSlider = parseFloat(document.getElementById("deformScale").value) || 60;
+      document.getElementById("deformScaleVal").textContent = scaleSlider + "%";
+
+      const mesh = currentResult.mesh;
+      const gcoord = mesh.gcoord;
+      const nodes = mesh.nodes;
+      const wField = currentResult.fields.w;
+      const rOut = currentResult.summary.r_outer || 1.0;
+      const wMaxAbs = Math.max(currentResult.summary.w_max_abs, 1e-12);
+      const zVisualScale = (scaleSlider / 100.0) * (0.42 * rOut) / wMaxAbs;
+
+      const baseScale = (Math.min(W, H) * 0.36 * cam3D.zoom) / rOut;
+      const cx = W / 2;
+      const cy = H * 0.54;
+
+      const cosY = Math.cos(cam3D.yaw), sinY = Math.sin(cam3D.yaw);
+      const cosP = Math.cos(cam3D.pitch), sinP = Math.sin(cam3D.pitch);
+
+      function project3D(x, y, z) {
+        const x1 = x * cosY - y * sinY;
+        const y1 = x * sinY + y * cosY;
+        const z2 = y1 * sinP + z * cosP;
+        const depth = y1 * cosP - z * sinP;
+        return [cx + x1 * baseScale, cy - z2 * baseScale, depth];
+      }
+
+      const wMin = currentResult.summary.w_min;
+      const wMax = currentResult.summary.w_max;
+      const wSpan = Math.max(Math.abs(wMax - wMin), 1e-12);
+      const cmap = document.getElementById("colormapSelect").value;
+
+      // Sắp xếp phần tử theo chiều sâu (Painter's algorithm)
+      const polys = [];
+      for (let iel = 0; iel < nodes.length; iel++) {
+        const nd = nodes[iel];
+        let depthSum = 0;
+        let wSum = 0;
+        const pts2d = [];
+        for (let k = 0; k < nd.length; k++) {
+          const nid = nd[k];
+          const x = gcoord[nid][0];
+          const y = gcoord[nid][1];
+          const z = wField[nid] * zVisualScale;
+          const [sx, sy, d] = project3D(x, y, z);
+          pts2d.push([sx, sy]);
+          depthSum += d;
+          wSum += wField[nid];
+        }
+        polys.push({
+          pts: pts2d,
+          depth: depthSum / nd.length,
+          wMean: wSum / nd.length
+        });
+      }
+
+      polys.sort((a, b) => b.depth - a.depth);
+
+      for (const poly of polys) {
+        const norm = (poly.wMean - wMin) / wSpan;
+        ctx.beginPath();
+        poly.pts.forEach(([px, py], idx) => {
+          if (idx === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.closePath();
+        ctx.fillStyle = getColor(norm, cmap);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(15, 23, 42, 0.45)";
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+      }
+
+      // Vẽ gối đỡ & vector lực 3D
+      currentResult.reactions.forEach(r => {
+        const nid = r.node_id - 1;
+        const z = wField[nid] * zVisualScale;
+        const [sx, sy] = project3D(r.x, r.y, z);
+        drawSupportSymbol(ctx, sx, sy, r.type, false);
+      });
+
+      currentResult.resolved_loads.forEach(ld => {
+        const nid = ld.nearest_node_id - 1;
+        const z = wField[nid] * zVisualScale;
+        const dir = ld.fz <= 0 ? 1 : -1;
+        const [sx1, sy1] = project3D(ld.applied_x, ld.applied_y, z + dir * 0.22 * rOut);
+        const [sx2, sy2] = project3D(ld.applied_x, ld.applied_y, z);
+
+        ctx.beginPath();
+        ctx.moveTo(sx1, sy1);
+        ctx.lineTo(sx2, sy2);
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(sx2, sy2, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#ef4444";
+        ctx.fill();
+        ctx.fillStyle = "#fca5a5";
+        ctx.font = "bold 11px Segoe UI";
+        ctx.fillText(`${ld.label} (${ld.fz}N)`, sx1 + 5, sy1);
+      });
+
+      ctx.restore();
+    }
+
+    function reset3DCamera() {
+      cam3D = { yaw: -0.65, pitch: 0.65, zoom: 1.0, dragging: false, lastX: 0, lastY: 0 };
+      render3D();
+    }
+
+    const canvas3dEl = document.getElementById("canvas3d");
+    canvas3dEl.addEventListener("mousedown", (e) => {
+      cam3D.dragging = true;
+      cam3D.lastX = e.clientX;
+      cam3D.lastY = e.clientY;
+    });
+    window.addEventListener("mouseup", () => { cam3D.dragging = false; });
+    window.addEventListener("mousemove", (e) => {
+      if (!cam3D.dragging) return;
+      const dx = e.clientX - cam3D.lastX;
+      const dy = e.clientY - cam3D.lastY;
+      cam3D.lastX = e.clientX;
+      cam3D.lastY = e.clientY;
+      cam3D.yaw += dx * 0.01;
+      cam3D.pitch = Math.max(0.1, Math.min(1.45, cam3D.pitch + dy * 0.01));
+      render3D();
+    });
+    canvas3dEl.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      cam3D.zoom = Math.max(0.4, Math.min(2.5, cam3D.zoom * (e.deltaY < 0 ? 1.1 : 0.9)));
+      render3D();
+    });
+
+    // =========================================================================
+    // VẼ ĐỒ THỊ MẶT CẮT (TAB 3)
+    // =========================================================================
+    function renderCharts() {
+      if (!currentResult) return;
+      const polar = currentResult.mesh.polar_coord;
+      const wmm = currentResult.fields.w.map(v => v * 1e3);
+      const Mr = currentResult.fields.Mr;
+      const Mth = currentResult.fields.Mtheta;
+      const vmMPa = currentResult.fields.sigma_vm.map(v => v * 1e-6);
+
+      const targetTheta = ((parseFloat(document.getElementById("sliceTheta").value) || 0) % 360 + 360) % 360;
+      const targetR = parseFloat(document.getElementById("sliceRadius").value) || 0.65;
+
+      // Tìm góc lưới gần nhất với targetTheta
+      const uniqueThetas = [...new Set(polar.map(p => Number(p[1].toFixed(3))))];
+      let bestTh = uniqueThetas[0];
+      let minAngDiff = 999;
+      uniqueThetas.forEach(th => {
+        const diff = Math.min(Math.abs(th - targetTheta), 360 - Math.abs(th - targetTheta));
+        if (diff < minAngDiff) { minAngDiff = diff; bestTh = th; }
+      });
+
+      const radialIndices = [];
+      polar.forEach((p, idx) => {
+        if (Math.abs(p[1] - bestTh) < 1e-2) radialIndices.push(idx);
+      });
+      radialIndices.sort((a, b) => polar[a][0] - polar[b][0]);
+
+      const rX = radialIndices.map(i => polar[i][0]);
+      const rW = radialIndices.map(i => wmm[i]);
+      const rMr = radialIndices.map(i => Mr[i]);
+      const rMth = radialIndices.map(i => Mth[i]);
+
+      // Tìm bán kính lưới gần nhất với targetR
+      const uniqueRs = [...new Set(polar.map(p => Number(p[0].toFixed(4))))];
+      let bestR = uniqueRs[0];
+      uniqueRs.forEach(r => {
+        if (Math.abs(r - targetR) < Math.abs(bestR - targetR)) bestR = r;
+      });
+
+      const circumIndices = [];
+      polar.forEach((p, idx) => {
+        if (Math.abs(p[0] - bestR) < 1e-3) circumIndices.push(idx);
+      });
+      circumIndices.sort((a, b) => polar[a][1] - polar[b][1]);
+
+      const cTh = circumIndices.map(i => polar[i][1]);
+      const cW = circumIndices.map(i => wmm[i]);
+      const cVM = circumIndices.map(i => vmMPa[i]);
+
+      drawLineChart("chartRadialW", rX, [{ data: rW, color: "#38bdf8", label: `w (mm) tại θ=${bestTh.toFixed(1)}°` }], "r (m)", "w (mm)");
+      drawLineChart("chartCircumW", cTh, [{ data: cW, color: "#22c55e", label: `w (mm) tại r=${bestR.toFixed(3)}m` }], "θ (độ)", "w (mm)");
+      drawLineChart("chartRadialM", rX, [
+        { data: rMr, color: "#f59e0b", label: "M_r (N·m/m)" },
+        { data: rMth, color: "#ec4899", label: "M_θ (N·m/m)" }
+      ], "r (m)", "Mô men (N·m/m)");
+      drawLineChart("chartCircumVM", cTh, [{ data: cVM, color: "#a855f7", label: `σ_vm (MPa) tại r=${bestR.toFixed(3)}m` }], "θ (độ)", "σ_vm (MPa)");
+    }
+
+    function drawLineChart(canvasId, xVals, seriesList, xLabel, yLabel) {
+      const canvas = document.getElementById(canvasId);
+      const rect = canvas.parentElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0 || xVals.length === 0) return;
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const W = rect.width, H = rect.height;
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, W, H);
+
+      const padL = 62, padR = 20, padT = 24, padB = 34;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+
+      const xmin = Math.min(...xVals), xmax = Math.max(...xVals);
+      let ymin = Infinity, ymax = -Infinity;
+      seriesList.forEach(s => {
+        s.data.forEach(v => {
+          if (v < ymin) ymin = v;
+          if (v > ymax) ymax = v;
+        });
+      });
+      if (Math.abs(ymax - ymin) < 1e-12) { ymin -= 1; ymax += 1; }
+
+      // Lưới
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = padT + (i / 4) * plotH;
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
+        const val = ymax - (i / 4) * (ymax - ymin);
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "10px Segoe UI";
+        ctx.fillText(formatNum(val), 6, y + 3);
+      }
+
+      // Đường biểu diễn
+      seriesList.forEach((s, sIdx) => {
+        ctx.beginPath();
+        s.data.forEach((v, i) => {
+          const px = padL + ((xVals[i] - xmin) / Math.max(xmax - xmin, 1e-9)) * plotW;
+          const py = padT + ((ymax - v) / (ymax - ymin)) * plotH;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        // Chú thích
+        ctx.fillStyle = s.color;
+        ctx.font = "bold 11px Segoe UI";
+        ctx.fillText("● " + s.label, padL + 10 + sIdx * 140, 16);
+      });
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "11px Segoe UI";
+      ctx.fillText(xLabel, padL + plotW / 2 - 15, H - 8);
+      ctx.restore();
+    }
+
+    // =========================================================================
+    // SO SÁNH 7 PHƯƠNG PHÁP PHẦN TỬ (TAB 4) & BẢNG SỐ LIỆU (TAB 5)
+    // =========================================================================
+    async function runElementComparison() {
+      const tbody = document.getElementById("compareTbody");
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--accent);">⏳ Đang giải và đối chiếu cả 7 phương pháp phần tử...</td></tr>`;
+      const payload = collectPayload();
+      let rows = [];
+      try {
+        if (window.location.protocol === "file:") throw new Error("local_mode");
+        const res = await fetch("/api/compare_elements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          tbody.innerHTML = `<tr><td colspan="10" style="color:var(--danger);text-align:center;">${data.error}</td></tr>`;
+          return;
+        }
+        rows = data.comparison;
+      } catch (err) {
+        try {
+          const elements = ["MITC4", "Q4_REDUCED", "Q4_FULL", "CS_DSG3", "DSG3", "MIN3", "CS_MIN3"];
+          rows = elements.map(el => {
+            const res = localSolveFEM({ ...payload, element_type: el });
+            return res.summary;
+          });
+        } catch (e2) {
+          tbody.innerHTML = `<tr><td colspan="10" style="color:var(--danger);text-align:center;">${e2.message}</td></tr>`;
+          return;
+        }
+      }
+      tbody.innerHTML = "";
+      rows.forEach(row => {
+        const isTri = ["DSG3", "CS_DSG3", "MIN3", "CS_MIN3"].includes(row.element_type);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="font-weight:700;color:var(--accent);">${row.element_type}</td>
+          <td>${isTri ? "Tam giác 3 nút (T3)" : "Tứ giác 4 nút (Q4)"}</td>
+          <td>${row.nel}</td>
+          <td style="font-weight:700;">${(row.w_max_abs * 1e3).toFixed(4)}</td>
+          <td>${(row.sigma_vm_max * 1e-6).toFixed(3)}</td>
+          <td>${row.Mr_max_abs.toFixed(2)}</td>
+          <td>${row.Mtheta_max_abs.toFixed(2)}</td>
+          <td>${row.strain_energy.toExponential(4)}</td>
+          <td>${row.force_balance_error.toExponential(2)}</td>
+          <td>${row.solve_time_ms.toFixed(1)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function populateTables(result) {
+      const rTbody = document.getElementById("reactionsTbody");
+      rTbody.innerHTML = "";
+      result.reactions.forEach(r => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>#${r.node_id}</td>
+          <td>${r.label} (${r.type.toUpperCase()})</td>
+          <td>${r.r.toFixed(3)}</td>
+          <td>${r.theta.toFixed(1)}°</td>
+          <td>${r.x.toFixed(3)}</td>
+          <td>${r.y.toFixed(3)}</td>
+          <td style="font-weight:700;color:#4ade80;">${r.Rz.toFixed(2)}</td>
+          <td>${r.Mrx.toFixed(2)}</td>
+          <td>${r.Mry.toFixed(2)}</td>
+        `;
+        rTbody.appendChild(tr);
+      });
+
+      const nTbody = document.getElementById("nodesTbody");
+      nTbody.innerHTML = "";
+      const gcoord = result.mesh.gcoord;
+      const polar = result.mesh.polar_coord;
+      const f = result.fields;
+      const indices = Array.from({ length: gcoord.length }, (_, i) => i);
+      indices.sort((a, b) => Math.abs(f.w[b]) - Math.abs(f.w[a]));
+
+      indices.slice(0, 100).forEach(i => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>#${i + 1}</td>
+          <td>${polar[i][0].toFixed(3)}</td>
+          <td>${polar[i][1].toFixed(1)}°</td>
+          <td>${gcoord[i][0].toFixed(3)}</td>
+          <td>${gcoord[i][1].toFixed(3)}</td>
+          <td style="font-weight:700;color:var(--accent);">${(f.w[i] * 1e3).toFixed(4)}</td>
+          <td>${f.theta_x[i].toExponential(3)}</td>
+          <td>${f.theta_y[i].toExponential(3)}</td>
+          <td>${f.Mr[i].toFixed(2)}</td>
+          <td>${f.Mtheta[i].toFixed(2)}</td>
+          <td>${f.Qr[i].toFixed(2)}</td>
+          <td>${(f.sigma_vm[i] * 1e-6).toFixed(3)}</td>
+        `;
+        nTbody.appendChild(tr);
+      });
+    }
+
+    function exportCSV() {
+      if (!currentResult) {
+        alert("Vui lòng chạy giải bài toán trước khi xuất CSV.");
+        return;
+      }
+      const gcoord = currentResult.mesh.gcoord;
+      const polar = currentResult.mesh.polar_coord;
+      const f = currentResult.fields;
+      const lines = ["NodeID,r(m),theta(deg),x(m),y(m),w(m),w(mm),theta_x(rad),theta_y(rad),Mr(Nm/m),Mtheta(Nm/m),Mrtheta(Nm/m),Qr(N/m),sigma_vm(Pa)"];
+      for (let i = 0; i < gcoord.length; i++) {
+        lines.push([
+          i + 1,
+          polar[i][0].toFixed(6),
+          polar[i][1].toFixed(3),
+          gcoord[i][0].toFixed(6),
+          gcoord[i][1].toFixed(6),
+          f.w[i].toExponential(6),
+          (f.w[i] * 1e3).toFixed(6),
+          f.theta_x[i].toExponential(6),
+          f.theta_y[i].toExponential(6),
+          f.Mr[i].toFixed(4),
+          f.Mtheta[i].toFixed(4),
+          f.Mrtheta[i].toFixed(4),
+          f.Qr[i].toFixed(4),
+          f.sigma_vm[i].toFixed(2)
+        ].join(","));
+      }
+      const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ket_qua_fem_tam_vanh_khuyen.csv";
+      a.click();
+    }
+
+    // =========================================================================
+    // CHUYỂN TAB & KHỞI ĐỘNG
+    // =========================================================================
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+      document.getElementById(tabId).classList.add("active");
+      btnEl.classList.add("active");
+      if (tabId === "tab2d") render2D();
+      if (tabId === "tab3d") render3D();
+      if (tabId === "tabCharts") renderCharts();
+    }
+
+    window.addEventListener("resize", () => {
+      render2D();
+      render3D();
+      renderCharts();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      applyPreset("preset_4supports_4loads");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+### 
+# MAT-fem Euler Bernoulli Beam v1.3 
+# 
+MESH dimension   2   Elemtype Linear   Nnode  2 
+ 
+coordinates 
+     1        00010 0.0 
+     2 8.75000e+000 0.0 
+     3 7.50000e+000 0.0 
+     4 6.25000e+000 0.0 
+     5        00005 0.0 
+     6 3.75000e+000 0.0 
+     7 2.50000e+000 0.0 
+     8 1.25000e+000 0.0 
+     9        00000 0.0 
+end coordinates 
+ 
+elements 
+     1      9      8   1 
+     2      8      7   1 
+     3      7      6   1 
+     4      6      5   1 
+     5      5      4   1 
+     6      4      3   1 
+     7      3      2   1 
+     8      2      1   1 
+end elements 
+ 

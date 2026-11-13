@@ -1,0 +1,37 @@
+BeginZE C:\Users\mportabella\Documents\MAT-fem\Todas las versiones a revisar\Shell_QLLL_V1.1\Examples\Cylinder\cil1.gid\cil1.vv
+   x -404.31201171875 704.31201171875
+   y 521.5069580078125 -221.50698852539062
+   z -1402.27001953125 802.27001953125
+   e 367.42300415039062
+   v -0.10206999629735947 0.22758300602436066 -0.018396899104118347
+   r 0.96821999549865723
+   m 0.89573502540588379 -0.010834099724888802 0.44445699453353882 0 -0.08208320289850235 0.97848701477050781 0.1892780065536499 0 -0.43694600462913513 -0.20602500438690186 0.87557500600814819 0 0 0 0 1
+   c 150 150 300
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 0
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:\Users\mportabella\Documents\MAT-fem\Todas las versiones a revisar\Shell_QLLL_V1.1\Examples\Cylinder\cil1.gid\cil1.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+

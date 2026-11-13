@@ -1,0 +1,24 @@
+### 
+# MAT-fem Plate MZC v1.4 
+# 
+MESH dimension   2   Elemtype Quadrilateral   Nnode  4 
+ 
+coordinates 
+     1         00000         00010 
+     2         00005         00010 
+     3         00000         00005 
+     4         00005         00005 
+     5         00000         00000 
+     6         00010         00010 
+     7         00005         00000 
+     8         00010         00005 
+     9         00010         00000 
+end coordinates 
+ 
+elements 
+     1      2      1      3      4  1 
+     2      4      3      5      7  1 
+     3      6      2      4      8  1 
+     4      8      4      7      9  1 
+end elements 
+ 

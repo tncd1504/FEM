@@ -1,0 +1,84 @@
+BeginZE C:\Users\Albert\Desktop\ALBERT\CAMINOS\TESINA\Ejemplos Buenos\EJEMPLO_3\Ej_2_3D_v2.gid\Ej_2_3D_v2.flavia.vv
+   x -35.351799011230469 42.200019836425781
+   y 36.927791595458984 -23.842561721801758
+   z -138.99749755859375 258.99749755859375
+   e 66.332496643066406
+   v -0.022875403985381126 -0.231474369764328 0.038383074104785919
+   r -0.97181427478790283
+   m 0.88989269733428955 0.085192583501338959 0.44814413785934448 0 -0.064012303948402405 0.99600690603256226 -0.062230687588453293 0 -0.45165625214576721 0.026691893115639687 0.8917926549911499 0 0 0 0 1
+   c 1 5 -60
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 2
+   DrawingType 3
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:\Users\Albert\Desktop\ALBERT\CAMINOS\TESINA\Ejemplos Buenos\EJEMPLO_3\Ej_2_3D_v2.gid\Ej_2_3D_v2.flavia.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+BeginInfo
+eJzNU11v2jAUfc+vuI9FylCgtGXRNAlGGkXjo4K0dE/IJIZadezIdkpY1f++axu0SZv2MG3SXuKb+3Gu7zm+ecGH3aturwf5MxoX/qcTLGoq0in0ur1uBFJAOskgpYIqVgTpNFlj5H03CoJc7jnaNzEQ/UxL2EkFBPY+ExQVJVVUhcHIRe9YSzmmVMRASXWhWG0Yol9A/6YTBwDnHsCqmtOKCkNsQugrb31l/ya0qRPZbDkdN7sdVTEcqXbelcGG0nudY5mORyF8klUtNXPdqCBYWMLFA9OGdEKYKHIAI2HNRCkPIZyG101dS2VCsDD3mok99AeIxHHGLTM6hiFOWIZ47BWlwhpb3lAgooQICK+fSPi9NoJRUTRVw91IJ4TII0RnhOh3CJd9mNDaPLlalzO084qC8TF6bCI2aVrGGVFH2DoSvDuCxkrByRHJjtp3u7bjAOTL2dlG79pdB2pOBNVBKg0C/2PBoJD18e+LhDT9sUjXg1+p1Lv2GHieQND6P4Tym8qdFg/JfLJYxvA6Y4WSWu4MEqGQHjfLmyMaU5JlYpN+WOk3X71cZYt57JfeCZat7qajL5DNbxfL2Sh30Vc3E9IBw9CzYQ1HBp6OCYhCfC12/st+CNoPbqPaLScI2XUdP6w/QuKpRtJulRQG/POw0Wk2y/IVNrQ/M9JCTlvTKAor9pXiLaP+4BxJ/NPTkImSFRQV60eD4U/RB6rMKXx1baOjF8K4fWfwwkq8WEUriXpo1yCC2fhoqD7BsKqp4CDVs72raKotVSB3QE/gMVyhdp8DN1jymCdzS6a7fjrdoGOz3StytmvCKS5YuTF+JutfZ/ONPpB688SEQZx0+hg7WVfJErWJgwV+UQ682dlEZWCWzO+t6xsuwMtR
+
+EndInfo
+
+BeginPostState
+BeginSingleMesh
+  Num meshes: 2
+  Num sets: 0
+  Num cuts: 0
+  Mesh: 0
+  State: On
+    Name: "VolumeMesh 1"
+    IdSet: 1
+    Color Type: 0
+    Color Ambient: 0.2 0.2 0.2 0.5
+    Color Diffuse: 0.6 0.6 0.6 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 1
+    Property Transparent: 0
+    Property Style: 15
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndMesh: 0
+  Mesh: 1
+  State: On
+    Name: "VolumeMesh 2"
+    IdSet: 2
+    Color Type: 0
+    Color Ambient: 0 0 0.3 0.5
+    Color Diffuse: 0 0 1 0.5
+    Color Specular: 1 1 1 0.5
+    Color Shininess: 0.5
+    Property Massive: 1
+    Property Transparent: 0
+    Property Style: 15
+    Property Edge Width: 1
+    Property Vector Filter Factor: 0
+    Property Stream Arrow: 0
+  EndMesh: 1
+EndSingleMesh
+  Post_Prefs_Vector_Size: 0 32 32 32
+  ResultView: {Id 4} {No results} {} {} {} {} 4 0
+EndPostState
+

@@ -1,0 +1,201 @@
+Number of total nodes in model: 293212
+Just before filling global stiffness matrix for static analysis
+Stiffness matrix filled
+Load vector constructed
+Beginning to apply constraints
+
+INFORMATION ABOUT STIFFNESS MATRIX
+Sparse matrix storage with Conjugate gradients Toni
+Degrees of freedom= 879636
+Total number of positions= 18390149
+Amount of memory= 213.8Mb
+
+Just before Solver
+iteration number 0 resid=0 tol=1e-005
+iteration number 50 resid=1.52425 tol=1e-005
+iteration number 100 resid=10.4492 tol=1e-005
+iteration number 150 resid=7.96129 tol=1e-005
+iteration number 200 resid=12.9864 tol=1e-005
+iteration number 250 resid=11.8406 tol=1e-005
+iteration number 300 resid=12.2224 tol=1e-005
+iteration number 350 resid=12.9167 tol=1e-005
+iteration number 400 resid=13.1208 tol=1e-005
+iteration number 450 resid=12.3256 tol=1e-005
+iteration number 500 resid=11.7709 tol=1e-005
+iteration number 550 resid=14.5072 tol=1e-005
+iteration number 600 resid=12.2493 tol=1e-005
+iteration number 650 resid=14.9991 tol=1e-005
+iteration number 700 resid=13.7175 tol=1e-005
+iteration number 750 resid=15.6205 tol=1e-005
+iteration number 800 resid=16.0381 tol=1e-005
+iteration number 850 resid=16.4846 tol=1e-005
+iteration number 900 resid=7.96406 tol=1e-005
+iteration number 950 resid=19.3818 tol=1e-005
+iteration number 1000 resid=53.4135 tol=1e-005
+iteration number 1050 resid=33.015 tol=1e-005
+iteration number 1100 resid=12.4093 tol=1e-005
+iteration number 1150 resid=7.83304 tol=1e-005
+iteration number 1200 resid=3.19327 tol=1e-005
+iteration number 1250 resid=2.15386 tol=1e-005
+iteration number 1300 resid=1.06861 tol=1e-005
+iteration number 1350 resid=0.736854 tol=1e-005
+iteration number 1400 resid=0.273412 tol=1e-005
+iteration number 1450 resid=0.295486 tol=1e-005
+iteration number 1500 resid=0.298017 tol=1e-005
+iteration number 1550 resid=0.225997 tol=1e-005
+iteration number 1600 resid=0.15254 tol=1e-005
+iteration number 1650 resid=0.122548 tol=1e-005
+iteration number 1700 resid=0.0696567 tol=1e-005
+iteration number 1750 resid=0.0843635 tol=1e-005
+iteration number 1800 resid=0.0637855 tol=1e-005
+iteration number 1850 resid=0.0572221 tol=1e-005
+iteration number 1900 resid=0.0494127 tol=1e-005
+iteration number 1950 resid=0.053571 tol=1e-005
+iteration number 2000 resid=0.0673052 tol=1e-005
+iteration number 2050 resid=0.0544783 tol=1e-005
+iteration number 2100 resid=0.0269589 tol=1e-005
+iteration number 2150 resid=0.0257685 tol=1e-005
+iteration number 2200 resid=0.0217119 tol=1e-005
+iteration number 2250 resid=0.0181062 tol=1e-005
+iteration number 2300 resid=0.0263042 tol=1e-005
+iteration number 2350 resid=0.0214466 tol=1e-005
+iteration number 2400 resid=0.0228599 tol=1e-005
+iteration number 2450 resid=0.0248857 tol=1e-005
+iteration number 2500 resid=0.0230859 tol=1e-005
+iteration number 2550 resid=0.0211839 tol=1e-005
+iteration number 2600 resid=0.0287637 tol=1e-005
+iteration number 2650 resid=0.0233674 tol=1e-005
+iteration number 2700 resid=0.0225536 tol=1e-005
+iteration number 2750 resid=0.0222925 tol=1e-005
+iteration number 2800 resid=0.0308025 tol=1e-005
+iteration number 2850 resid=0.0194867 tol=1e-005
+iteration number 2900 resid=0.0321377 tol=1e-005
+iteration number 2950 resid=0.0230699 tol=1e-005
+iteration number 3000 resid=0.0178653 tol=1e-005
+iteration number 3050 resid=0.0185553 tol=1e-005
+iteration number 3100 resid=0.0127228 tol=1e-005
+iteration number 3150 resid=0.0101117 tol=1e-005
+iteration number 3200 resid=0.0134333 tol=1e-005
+iteration number 3250 resid=0.0126299 tol=1e-005
+iteration number 3300 resid=0.0130057 tol=1e-005
+iteration number 3350 resid=0.00898941 tol=1e-005
+iteration number 3400 resid=0.00954403 tol=1e-005
+iteration number 3450 resid=0.00678543 tol=1e-005
+iteration number 3500 resid=0.00826292 tol=1e-005
+iteration number 3550 resid=0.00698706 tol=1e-005
+iteration number 3600 resid=0.0065493 tol=1e-005
+iteration number 3650 resid=0.00601256 tol=1e-005
+iteration number 3700 resid=0.00695791 tol=1e-005
+iteration number 3750 resid=0.00601247 tol=1e-005
+iteration number 3800 resid=0.0064795 tol=1e-005
+iteration number 3850 resid=0.00500819 tol=1e-005
+iteration number 3900 resid=0.00445616 tol=1e-005
+iteration number 3950 resid=0.00503339 tol=1e-005
+iteration number 4000 resid=0.00475264 tol=1e-005
+iteration number 4050 resid=0.00437929 tol=1e-005
+iteration number 4100 resid=0.00349939 tol=1e-005
+iteration number 4150 resid=0.00273838 tol=1e-005
+iteration number 4200 resid=0.00262373 tol=1e-005
+iteration number 4250 resid=0.0027307 tol=1e-005
+iteration number 4300 resid=0.00344525 tol=1e-005
+iteration number 4350 resid=0.00313603 tol=1e-005
+iteration number 4400 resid=0.00315101 tol=1e-005
+iteration number 4450 resid=0.00348492 tol=1e-005
+iteration number 4500 resid=0.00534009 tol=1e-005
+iteration number 4550 resid=0.00504379 tol=1e-005
+iteration number 4600 resid=0.00434372 tol=1e-005
+iteration number 4650 resid=0.00308845 tol=1e-005
+iteration number 4700 resid=0.00400334 tol=1e-005
+iteration number 4750 resid=0.00393229 tol=1e-005
+iteration number 4800 resid=0.00286599 tol=1e-005
+iteration number 4850 resid=0.00210781 tol=1e-005
+iteration number 4900 resid=0.00180467 tol=1e-005
+iteration number 4950 resid=0.00219932 tol=1e-005
+iteration number 5000 resid=0.00229569 tol=1e-005
+iteration number 5050 resid=0.00268204 tol=1e-005
+iteration number 5100 resid=0.00283054 tol=1e-005
+iteration number 5150 resid=0.00326428 tol=1e-005
+iteration number 5200 resid=0.0028184 tol=1e-005
+iteration number 5250 resid=0.00187304 tol=1e-005
+iteration number 5300 resid=0.00118625 tol=1e-005
+iteration number 5350 resid=0.00129026 tol=1e-005
+iteration number 5400 resid=0.0014937 tol=1e-005
+iteration number 5450 resid=0.00187195 tol=1e-005
+iteration number 5500 resid=0.00196793 tol=1e-005
+iteration number 5550 resid=0.00245912 tol=1e-005
+iteration number 5600 resid=0.003031 tol=1e-005
+iteration number 5650 resid=0.00250915 tol=1e-005
+iteration number 5700 resid=0.00223904 tol=1e-005
+iteration number 5750 resid=0.0018016 tol=1e-005
+iteration number 5800 resid=0.00165863 tol=1e-005
+iteration number 5850 resid=0.00136511 tol=1e-005
+iteration number 5900 resid=0.00116747 tol=1e-005
+iteration number 5950 resid=0.00083839 tol=1e-005
+iteration number 6000 resid=0.000900843 tol=1e-005
+iteration number 6050 resid=0.000432014 tol=1e-005
+iteration number 6100 resid=0.000384946 tol=1e-005
+iteration number 6150 resid=0.000338352 tol=1e-005
+iteration number 6200 resid=0.000226556 tol=1e-005
+iteration number 6250 resid=0.000265845 tol=1e-005
+iteration number 6300 resid=0.000247791 tol=1e-005
+iteration number 6350 resid=0.000256352 tol=1e-005
+iteration number 6400 resid=0.000204816 tol=1e-005
+iteration number 6450 resid=0.000169284 tol=1e-005
+iteration number 6500 resid=0.00014869 tol=1e-005
+iteration number 6550 resid=0.000141541 tol=1e-005
+iteration number 6600 resid=0.000138568 tol=1e-005
+iteration number 6650 resid=0.000110464 tol=1e-005
+iteration number 6700 resid=8.4296e-005 tol=1e-005
+iteration number 6750 resid=5.96795e-005 tol=1e-005
+iteration number 6800 resid=4.59506e-005 tol=1e-005
+iteration number 6850 resid=7.07738e-005 tol=1e-005
+iteration number 6900 resid=6.09738e-005 tol=1e-005
+iteration number 6950 resid=6.42321e-005 tol=1e-005
+iteration number 7000 resid=3.80672e-005 tol=1e-005
+iteration number 7050 resid=3.29338e-005 tol=1e-005
+iteration number 7100 resid=4.22587e-005 tol=1e-005
+iteration number 7150 resid=2.9632e-005 tol=1e-005
+iteration number 7200 resid=2.9513e-005 tol=1e-005
+iteration number 7250 resid=2.00082e-005 tol=1e-005
+iteration number 7300 resid=2.28199e-005 tol=1e-005
+iteration number 7350 resid=2.737e-005 tol=1e-005
+iteration number 7400 resid=5.60909e-005 tol=1e-005
+iteration number 7450 resid=4.46715e-005 tol=1e-005
+iteration number 7500 resid=2.66299e-005 tol=1e-005
+iteration number 7550 resid=2.12148e-005 tol=1e-005
+iteration number 7600 resid=3.07272e-005 tol=1e-005
+iteration number 7650 resid=5.25702e-005 tol=1e-005
+iteration number 7700 resid=5.48856e-005 tol=1e-005
+iteration number 7750 resid=3.89648e-005 tol=1e-005
+iteration number 7800 resid=3.43672e-005 tol=1e-005
+iteration number 7850 resid=2.80209e-005 tol=1e-005
+iteration number 7900 resid=3.16247e-005 tol=1e-005
+iteration number 7950 resid=4.81612e-005 tol=1e-005
+iteration number 8000 resid=5.15693e-005 tol=1e-005
+iteration number 8050 resid=7.94409e-005 tol=1e-005
+iteration number 8100 resid=7.99439e-005 tol=1e-005
+iteration number 8150 resid=4.66171e-005 tol=1e-005
+iteration number 8200 resid=3.85777e-005 tol=1e-005
+iteration number 8250 resid=3.48979e-005 tol=1e-005
+iteration number 8300 resid=3.21093e-005 tol=1e-005
+iteration number 8350 resid=2.92718e-005 tol=1e-005
+iteration number 8400 resid=2.42792e-005 tol=1e-005
+iteration number 8450 resid=2.6433e-005 tol=1e-005
+iteration number 8500 resid=2.83304e-005 tol=1e-005
+iteration number 8550 resid=3.64932e-005 tol=1e-005
+iteration number 8600 resid=2.68556e-005 tol=1e-005
+iteration number 8650 resid=2.41554e-005 tol=1e-005
+iteration number 8700 resid=3.23209e-005 tol=1e-005
+iteration number 8750 resid=5.75852e-005 tol=1e-005
+iteration number 8800 resid=5.76195e-005 tol=1e-005
+iteration number 8850 resid=3.29149e-005 tol=1e-005
+iteration number 8900 resid=1.439e-005 tol=1e-005
+finished solver iteration number 8913 resid=9.71131e-006 tol=1e-005
+Solved after 8913 iterations
+Solver finished
+Beginning calc strengths and reactions
+End of calc strengths and reactions
+Beginning smooth of the gaussian variables
+Transfering results
+
+Total time = 1e+002 min. = 6.3e+003 seg.

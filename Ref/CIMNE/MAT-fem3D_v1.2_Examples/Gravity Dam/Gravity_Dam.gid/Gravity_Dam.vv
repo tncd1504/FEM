@@ -1,0 +1,41 @@
+BeginZE C:\Users\Miquel\Documents\My Dropbox\CIMNE\MAT-fem\MAT-fem (para subir a la web)\MAT-fem3D_v1.2 (faltan ejemplos)\Examples\Gravity_Dam.gid\Gravity_Dam.vv
+   x -47.182765960693359 167.12689208984375
+   y 56.212356567382812 -48.77001953125
+   z -156.183349609375 88.183349609375
+   e 60.755657196044922
+   v 0.38377466365562724 0.48462703180241978 0.66570132317149089
+   r 0.41796580856212495
+   m -0.35604321956634521 -0.18450562655925751 0.91607367992401123 0 0.92845594882965088 -0.18088248372077942 0.32442432641983032 0 0.10584354400634766 0.96604311466217041 0.23570729792118073 0 0 0 0 1
+   c 50 10.833333015441895 34
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 0
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 2048
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE C:\Users\Miquel\Documents\My Dropbox\CIMNE\MAT-fem\MAT-fem (para subir a la web)\MAT-fem3D_v1.2 (faltan ejemplos)\Examples\Gravity_Dam.gid\Gravity_Dam.vv
+
+BeginMirror
+   Mirror 0 Angle 0.0 AngleFake -15.0 SizeFactor 2.0 HeightOffset 0.25 Color #d9e5f24d Backlight Off EdgeStyle No Type Scene DrawMode Mirror
+EndMirror
+
+BeginInfo
+eJzNU11v2jAUfc+vuI9FSlFCaceiaRKMNIrGRwW0dE/IJIZadezIdkpY1f++axu0SZv2MG3SXuKb+3Gu7zm+q4IPutfdOIbVMxoX/qcTzGsqsgnE3bgbgRSQjXPIqKCKFUE2SdcYed+NgmAl9xztdwkQ/UxL2EkFBPY+ExQVJVVUhcHQRe9YSzmmVMRASXWhWG0Yol9AHMWdJAA4NwFW1ZxWVBhiM0JfeutLMTm0uWPZbDkdNbsdVQkcqXbepcGW0nudY5GNhiF8klUtNXP9qCBYWMLFA9OGdEIYK3IAI2HNRCkPIZzG101dS2VCsDD3mok99PqIxHHKLTM6gQHOWIZ47BWlwhpb3lAgooQICK+fSPi9NoJhUTRVw91MJ4TII0RnhOh3CFc9GNPaPLlalzOw84qC8RF6bCI2aVrGGVFH2DoSvDuCxorByRHpjtrLXdtxAPLl7Gyjy3bXgZoTQXWQSYPA/1wyKGR9/PsyIVF/LNNN/1c6xTceA88TCFr/h1R+W7kT4yGdjeeLBF6nrFBSy51BIhTS42Z5c0RjSrpIbdIPa/3mqxfLfD5L/OI7wfLl3WT4BfLZ7XwxHa5c9NXNhHTAIPRsWMORgadjAqIQ34ud/6oXgvaD26h26wlCdl3HD+uPkHqqkbRbJYUB/zxsdJJP89USG9qfKWlhRVvTKApL9pXiLaNe/xxJ/dvTkIuSFRQV60X9wU/RB6rMKXx9Y6PDF8K4fWfwwkq8WEUriXpo1yCC6ehoqD7BsKqp4CDVs72raKotVSB3QE/gCVyjdp8DN1j6uEpnlkx3/WyyQcdmu1fkbNeEU1yxcmP8TNa/zmcbfSD15okJgzjZ5DFxsi7TBWqTBHP8ohx4s7OJysA0nd1b1zfKisv1
+
+EndInfo

@@ -1,0 +1,1183 @@
+BOOK:Constraints
+NUMBER: 1 CONDITION: Point_Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement or rotation of points.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement or rotation for that degree.\nUnits in International System for values are:\n\t (m) for the displacements\n\t(rad) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 2 CONDITION: Point_Elastic_Constraints
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to apply an elastic spring to the displacement or rotation of points.\nEvery marked flag will prescribe the spring for that degree of freedom.\nEnter the stiffness constant for every actived degree of freedom in the values fields.\nUnits in International System for stiffness constants are:\n\t (N/m) for the displacements\n\t(N*m/rad) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 3 CONDITION: Line_Constraints
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement or rotation of all the nodes that belong to the line.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement or rotation for that degree.\nUnits in International System for values are:\n\t (m) for the displacements\n\t(rad) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 4 CONDITION: Line_Elastic_Constraints
+CONDTYPE: over lines
+HELP: Use this condition to apply an elastic spring to the displacement or rotation of all nodes that belong to the beam or shell contour defined with the line.\nEvery marked flag will prescribe the spring for that degree of freedom.\nEnter the stiffness constant for every actived degree of freedom in the values fields.\nUnits in International System for stiffness constants are:\n\t (N/m2) for the displacements\n\t(N*m/(rad*m)) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 5 CONDITION: Surface_Constraints
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the displacement or rotation of all the nodes that belong to the surface.\nEvery marked flag will prescribe the movement for that degree of freedom.\nThe values fields permmit to set a prescribed displacement or rotation for that degree.\nUnits in International System for values are:\n\t (m) for the displacements\n\t(rad) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+NUMBER: 6 CONDITION: Surface_Elastic_Constraints
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: Use this condition to apply an elastic spring to the displacement or rotation of all nodes that belong to the surface shell.\nEvery marked flag will prescribe the spring for that degree of freedom.\nEnter the stiffness constant for every actived degree of freedom in the values fields.\nUnits in International System for stiffness constants are:\n\t (N/m3) for the displacements\n\t(N*m/(rad*m2)) for the rotations.
+TITLE: Flags
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: If the direction to prescribe is not coincident with the global axes, it is possible to define a set of local axes and prescribe the displacements related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: X_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,X_Value,0.0)(#DEFAULT#,RESTORE,X_Value,#CURRENT#)
+QUESTION: Y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Y_Value,0.0)(#DEFAULT#,RESTORE,Y_Value,#CURRENT#)
+QUESTION: Z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,Z_Value,0.0)(#DEFAULT#,RESTORE,Z_Value,#CURRENT#)
+QUESTION: theta_x_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_x_Value,0.0)(#DEFAULT#,RESTORE,theta_x_Value,#CURRENT#)
+QUESTION: theta_y_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_y_Value,0.0)(#DEFAULT#,RESTORE,theta_y_Value,#CURRENT#)
+QUESTION: theta_z_Constraint#CB#(1,0)
+VALUE: 1
+DEPENDENCIES: (0,SET,theta_z_Value,0.0)(#DEFAULT#,RESTORE,theta_z_Value,#CURRENT#)
+TITLE: Values
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Value
+VALUE: 0.0
+QUESTION: Y_Value
+VALUE: 0.0
+QUESTION: Z_Value
+VALUE: 0.0
+QUESTION: theta_x_Value
+VALUE: 0.0
+QUESTION: theta_y_Value
+VALUE: 0.0
+QUESTION: theta_z_Value
+VALUE: 0.0
+END CONDITION
+BOOK:Static Loads
+NUMBER: 7 CONDITION: Self_weight_Beam
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: If this condition is applied to beams, a load is calculated and assigned, depending on the self-weight of the material, the area of the section and the direction of the gravity.
+QUESTION: Self_weight_load#CB#(.)
+VALUE: -
+END CONDITION
+NUMBER: 8 CONDITION: Global_Beam_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the beam given in global axes. Units in International System for values are:\n\t (N/m) for the beam pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 9 CONDITION: Global_Projected_Beam_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the beam given in global axes and projected as if the length of the beam was the projected length over the pressure vector. Units in International System for values are:\n\t (N/m) for the beam pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 10 CONDITION: Local_Beam_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the beam given in the same local axes used to define the section. Units in International System for values are:\n\t (N/m) for the beam pressures.\n\t (N*m/m) for the beam distributed momentum.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Local_X_Pressure
+VALUE: 0.0
+QUESTION: Local_Y_Pressure
+VALUE: 0.0
+QUESTION: Local_Z_Pressure
+VALUE: 0.0
+QUESTION: Local_Mx_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 11 CONDITION: Punctual_Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: A static force and momentum applied to the selected points of the model. Units in International System for values are:\n\t (N) for the forces.\n\t (N*m) for the momentum.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Force
+VALUE: 0.0
+QUESTION: Y_Force
+VALUE: 0.0
+QUESTION: Z_Force
+VALUE: 0.0
+QUESTION: Mx_Force
+VALUE: 0.0
+QUESTION: My_Force
+VALUE: 0.0
+QUESTION: Mz_Force
+VALUE: 0.0
+END CONDITION
+NUMBER: 12 CONDITION: Self_weight_shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: If this condition is applied to shells, a load is calculated and assigned, depending on the self-weight of the material, the thickness of the shell and the direction of the gravity.
+QUESTION: Self_weight_load#CB#(.)
+VALUE: -
+END CONDITION
+NUMBER: 13 CONDITION: Global_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the shell given in global axes. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 14 CONDITION: Global_Projected_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the shell given in global axes and projected as if the area of the shell was the projected area over the pressure vector. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 15 CONDITION: Local_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A static pressure load over the shell given in the same local axes used to define the shell properties. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Local_X_Pressure
+VALUE: 0.0
+QUESTION: Local_Y_Pressure
+VALUE: 0.0
+QUESTION: Local_Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 16 CONDITION: Shell_Face_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over face elements
+HELP: A static pressure load over the contour of the shell given in global axes or in user defined axes. Units in International System for values are:\n\t (N/m) for the shell contour pressures.
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: It is possible to define a set of local axes and enter the values of the pressure related to that local axes. Option 'Automatic' permmit to assign a load normal or tangent to the curved lines. To see the defined local axes use button 'Draw'.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+END CONDITION
+NUMBER: 17 CONDITION: Beam_Temperature
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: This condition considers the deformation supported by the beam when there is a uniform temperature change in all the beam.
+QUESTION: alpha
+VALUE: 0.000012
+QUESTION: Delta_T(Degrees_Celsius)
+VALUE: 0.0
+END CONDITION
+NUMBER: 18 CONDITION: Shell_triangular_face_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over face elements
+HELP: This load is similar to that of 'Shell_Face_Load' but its intensity changes depending on the point where it is applied. The two points define an imaginary line in the space. For every point of the geometry line  where the load is applied, it is possible to project this point on the imaginary line and interpolate the values related to these points depending on where it is projected. \nUnits in International System for values are:\n\t (m) for the points\n\t(N/m) for the pressures.
+TITLE: Position
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_point_1
+VALUE: 0.0
+QUESTION: Y_point_1
+VALUE: 0.0
+QUESTION: Z_point_1
+VALUE: 0.0
+QUESTION: X_point_2
+VALUE: 0.0
+QUESTION: Y_point_2
+VALUE: 0.0
+QUESTION: Z_point_2
+VALUE: 0.0
+TITLE: Pressures
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: It is possible to define a set of local axes and enter the values of the pressure related to that local axes. Option 'Automatic' permmit to assign a load normal or tangent to the curved lines. To see the defined local axes use button 'Draw'.
+QUESTION: X_pressure_1
+VALUE: 0.0
+QUESTION: Y_pressure_1
+VALUE: 0.0
+QUESTION: Z_pressure_1
+VALUE: 0.0
+QUESTION: X_pressure_2
+VALUE: 0.0
+QUESTION: Y_pressure_2
+VALUE: 0.0
+QUESTION: Z_pressure_2
+VALUE: 0.0
+END CONDITION
+NUMBER: 19 CONDITION: Shell_triangular_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This load is similar to that of 'global shell load' but its intensity changes depending on the point where it is applied. The two points define an imaginary line in the space. For every point of the surface where the load is applied, it is possible to project this point on the line and interpolate the values related to these points depending on where it is projected. \nUnits in International System for values are:\n\t (m) for the points\n\t(N/m2) for the pressures.
+TITLE: Position
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_point_1
+VALUE: 0.0
+QUESTION: Y_point_1
+VALUE: 0.0
+QUESTION: Z_point_1
+VALUE: 0.0
+QUESTION: X_point_2
+VALUE: 0.0
+QUESTION: Y_point_2
+VALUE: 0.0
+QUESTION: Z_point_2
+VALUE: 0.0
+TITLE: Pressures
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: It is possible to define a set of local axes and enter the values of the pressure related to that local axes. Option 'Automatic' permmit to assign a load normal or tangent to the curved surfaces. To see the defined local axes use button 'Draw'.
+QUESTION: X_pressure_1
+VALUE: 0.0
+QUESTION: Y_pressure_1
+VALUE: 0.0
+QUESTION: Z_pressure_1
+VALUE: 0.0
+QUESTION: X_pressure_2
+VALUE: 0.0
+QUESTION: Y_pressure_2
+VALUE: 0.0
+QUESTION: Z_pressure_2
+VALUE: 0.0
+END CONDITION
+NUMBER: 20 CONDITION: Shell_hydrostatic_face_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over face elements
+HELP: This is a triangular load that has value 0.0 at the reference coordinate (in the sense of the gravity) and gives an hydrostatic pressure that depends on the self-weight of the water or terrain. \nUnits in International System for values are:\n\t (m) for the coordinates\n\t(N/m3) for the self-weight.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Reference_coordinate:
+VALUE: 0.0
+QUESTION: Self_weight_water:
+VALUE: 10000
+END CONDITION
+NUMBER: 21 CONDITION: Shell_hydrostatic_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This is a triangular load that has value 0.0 at the reference coordinate (in the sense of the gravity) and gives an hydrostatic pressure that depends on the self-weight of the water or terrain. \nUnits in International System for values are:\n\t (m) for the coordinates\n\t(N/m3) for the self-weight.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Reference_coordinate:
+VALUE: 0.0
+QUESTION: Self_weight_water:
+VALUE: 10000
+END CONDITION
+NUMBER: 22 CONDITION: Point_Custom_Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+QUESTION: Material:#MAT#(Custom_data)
+VALUE: Custom_data1
+TKWIDGET: custom_data::ComunicateWithGiD_load
+END CONDITION
+NUMBER: 23 CONDITION: Line_Custom_Load
+CONDTYPE: over lines
+QUESTION: Material:#MAT#(Custom_data)
+VALUE: Custom_data1
+TKWIDGET: custom_data::ComunicateWithGiD_load
+END CONDITION
+NUMBER: 24 CONDITION: Surface_Custom_Load
+CONDTYPE: over surfaces
+QUESTION: Material:#MAT#(Custom_data)
+VALUE: Custom_data1
+TKWIDGET: custom_data::ComunicateWithGiD_load
+END CONDITION
+NUMBER: 25 CONDITION: Volume_Custom_Load
+CONDTYPE: over volumes
+CONDMESHTYPE: over body elements
+QUESTION: Material:#MAT#(Custom_data)
+VALUE: Custom_data1
+TKWIDGET: custom_data::ComunicateWithGiD_load
+END CONDITION
+BOOK:General properties
+NUMBER: 26 CONDITION: Section
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to beams with arbitrary shape section. 'Inertia y' is the inertia modulus related to the Y' local axe. 'Inertia z' is the inertia modulus related to the Z' local axe. J is the torsion inertia. E is the Young Modulus and G is the Torsion modulus. \nUnits in International System for values are:\n\t (m2) for the area\n\t(m4) for the inertias and J\n\t(N/m2) for 'E' and 'G'\n\t(N/m3) for the Specific_weight.
+TITLE: Data
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+HELP: Local axes are used to define the orientation of the section. After analysis, results will be displayed related to these local axes system.\nIn this system, Local X' axe must have the same direction than the beam. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Name
+VALUE: -
+STATE: HIDDEN
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Area
+VALUE: 0.0
+QUESTION: Inertia_y
+VALUE: 0.0
+QUESTION: Inertia_z
+VALUE: 0.0
+QUESTION: J
+VALUE: 0.0
+QUESTION: G
+VALUE: 8.1e10
+QUESTION: E
+VALUE: 2.1e11
+QUESTION: Specific_weight
+VALUE: 0.0
+TKWIDGET: sections::ComunicateWithGiDs
+TITLE: Stress data
+QUESTION: W_y
+VALUE: 0.0
+HELP: 'W y' is the resistance modulus (Wy=Iy/(z/2)) related to the Y' local axe.
+QUESTION: W_z
+VALUE: 0.0
+HELP: 'W z' is the resistance modulus (Wz=Iz/(y/2)) related to the Z' local axe.
+QUESTION: Aty
+VALUE: 0.0
+HELP: 'Aty' is the shear area (tau_y=Qy/Aty).
+QUESTION: Atz
+VALUE: 0.0
+HELP: 'Atz' is the shear area (tau_z=Qz/Atz).
+QUESTION: Maximum_stress
+VALUE: 0.0
+HELP: 'Maximum_stress' is the maximum allowed stress in the material
+END CONDITION
+NUMBER: 27 CONDITION: Rectangular_Section
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to beams with rectangular section. 'Width y' is the width in the Y' local axe direction. 'Width z' is the width in the Z' local axe direction. E is the Young Modulus and G is the Torsion modulus. \nUnits in International System for values are:\n\t (m) for the widths\n\t(N/m2) for 'E' and 'G'\n\t(N/m3) for the Specific_weight.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+HELP: Local axes are used to define the orientation of the section. After analysis, results will be displayed related to these local axes system.\nIn this system, Local X' axe must have the same direction than the beam. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Width_y
+VALUE: 0.0
+QUESTION: Width_z
+VALUE: 0.0
+QUESTION: G
+VALUE: 8.1e10
+QUESTION: E
+VALUE: 2.1e11
+QUESTION: Specific_weight
+VALUE: 0.0
+END CONDITION
+NUMBER: 28 CONDITION: Shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to shells. 'Thickness' is the transversal dimension of the shell. 'E' is the Young Modulus and 'nu' is the Poisson coefficient. \nUnits in International System for values are:\n\t (m) for the thickness\n\t(N/m2) for 'E'\n\t(adimensional) nu\n\t(N/m3) for the Specific_weight.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Default-
+HELP: Local axes are used to define the orientation of the shell. After analysis, results will be displayed related to these local axes system.\nIn this system, Local Z' axe must have the same direction than the normal to the shell. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Thickness
+VALUE: 0.0
+QUESTION: Constitutive_Model#CB#(Linear_Elastic,Plasticity)
+VALUE: Linear_Elastic
+DEPENDENCIES: (Linear_Elastic,HIDE,DUMMY_const,->Constitutive_Model,                             HIDE,Num_Layer,#CURRENT#,                             HIDE,Plasticity_type,#CURRENT#)             (Plasticity,HIDE,DUMMY_const,->Constitutive_Model,                        RESTORE,Num_Layer,#CURRENT#,                        RESTORE,Plasticity_type,#CURRENT#)
+QUESTION: Plasticity_type#MAT#(Plasticity)
+VALUE: J2_Plasticity
+QUESTION: DUMMY_const
+VALUE: Linear_Elastic
+STATE: HIDDEN
+TKWIDGET: MaterialWidget::Constitutive_Window
+QUESTION: E
+VALUE: 2.1e11
+QUESTION: nu
+VALUE: 0.3
+QUESTION: Num_Layer
+VALUE: 10
+STATE: HIDDEN
+QUESTION: Specific_weight
+VALUE: 0.0
+END CONDITION
+NUMBER: 29 CONDITION: Anisotropic_Shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to linear elastic orthotropic shells. 'Thickness' is the transversal dimension of the shell. 'Ex' and 'Ey' are the Young Modulus and 'nuXY' 'nuYX' are the Poisson coefficient. 'Gxy', 'Gxz' and 'Gyz' are the shear modulus\nUnits in International System for values are:\n\t (m) for the thickness\n\t(N/m2) for 'Ex','Ey', 'Gxy', 'Gxz' and 'Gyz' \n\t(adimensional) 'nuXY' 'nuYX'\n\t(N/m3) for the Specific_weight.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Default-
+HELP: Local axes are used to define the orientation of the shell. After analysis, results will be displayed related to these local axes system.\nIn this system, Local Z' axe must have the same direction than the normal to the shell. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Thickness
+VALUE: 0.0
+QUESTION: Ex
+VALUE: 2.1e11
+QUESTION: Ey
+VALUE: 2.1e11
+QUESTION: nuXY
+VALUE: 0.3
+QUESTION: nuYX
+VALUE: 0.3
+QUESTION: Gxy
+VALUE: 8.1e10
+QUESTION: Gxz
+VALUE: 8.1e10
+QUESTION: Gyz
+VALUE: 8.1e10
+QUESTION: Num_Layer
+VALUE: 10
+STATE: HIDDEN
+QUESTION: Specific_weight
+VALUE: 0.0
+END CONDITION
+NUMBER: 30 CONDITION: Full_anisotropic_shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to orthotropic shells.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Default-
+HELP: Local axes are used to define the orientation of the shell. After analysis, results will be displayed related to these local axes system.\nIn this system, Local Z' axe must have the same direction than the normal to the shell. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Material:#MAT#(Full_anisotropic_shell)
+VALUE: Full_anisotropic_shell
+TKWIDGET: Full_anisotropic_shell::ComunicateWithGiD
+END CONDITION
+BOOK:Concrete properties
+NUMBER: 31 CONDITION: Concrete_rec_section
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: Similar to the 'Rectangular section' but material is defined to be concrete and the number means its characteristic resistance in N/mm2\nUnits in International System for values are:\n\t (m) for the widths.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+HELP: Local axes are used to define the orientation of the section. After analysis, results will be displayed related to these local axes system.\nIn this system, Local X' axe must have the same direction than the beam. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Width_y
+VALUE: 0.0
+QUESTION: Width_z
+VALUE: 0.0
+QUESTION: Concrete#CB#(HA-20,HA-25,HA-30,HA-35,HA-40,HA-45,HA-50)
+VALUE: HA-25
+END CONDITION
+NUMBER: 32 CONDITION: Concrete_Shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: Similar to the 'shell' condition but material is defined to be concrete and the number means its characteristic resistance in N/mm2\nUnits in International System for values are:\n\t (m) for the thickness.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Default-
+HELP: Local axes are used to define the orientation of the shell. After analysis, results will be displayed related to these local axes system.\nIn this system, Local Z' axe must have the same direction than the normal to the shell. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Thickness
+VALUE: 0.0
+QUESTION: Concrete#CB#(HA-20,HA-25,HA-30,HA-35,HA-40,HA-45,HA-50)
+VALUE: HA-25
+END CONDITION
+BOOK:Steel properties
+NUMBER: 33 CONDITION: Steel_section
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: Similar to other beam sections but permmit to select one standard steel section and one standard material following EA-95 regulations.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+HELP: Local axes are used to define the orientation of the section. After analysis, results will be displayed related to these local axes system.\nIn this system, Local X' axe must have the same direction than the beam. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: SteelName
+VALUE: -
+STATE: HIDDEN
+QUESTION: SteelType
+VALUE: -
+STATE: HIDDEN
+QUESTION: Z_axe_position
+VALUE: 0.0
+STATE: HIDDEN
+TKWIDGET: SteelSections::ComunicateWithGiD
+END CONDITION
+NUMBER: 34 CONDITION: Steel_Shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: Similar to the 'shell' condition but material is defined to be steel following the EA-95 regulations.\nUnits in International System for values are:\n\t (m) for the thickness.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Default-
+HELP: Local axes are used to define the orientation of the shell. After analysis, results will be displayed related to these local axes system.\nIn this system, Local Z' axe must have the same direction than the normal to the shell. If option 'Automatic' is used, they can be viewed, after assigned, with button 'draw'. It is possible also to create user defined local axes systems. All local axes systems can be viewed, after analysis, in the postprocessing part.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Thickness
+VALUE: 0.0
+QUESTION: Steel#CB#(A37,A42,A52)
+VALUE: A42
+END CONDITION
+BOOK:Connections
+NUMBER: 35 CONDITION: Point_disconnect_degrees
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+CANREPEAT: yes
+HELP: To disconnect some degrees in one point, select the degrees to disconnect and give an Identifier. Then, assign the same identifier using condition 'Disconnect_Id' to all the beam or shell elements that must form a rigid group disconnected from the node.\nValue -ANY- means that all the elements around the node will form independent groups will their degrees disconnected.\nExample: if the 3 rotations are marked in one node with identifier 'Id1', and the same identifier 'Id1' is assigned to several beam elements that are over this node then, these beams will be rigid between them and will rotate freely related to the rest or beams or shell elements.
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to disconnect is not coincident with the global axes, it is possible to define a set of local axes and disconnect the degrees related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: Identifier
+VALUE: -ANY-
+STATE: HIDDEN
+TKWIDGET: DisconnectConditions::ComunicateWithGiD
+QUESTION: Disconnect_x_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_y_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_z_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_x_rotation#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_y_rotation#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_z_rotation#CB#(1,0)
+VALUE: 0
+END CONDITION
+NUMBER: 36 CONDITION: Line_disconnect_degrees
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+CANREPEAT: yes
+HELP: To disconnect some degrees in all points over one line, select the degrees to disconnect and give an Identifier. Then, assign the same identifier using condition 'Disconnect_Id' to all the beam or shell elements that must form a rigid group disconnected from the node.\nValue -ANY- means that all the elements around the node will form independent groups will their degrees disconnected.\nExample: if the 3 rotations are marked in the nodes of one line with identifier 'Id1', and the same identifier 'Id1' is assigned to several shell elements that are over this node then, these shell elements will be rigid between them and will rotate freely related to the rest or beams or shell elements.
+QUESTION: Local_Axes#LA#(-GLOBAL-)
+VALUE: -GLOBAL-
+HELP: If the direction to disconnect is not coincident with the global axes, it is possible to define a set of local axes and disconnect the degrees related to that local axes. To see the defined local axes use button 'Draw'.
+QUESTION: Identifier
+VALUE: -ANY-
+STATE: HIDDEN
+TKWIDGET: DisconnectConditions::ComunicateWithGiD
+QUESTION: Disconnect_x_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_y_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_z_displacement#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_x_rotation#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_y_rotation#CB#(1,0)
+VALUE: 0
+QUESTION: Disconnect_z_rotation#CB#(1,0)
+VALUE: 0
+END CONDITION
+NUMBER: 37 CONDITION: Line_disconnect_Id
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+CANREPEAT: yes
+HELP: This condition is used to identify beams ir order to disconnect degrees in some nodes. Must be used related to condition 'Disconnect_degrees'. Check the help on that condition for details.
+QUESTION: Identifier
+VALUE: -ANY-
+STATE: HIDDEN
+TKWIDGET: DisconnectConditions::ComunicateWithGiD
+END CONDITION
+NUMBER: 38 CONDITION: Surface_disconnect_Id
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+CANREPEAT: yes
+HELP: This condition is used to identify shell elements ir order to disconnect degrees in some nodes. Must be used related to condition 'Disconnect_degrees'. Check the help on that condition for details.
+QUESTION: Identifier
+VALUE: -ANY-
+STATE: HIDDEN
+TKWIDGET: DisconnectConditions::ComunicateWithGiD
+END CONDITION
+NUMBER: 39 CONDITION: Rotules
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: This conditions is only useful for beam, not for shells. Apply it to points and all the beams that have an endpoint in that node will have free rotation between them in all rotation senses.
+QUESTION: Rotule#CB#(YES)
+VALUE: YES
+END CONDITION
+NUMBER: 40 CONDITION: Beam_Rotules
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: Similar to the 'rotules' condition but it is applied to elements. In this way it is possible to select just one beam between several as articulated. To see which point is the 'ini point' and which is the 'end point' use Utilities->Draw Normals->Lines or Draw the condition.
+QUESTION: Initial_rotule#CB#(YES,NO)
+VALUE: YES
+QUESTION: End_rotule#CB#(YES,NO)
+VALUE: YES
+END CONDITION
+BOOK:Laminate
+NUMBER: 41 CONDITION: Laminate_Shell
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to beams.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+QUESTION: Laminate
+VALUE: laminate
+STATE: hidden
+TKWIDGET: laminatebuttons::initbuttons
+END CONDITION
+NUMBER: 42 CONDITION: Naval_Stiffeners
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: This property must be assigned to surfaces.
+QUESTION: Local_Axes#LA#(-Default-,-Automatic-,-Automatic_alt-)
+VALUE: -Automatic-
+QUESTION: Stiffener
+VALUE: naval
+STATE: hidden
+TKWIDGET: naval_stiffeners::initbuttons
+END CONDITION
+BOOK:Masses
+NUMBER: 43 CONDITION: Point-Mass
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to assign translational o rotational masses to points.\nUnits in International System for values are:\n\t (kg) for the transalational masses\n\t(kg.m^2) for the rotational masses.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Mass_x
+VALUE: 0.0
+QUESTION: Mass_y
+VALUE: 0.0
+QUESTION: Mass_z
+VALUE: 0.0
+QUESTION: Mom_iner_x
+VALUE: 0.0
+QUESTION: Mom_iner_y
+VALUE: 0.0
+QUESTION: Mom_iner_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 44 CONDITION: Beam-Mass
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: Use this condition to assign translational o rotational masses to a beam.\nUnits in International System for values are:\n\t (kg/m) for the transalational masses\n\t(kg.m) for the rotational masses.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Trasl_Mass
+VALUE: 0.0
+QUESTION: Mom_iner_x
+VALUE: 0.0
+QUESTION: Mom_iner_y
+VALUE: 0.0
+QUESTION: Mom_iner_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 45 CONDITION: Face-Shell-Mass
+CONDTYPE: over lines
+CONDMESHTYPE: over face elements
+HELP: Use this condition to assign translational o rotational masses to a face of a shell.\nUnits in International System for values are:\n\t (kg/m) for the transalational masses\n\t(kg.m) for the rotational masses.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Trasl_Mass
+VALUE: 0.0
+QUESTION: Mom_iner_x
+VALUE: 0.0
+QUESTION: Mom_iner_y
+VALUE: 0.0
+QUESTION: Mom_iner_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 46 CONDITION: Surface-Shell-Mass
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: Use this condition to assign surface masses to a shell.\nUnits in International System for values are:\n\t (kg/m^2)
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Surface_mass
+VALUE: 0.0
+END CONDITION
+BOOK:Dynamic Loads
+NUMBER: 47 CONDITION: Dynamic-Point-Load
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: A dynamic force and momentum applied to the selected points of the model. Units in International System for values are:\n\t (N) for the forces.\n\t (N*m) for the momentum.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Force
+VALUE: 0.0
+QUESTION: Y_Force
+VALUE: 0.0
+QUESTION: Z_Force
+VALUE: 0.0
+QUESTION: Mx_Force
+VALUE: 0.0
+QUESTION: My_Force
+VALUE: 0.0
+QUESTION: Mz_Force
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 48 CONDITION: Dyn._Global_Beam_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: A pressure load over the beam given in global axes. Units in International System for values are:\n\t (N/m) for the beam pressures.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 49 CONDITION: Dyn._Local_Beam_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over body elements
+HELP: A pressure load over the beam given in the same local axes used to define the section. Units in International System for values are:\n\t (N/m) for the beam pressures.\n\t (N*m/m) for the beam distributed momentum.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Local_X_Pressure
+VALUE: 0.0
+QUESTION: Local_Y_Pressure
+VALUE: 0.0
+QUESTION: Local_Z_Pressure
+VALUE: 0.0
+QUESTION: Local_Mx_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 50 CONDITION: Dyn._Shell_Face_Load
+CONDTYPE: over lines
+CONDMESHTYPE: over face elements
+HELP: A pressure load over the contour of the shell given in global axes or in user defined axes. Units in International System for values are:\n\t (N/m) for the shell contour pressures.
+TITLE: Amplitudes
+QUESTION: Local_Axes#LA#(-GLOBAL-,-Automatic-,-Automatic_alt-)
+VALUE: -GLOBAL-
+HELP: It is possible to define a set of local axes and enter the values of the pressure related to that local axes. Option 'Automatic' permmit to assign a load normal or tangent to the curved lines. To see the defined local axes use button 'Draw'.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 51 CONDITION: Dyn._Global_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A pressure load over the shell given in global axes. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_Pressure
+VALUE: 0.0
+QUESTION: Y_Pressure
+VALUE: 0.0
+QUESTION: Z_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 52 CONDITION: Dyn._Local_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A pressure load over the shell given in the same local axes used to define the shell properties. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+TITLE: Amplitudes
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Local_X_Pressure
+VALUE: 0.0
+QUESTION: Local_Y_Pressure
+VALUE: 0.0
+QUESTION: Local_Z_Pressure
+VALUE: 0.0
+TITLE: Parameters
+QUESTION: Function#CB#(Sine/Cosine_Load,Table)
+VALUE: Sine/Cosine_Load
+DEPENDENCIES: (Table,HIDE,Circular_Freq,#CURRENT#,HIDE,Phase_angle,#CURRENT#,HIDE,Initial_Time,#CURRENT#,HIDE,Final_Time,#CURRENT#,RESTORE,Load_Table,#CURRENT#)
+DEPENDENCIES: (Sine/Cosine_Load,RESTORE,Circular_Freq,#CURRENT#,RESTORE,Phase_angle,#CURRENT#,RESTORE,Initial_Time,#CURRENT#,RESTORE,Final_Time,#CURRENT#,HIDE,Load_Table,#CURRENT#)
+QUESTION: Circular_Freq
+VALUE: 3.1416
+HELP: Indicate the circular frequency of the dynamic load
+QUESTION: Phase_angle
+VALUE: 0.0
+HELP: Indicate the phase angle of the dynamic load
+QUESTION: Initial_Time
+VALUE: 0.0
+HELP: Indicate the initial time instant of aplication of the dynamic load
+QUESTION: Final_Time
+VALUE: 0.0
+HELP: Indicate the final time instant of aplication of the dynamic load
+QUESTION: Load_Table:#MAT#(Tables)
+VALUE: Table
+TKWIDGET: button_tables::initbutton
+END CONDITION
+NUMBER: 53 CONDITION: Dyn._Blast_Shell_Load
+CONDTYPE: over surfaces
+CONDMESHTYPE: over body elements
+HELP: A blast pressure load over the shell. Units in International System for values are:\n\t (N/m2) for the shell pressures.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: X_bomb
+VALUE: 0.0
+HELP: Cordinate X of the explosive
+QUESTION: Y_bomb
+VALUE: 0.0
+HELP: Cordinate Y of the explosive
+QUESTION: Z_bomb
+VALUE: 0.0
+HELP: Cordinate Z of the explosive
+QUESTION: Weigth_bomb
+VALUE: 0.0
+HELP: Bomb power in equivalence weight of TNT.
+END CONDITION
+BOOK:Initial_Conditions
+NUMBER: 54 CONDITION: Surfaces_Initial_Conditions
+CONDTYPE: over surfaces
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 55 CONDITION: Lines_Initial_Conditions
+CONDTYPE: over lines
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+NUMBER: 56 CONDITION: Points_Initial_Conditions
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: Use this condition to prescribe the user-defined initial in the dynamic analysis.
+QUESTION: Units#CB#(N-m-kg,N-cm-kg,N-mm-kg,Kp-cm-utm)
+VALUE: N-m-kg
+QUESTION: Disp_x
+VALUE: 0.0
+QUESTION: Disp_y
+VALUE: 0.0
+QUESTION: Disp_z
+VALUE: 0.0
+QUESTION: Vel_x
+VALUE: 0.0
+QUESTION: Vel_y
+VALUE: 0.0
+QUESTION: Vel_z
+VALUE: 0.0
+END CONDITION
+BOOK:Detailed results
+NUMBER: 57 CONDITION: Detailed_results
+CONDTYPE: over points
+CONDMESHTYPE: over nodes
+HELP: If this condition is applied to points, an additional file is created: PROJECT.detailed.xml with detailed result information in the selected nodes.
+QUESTION: Id
+VALUE: pointA
+END CONDITION

@@ -1,0 +1,33 @@
+BeginZE D:\Carpeta K\LIBRO_2\Shell_QLLL_V1.1\Examples\Hiberbolic\hiper256x256.gid\hiper256x256.vv
+   x -51.8456 151.846
+   y 122.648 -22.6483
+   z -217.945 217.945
+   e 72.6483
+   v -0 -0 -8.74228e-008
+   r -1
+   m 1 -1.74846e-007 0 0 1.74846e-007 1 0 0 0 0 1 0 0 0 0 1
+   c 50 50 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 1
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE D:\Carpeta K\LIBRO_2\Shell_QLLL_V1.1\Examples\Hiberbolic\hiper256x256.gid\hiper256x256.vv
+

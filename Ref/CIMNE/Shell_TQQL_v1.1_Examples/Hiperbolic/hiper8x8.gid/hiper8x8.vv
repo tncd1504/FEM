@@ -1,0 +1,33 @@
+BeginZE D:\Carpeta K\LIBRO_2\Lamina_TCCL_V1.0\hiper8x8.gid\hiper8x8.vv
+   x -76.2963 176.296
+   y 136.62 -36.6198
+   z -217.945 217.945
+   e 72.6483
+   v -0.221694 0.060146 -0.00219613
+   r -0.973257
+   m 0.992755 -0.0309429 -0.116101 0 -0.0223933 0.901694 -0.431795 0 0.118049 0.431267 0.894468 0 0 0 0 1
+   c 50 50 0
+   pd 0
+   pno 0
+   pfo 0
+   pf 4
+   pv 0
+   NowUse 0
+   DrawingType 0
+   LightVector 90 90 150 0
+   OGLShadow(UseShadows) 0
+   OGLShadow(RenderMode) RenderNice
+   OGLShadow(ShadowBias) -0.002
+   OGLShadow(AmbientShadows) 1
+   OGLShadow(UseFBO) 0
+   OGLShadow(FBOSize) 0
+   OGLShadow(DimmedLightFactor) 0.02
+   OGLStereo(UseStereo) 0
+   OGLStereo(RelativeEyeDistance) 1
+   OGLStereo(FlipEyes) 0
+   OGLStereo(StereoMode) AnaglyphColors
+   OGLStereo(EyeDistance) 0.075
+   OGLStereo(LeftEyeDistance) 1 0 0 1
+   OGLStereo(RightEyeDistance) 0 1 1 1
+EndZE D:\Carpeta K\LIBRO_2\Lamina_TCCL_V1.0\hiper8x8.gid\hiper8x8.vv
+

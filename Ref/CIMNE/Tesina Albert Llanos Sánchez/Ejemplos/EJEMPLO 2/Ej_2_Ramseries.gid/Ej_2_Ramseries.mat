@@ -1,0 +1,10 @@
+BOOK:Tables
+NUMBER: 3 MATERIAL: Table
+QUESTION: Table
+VALUE: 1
+STATE: hidden
+QUESTION: Table_Interpolation_Values:(x,y[x])
+VALUE: #N# 1 none
+STATE: hidden
+TKWIDGET: Function::ComunicateWithGiD
+END MATERIAL
