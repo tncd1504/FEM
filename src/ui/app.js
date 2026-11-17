@@ -5,8 +5,11 @@
  */
 import { toSI, fromSI, fmt } from '../core/units.js';
 import { runBT00, runBT01, runBT02 } from '../modules/xep-coc/pile_specs.js';
+import { runBT03 } from '../modules/xep-coc/section_checker.js';
+import { runBT04, runBT05 } from '../modules/xep-coc/contact_checker.js';
+import { runBT06, runBT07, runBT08 } from '../modules/xep-coc/support_checker.js';
 
-const STORAGE_KEY = 'fem_xep_coc_m1_state_v050';
+const STORAGE_KEY = 'fem_xep_coc_m1_m2_state_v050';
 
 let pileDb = null;
 let supportDb = null;
@@ -79,6 +82,14 @@ function readFormConfig() {
       e1_m: Number(el('inp-e1').value),
       e2_m: Number(el('inp-e2').value),
     },
+    m2Config: {
+      L_cang_m: Number(el('inp-Lcang')?.value ?? 15.0),
+      anchorSlip_mm: Number(el('inp-anchorSlip')?.value ?? 2.0),
+      measurementStage: el('inp-measureStage')?.value ?? 'before_anchoring',
+      deltaT_K: Number(el('inp-deltaT')?.value ?? 0),
+      contactArcAngle_deg: Number(el('inp-contactAngle')?.value ?? 20),
+      ringLoadCase: el('inp-ringCase')?.value ?? 'two_point_diametral',
+    },
   };
 }
 
@@ -145,10 +156,12 @@ function renderReferenceBox(ref) {
 }
 
 /** Hiển thị lưới thông số tự tính (computed) theo chế độ đơn vị đang chọn. */
-function renderComputedSummary(bt00, bt01, bt02) {
+function renderComputedSummary(bt00, bt01, bt02, bt03) {
   const mode = getDisplayMode();
   const s = bt00.summarySI;
   const c = bt00.record.computed.concrete;
+  const eff = bt03.prestress.effective;
+  const cap = bt03.capacitiesSI;
   const badge = el('computed-unit-badge');
   badge.textContent = mode === 'SI'
     ? 'Đang hiển thị: Hệ SI chuẩn (m, m², m⁴, Pa, N/m, N·m)'
@@ -157,23 +170,23 @@ function renderComputedSummary(bt00, bt01, bt02) {
   const items = mode === 'SI'
     ? [
         ['Chiều dày tự tính t', `${fmt(s.t, 4)} m`, `t = (Do - Di)/2`],
-        ['Diện tích hình học Ag', `${fmt(s.Ag, 5)} m²`, `Ab = ${fmt(s.Ab, 5)} m²`],
-        ['Diện tích thép DƯL Ap', `${fmt(s.Ap, 6)} m²`, `${bt00.record.computed.section.N1} thanh`],
-        ['Diện tích quy đổi Ared', `${fmt(s.Ared, 5)} m²`, `α = Ep/Eb = ${fmt(bt00.record.computed.section.alpha, 4)}`],
-        ['Mômen quán tính Ig / Ired', `${fmt(s.Ig, 5)} / ${fmt(s.Ired, 5)} m⁴`, `Wred = ${fmt(s.Wred, 5)} m³`],
-        ['Bê tông TCVN 5574 (${c.gradeB})', `Rb = ${fmt(c.Rb, 4)} Pa`, `Rbt = ${fmt(c.Rbt, 4)} Pa, Eb = ${fmt(c.Eb, 4)} Pa`],
-        ['Tự trọng đơn vị q', `${fmt(s.selfWeightPerMeter, 5)} N/m`, `Khối lượng dài = ${fmt(s.massPerMeter, 4)} kg/m`],
-        ['Độ cứng uốn EIred', `${fmt(s.EIred, 5)} N·m²`, `Tổng tự trọng G = ${fmt(s.totalSelfWeight, 5)} N`],
+        ['Diện tích Ag / Ared', `${fmt(s.Ag, 5)} / ${fmt(s.Ared, 5)} m²`, `Ap = ${fmt(s.Ap, 5)} m² (${bt00.record.computed.section.N1} thanh)`],
+        ['Quán tính Ig / Ired', `${fmt(s.Ig, 5)} / ${fmt(s.Ired, 5)} m⁴`, `Wred = ${fmt(s.Wred, 5)} m³`],
+        [`Bê tông TCVN 5574 (${c.gradeB})`, `Rb = ${fmt(c.Rb, 4)} Pa`, `Rbt = ${fmt(c.Rbt, 4)} Pa, Eb = ${fmt(c.Eb, 4)} Pa`],
+        ['Tự trọng q & EIred', `${fmt(s.selfWeightPerMeter, 5)} N/m`, `EIred = ${fmt(s.EIred, 5)} N·m²`],
+        ['DƯL hữu hiệu (BT03)', `σ_pe = ${fmt(eff.sigma_pe_Pa, 4)} Pa`, `P_eff = ${fmt(eff.P_eff_N, 4)} N, σ_pc = ${fmt(eff.sigma_pc_Pa, 4)} Pa`],
+        ['Mômen Mcrc & MRd (BT03)', `Mcrc = ${fmt(cap.Mcrc_Nm, 4)} N·m`, `MRd = ${fmt(cap.MRd_design_Nm, 4)} N·m`],
+        ['Sức kháng cắt QRd(x)', `Đầu: ${fmt(cap.QRd_endZone_N, 4)} N`, `Giữa thân: ${fmt(cap.QRd_midZone_N, 4)} N`],
       ]
     : [
         ['Chiều dày tự tính t', `${fmt(fromSI(s.t, 'mm'), 4)} mm`, `t = (Do - Di)/2`],
-        ['Diện tích hình học Ag', `${fmt(fromSI(s.Ag, 'cm2'), 5)} cm²`, `Ab = ${fmt(fromSI(s.Ab, 'cm2'), 5)} cm²`],
-        ['Diện tích thép DƯL Ap', `${fmt(fromSI(s.Ap, 'cm2'), 4)} cm²`, `${bt00.record.computed.section.N1} thanh (bỏ N2, ØGC)`],
-        ['Diện tích quy đổi Ared', `${fmt(fromSI(s.Ared, 'cm2'), 5)} cm²`, `α = Ep/Eb = ${fmt(bt00.record.computed.section.alpha, 4)}`],
+        ['Diện tích Ag / Ared', `${fmt(fromSI(s.Ag, 'cm2'), 5)} / ${fmt(fromSI(s.Ared, 'cm2'), 5)} cm²`, `Ap = ${fmt(fromSI(s.Ap, 'cm2'), 4)} cm² (bỏ N2, ØGC)`],
         ['Quán tính Ig / Ired', `${fmt(fromSI(s.Ig, 'cm4'), 5)} / ${fmt(fromSI(s.Ired, 'cm4'), 5)} cm⁴`, `Wred = ${fmt(fromSI(s.Wred, 'cm3'), 5)} cm³`],
         [`Bê tông TCVN 5574 (${c.gradeB})`, `Rb = ${fmt(fromSI(c.Rb, 'MPa'), 4)} MPa`, `Rbt = ${fmt(fromSI(c.Rbt, 'MPa'), 3)} MPa, Eb = ${fmt(fromSI(c.Eb, 'MPa'), 5)} MPa`],
-        ['Tự trọng đơn vị q', `${fmt(fromSI(s.selfWeightPerMeter, 'kN/m'), 4)} kN/m`, `Khối lượng dài = ${fmt(s.massPerMeter, 4)} kg/m`],
-        ['Độ cứng uốn EIred', `${fmt(s.EIred / 1e3, 5)} kN·m²`, `Tổng tự trọng G = ${fmt(fromSI(s.totalSelfWeight, 'kN'), 4)} kN`],
+        ['Tự trọng q & EIred', `${fmt(fromSI(s.selfWeightPerMeter, 'kN/m'), 4)} kN/m`, `EIred = ${fmt(s.EIred / 1e3, 5)} kN·m²`],
+        ['DƯL hữu hiệu (BT03)', `σ_pe = ${fmt(fromSI(eff.sigma_pe_Pa, 'MPa'), 4)} MPa`, `P_eff = ${fmt(fromSI(eff.P_eff_N, 'kN'), 4)} kN, σ_pc = ${fmt(fromSI(eff.sigma_pc_Pa, 'MPa'), 3)} MPa`],
+        ['Mômen Mcrc & MRd (BT03)', `Mcrc = ${fmt(cap.Mcrc_Nm / 1e3, 4)} kN·m`, `MRd = ${fmt(cap.MRd_design_Nm / 1e3, 4)} kN·m (Mu,tc = ${fmt(cap.Mu_characteristic_Nm / 1e3, 4)})`],
+        ['Sức kháng cắt QRd(x)', `Đầu 2Do: ${fmt(cap.QRd_endZone_N / 1e3, 4)} kN`, `Thân giữa: ${fmt(cap.QRd_midZone_N / 1e3, 4)} kN`],
       ];
 
   el('bt00-summary-grid').innerHTML = items
@@ -353,10 +366,10 @@ function renderInternalForcePlots(bt01, bt02) {
       },
     ],
     {
-      title: { text: `Biểu đồ Mômen uốn M(x) [${mUnit}]`, font: { size: 13 } },
+      title: { text: `Biểu đồ Mômen uốn M(x) [${mUnit}] (Vẽ về thớ căng: M < 0 hướng lên, M > 0 hướng xuống)`, font: { size: 13 } },
       margin: { l: 55, r: 20, t: 35, b: 40 },
       xaxis: { title: 'x (m)' },
-      yaxis: { title: `M (${mUnit})`, zeroline: true },
+      yaxis: { title: `M (${mUnit})`, autorange: 'reversed', zeroline: true, zerolinewidth: 2, zerolinecolor: '#334155' },
       legend: { orientation: 'h', y: -0.22, font: { size: 11 } },
       paper_bgcolor: 'transparent',
       plot_bgcolor: '#f8fafc',
@@ -549,6 +562,110 @@ function render8StepReport(tab, { bt00, bt01, bt02 }) {
       </div>
       <div><strong>8. Kết luận:</strong> <span class="text-emerald-700 font-bold">Bài tính BT02 đã được kiểm chứng (${bt02.verified ? 'ĐẠT' : 'KHÔNG ĐẠT'})</span>. Sẵn sàng làm nền tảng cho Mốc M2 (BT03–BT08: tính tổn hao DƯL & kiểm tra sức kháng tiết diện TCVN 5574:2018) và Mốc M3 (BT10–BT11: hệ nhiều tầng S2).</div>
     </div>`;
+    return;
+  }
+
+  if (tab === 'BT03' && lastResults?.bt03) {
+    const bt03 = lastResults.bt03;
+    const p = bt03.prestress;
+    const cap = bt03.capacitiesSI;
+    const dem = bt03.demandsSI;
+    const u = bt03.utilization;
+    const lossRows = p.lossTable
+      .map(
+        (l) => `
+        <tr class="border-b">
+          <td class="p-1.5 font-mono font-bold">${l.id} (GĐ ${l.stage})</td>
+          <td class="p-1.5">${l.mechanism}</td>
+          <td class="p-1.5 font-mono text-[11px]">${l.clause}<br/>${l.formula}</td>
+          <td class="p-1.5 font-mono">${fmt(l.value_Pa, 5)} Pa (${fmt(l.value_MPa, 4)} MPa)</td>
+        </tr>`
+      )
+      .join('');
+
+    container.innerHTML = `
+      <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+        <div><strong>1. Tên bài và mục tiêu:</strong> ${bt03.title}. Tự tính đầy đủ 6 khoản tổn hao ứng suất trước, dự ứng lực hữu hiệu (<code>σ_pe, P_eff, σ_pc</code>) và kiểm tra sức kháng uốn, nứt, cắt dọc cọc theo phân vùng <code>section(x)</code>.</div>
+        <div><strong>2. Sơ đồ & Quy trình công nghệ:</strong> Căng trước bằng máy cơ khí tại nhà máy trên đoạn căng <code>L_cang = ${fmt(p.processTrace.L_cang_m, 4)} m</code> (chiều dài cọc <code>L = ${fmt(p.processTrace.L_pile_m, 4)} m</code>, thép cắt <code>L_cut = ${fmt(p.processTrace.L_cut_m, 4)} m</code>, mốc đo: <code>${p.processTrace.measurementStage}</code>); dưỡng hộ hầm sấy áp suất khí quyển (<code>ζ_heat = ${p.processTrace.zeta_heat}</code>) → tháo khuôn → dưỡng hộ tự nhiên. Bỏ thép dọc gia cường đầu cọc (<code>N2, ØGC, L2</code>).</div>
+        <div><strong>3. Đầu vào (SI):</strong> <code>σ_sp0 = ${fmt(p.initial.sigma_sp0_Pa / 1e6, 4)} MPa</code>, <code>P0 = ${fmt(p.initial.P0_N / 1e3, 4)} kN</code>, <code>ΔT = ${p.processTrace.deltaT_K} K</code>, <code>ΔL2 = ${(Number(el('inp-anchorSlip')?.value ?? 2)).toFixed(2)} mm</code>.</div>
+        <div><strong>4. Cơ sở tính:</strong> TCVN 5574:2018 Mục 9.1 (tổn hao DƯL), Mục 8.1.2 (uốn TTGH I mô hình biến dạng phi tuyến 2 đoạn thẳng), Mục 8.1.3 (cắt theo hình chiếu vết nứt xiên <code>c</code> và vùng đai <code>section(x)</code>), Mục 8.2.2 (mômen kháng nứt <code>Mcrc</code>).</div>
+        <div><strong>5. Bảng các khoản tổn hao ứng suất trước (TCVN 5574:2018 Mục 9.1):</strong>
+          <table class="w-full mt-1 border-collapse text-xs">
+            <thead><tr class="bg-slate-200 text-left"><th class="p-1.5">Khoản</th><th class="p-1.5">Cơ chế tổn hao</th><th class="p-1.5">Điều khoản & Công thức</th><th class="p-1.5">Giá trị (SI Pa / MPa)</th></tr></thead>
+            <tbody>${lossRows}</tbody>
+          </table>
+          <div class="mt-1.5 font-mono text-xs bg-blue-50 border border-blue-200 p-2 rounded">
+            Tổng tổn hao <code>Δσ_sp = ${fmt(p.totals.totalLoss_Pa / 1e6, 4)} MPa</code> (${fmt(p.totals.lossRatio * 100, 3)}%) ⇒
+            <strong>σ_pe = ${fmt(p.effective.sigma_pe_Pa / 1e6, 4)} MPa</strong> |
+            <strong>P_eff = ${fmt(p.effective.P_eff_N / 1e3, 4)} kN</strong> |
+            <strong>σ_pc(Ab) = ${fmt(p.effective.sigma_pc_net_Pa / 1e6, 4)} MPa</strong> (σ_pc,red = ${fmt(p.effective.sigma_pc_red_Pa / 1e6, 4)} MPa)
+          </div>
+        </div>
+        <div><strong>6. Sức kháng tự tính vs. Tác động từ BT02:</strong>
+          <ul class="list-disc pl-5 space-y-1 mt-1 font-mono">
+            <li>Chống nứt (TTGH II): <code>|M_ser| = ${fmt(dem.M_ser_max_Nm / 1e3, 4)} kN·m</code> vs <code>Mcrc = ${fmt(cap.Mcrc_Nm / 1e3, 4)} kN·m</code> ⇒ Hệ số sử dụng <code>U_crack = ${fmt(u.crackingSLS, 3)}</code></li>
+            <li>Chịu uốn (TTGH I): <code>M_u,max = ${fmt(dem.M_uls_max_Nm / 1e3, 4)} kN·m</code> vs <code>MRd = ${fmt(cap.MRd_design_Nm / 1e3, 4)} kN·m</code> (<code>Mu,tc = ${fmt(cap.Mu_characteristic_Nm / 1e3, 4)} kN·m</code>) ⇒ <code>U_bend = ${fmt(u.flexureULS, 3)}</code></li>
+            <li>Chịu cắt vùng đầu cọc <code>2Do</code>: <code>Q_end = ${fmt(dem.Q_end_max_N / 1e3, 4)} kN</code> vs <code>QRd,end = ${fmt(cap.QRd_endZone_N / 1e3, 4)} kN</code> ⇒ <code>U_shear,end = ${fmt(u.shearEndZoneULS, 3)}</code></li>
+            <li>Chịu cắt vùng thân giữa (tại vị trí kê <code>x1, x2</code>): <code>Q_mid = ${fmt(dem.Q_mid_max_N / 1e3, 4)} kN</code> vs <code>QRd,mid = ${fmt(cap.QRd_midZone_N / 1e3, 4)} kN</code> ⇒ <code>U_shear,mid = ${fmt(u.shearMidZoneULS, 3)}</code></li>
+          </ul>
+        </div>
+        <div><strong>7. Đối chiếu chẩn đoán (không dùng làm ngưỡng):</strong> Bản vẽ tham khảo công bố <code>Mcr_BV = ${bt03.referenceDiagnosticOnly.publishedMcr_Nm ? fmt(bt03.referenceDiagnosticOnly.publishedMcr_Nm / 1e3, 4) : '—'} kN·m</code>, <code>Mu_BV = ${bt03.referenceDiagnosticOnly.publishedMu_Nm ? fmt(bt03.referenceDiagnosticOnly.publishedMu_Nm / 1e3, 4) : '—'} kN·m</code>.</div>
+        <div><strong>8. Kết luận:</strong> Cơ chế chi phối dọc cọc: <code>${bt03.governingMechanism}</code> (<code>U_max = ${fmt(bt03.maxUtilization, 3)}</code>) — Trạng thái kết cấu dọc cọc: <strong class="${bt03.structuralPass ? 'text-emerald-700' : 'text-red-700'}">${bt03.structuralPass ? 'ĐÁP ỨNG (U ≤ 1,0)' : 'VƯỢT GIỚI HẠN (U > 1,0)'}</strong>.</div>
+      </div>`;
+    return;
+  }
+
+  if (tab === 'BT04' && lastResults?.bt04) {
+    const bt04 = lastResults.bt04;
+    container.innerHTML = `
+      <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+        <div><strong>1. Tên bài và mục tiêu:</strong> ${bt04.title}. Kiểm tra nén cục bộ phía bê tông cọc tại diện tiếp xúc với thanh kê gỗ cứng <code>100 × 100 mm</code>; không kiểm tra nén/biến dạng gỗ.</div>
+        <div><strong>2. Sơ đồ & Hình học tiếp xúc:</strong> Chiều dài tiếp xúc dọc cọc <code>bx = ${fmt(bt04.inputsSI.bx_m, 3)} m</code>, góc ôm tiếp xúc <code>θ_c = ${bt04.inputsSI.contactArcAngle_deg}°</code> ⇒ bề rộng dây cung tiếp xúc <code>bc = ${fmt(bt04.contactGeometrySI.bc_effective_m * 1e3, 4)} mm</code>, diện tích tiếp xúc thực tế phía cọc <code>A_loc = ${fmt(bt04.contactGeometrySI.A_loc_m2 * 1e4, 4)} cm²</code> (khác diện tích mặt cắt cọc <code>Ag = ${fmt(bt04.contactGeometrySI.Ag_pile_m2 * 1e4, 4)} cm²</code> và khác diện tích tiết diện gỗ <code>100 cm²</code>).</div>
+        <div><strong>3. Đầu vào (SI):</strong> Lực nén pháp tuyến lớn nhất tại gối <code>N_c = ${fmt(bt04.inputsSI.normalForce_N / 1e3, 4)} kN</code>.</div>
+        <div><strong>4. Cơ sở tính:</strong> TCVN 5574:2018 Mục 8.1.5: <code>R_b,loc = φ_b · R_b</code> với <code>φ_b = ${fmt(bt04.capacitySI.phi_b, 3)}</code>, <code>N_loc,Rd = ψ · R_b,loc · A_loc</code> (<code>ψ = ${bt04.capacitySI.psi}</code>).</div>
+        <div><strong>5. Kết quả & Đối chứng tích phân áp lực:</strong> Áp lực trung bình <code>p_avg = ${fmt(bt04.pressuresSI.p_avg_Pa / 1e6, 4)} MPa</code>, áp lực đỉnh elip <code>p_max = ${fmt(bt04.pressuresSI.p_max_elliptical_Pa / 1e6, 4)} MPa</code>; tích phân áp lực <code>∫p·dA = ${fmt(bt04.pressuresSI.integralForce_N / 1e3, 4)} kN</code> (sai số cân bằng <code>${bt04.pressuresSI.equilibriumRelError.toExponential(2)}</code>); sức kháng nén cục bộ phía cọc <code>N_loc,Rd = ${fmt(bt04.capacitySI.N_loc_Rd_N / 1e3, 4)} kN</code> ⇒ Hệ số sử dụng <code>U_loc = ${fmt(bt04.capacitySI.utilization, 3)}</code>.</div>
+        <div><strong>6. Kết luận:</strong> <strong class="${bt04.capacitySI.pass ? 'text-emerald-700' : 'text-red-700'}">${bt04.capacitySI.pass ? 'ĐẠT NÉN CỤC BỘ PHÍA CỌC' : 'KHÔNG ĐẠT NÉN CỤC BỘ'}</strong>. Tiếp tục kiểm tra uốn vòng thành cọc rỗng tại BT05.</div>
+      </div>`;
+    return;
+  }
+
+  if (tab === 'BT05' && lastResults?.bt05) {
+    const bt05 = lastResults.bt05;
+    container.innerHTML = `
+      <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+        <div><strong>1. Tên bài và mục tiêu:</strong> ${bt05.title}. Phân tích nội lực uốn vòng <code>M_ring(θ), N_ring(θ)</code> và kiểm tra nứt/ép vỡ thành cọc rỗng theo đúng vùng cốt đai <code>sectionAt(x1)</code>.</div>
+        <div><strong>2. Sơ đồ & Phân vùng cốt đai tại vị trí kê <code>x1 = ${fmt(bt05.inputsSI.x_m, 3)} m</code>:</strong> Thuộc vùng <strong>${bt05.sectionZoneAtContact.zone === 'end' ? 'Đầu cọc (2Do)' : 'Thân giữa (đai thưa)'}</strong> (<code>${bt05.sectionZoneAtContact.wireCount}Ø${fmt(bt05.sectionZoneAtContact.diameter_m * 1e3, 2)} a${fmt(bt05.sectionZoneAtContact.pitch_m * 1e3, 3)} mm</code>). Bề rộng làm việc dọc trục <code>b_eff = bx + 4t = ${fmt(bt05.inputsSI.b_eff_m, 3)} m</code>. Không gán dự ứng lực dọc <code>σ_pc</code> cho phương vòng.</div>
+        <div><strong>3. Nội lực vòng & So sánh với R/A trung bình:</strong> Mômen vòng căng mặt trong cực đại <code>M_in,max = ${fmt(bt05.ringForcesSI.M_inner_max_Nm / 1e3, 4)} kN·m</code>, căng mặt ngoài tại hông <code>M_out,max = ${fmt(bt05.ringForcesSI.M_outer_max_Nm / 1e3, 4)} kN·m</code>. Ứng suất kéo vòng cực đại <code>σ_t,ring = ${fmt(bt05.ringForcesSI.sigma_tens_max_Pa / 1e6, 4)} MPa</code> (gấp <strong>${fmt(bt05.ringForcesSI.stressAmplificationOverNaiveRA, 2)} lần</strong> ứng suất trung bình <code>P/Ag = ${fmt(bt05.ringForcesSI.naiveAverageStress_Pa / 1e6, 4)} MPa</code>).</div>
+        <div><strong>4. Sức kháng vòng & Đối chứng Roark:</strong> Sai số so với công thức giải tích Roark = <code>${bt05.verification.ringAnalyticalRelError.toExponential(2)}</code>. Mômen kháng nứt vòng <code>M_ring,crc = ${fmt(bt05.capacitiesSI.M_ring_crc_Nm / 1e3, 4)} kN·m</code> (<code>U_crack,ring = ${fmt(bt05.capacitiesSI.utilizationCrack, 3)}</code>), sức kháng uốn vòng <code>M_ring,Rd = ${fmt(bt05.capacitiesSI.M_ring_Rd_Nm / 1e3, 4)} kN·m</code> (<code>U_ULS,ring = ${fmt(bt05.capacitiesSI.utilizationULS, 3)}</code>).</div>
+      </div>`;
+    return;
+  }
+
+  if (tab === 'BT06' && lastResults?.bt06) {
+    const { bt06, bt07, bt08 } = lastResults;
+    const rRows = bt06.reactions
+      .map(
+        (r) => `<tr class="border-b"><td class="p-1 font-mono">Cọc #${r.pileIndex} (y=${r.y_m}m)</td><td class="p-1 font-bold ${r.active ? 'text-emerald-700' : 'text-amber-700'}">${r.active ? 'Đang tiếp xúc (Nén)' : 'Tách hở (R = 0)'}</td><td class="p-1 font-mono">${fmt(r.R_N / 1e3, 4)} kN</td><td class="p-1 font-mono">${fmt(r.gapOpening_m * 1e3, 4)} mm</td></tr>`
+      )
+      .join('');
+    container.innerHTML = `
+      <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-3">
+        <div>
+          <strong>BT06 — Truyền lực qua thanh kê gỗ 100 × 100 mm tuyệt đối cứng (tiếp xúc một phía):</strong>
+          <p class="mt-0.5 text-slate-600">Mô hình vật rắn tuyệt đối cứng (<code>0,1 × 0,1 m, A = 0,01 m²</code>), không kiểm tra uốn/cắt/nén gỗ. Khi tải tầng trên đặt lệch tâm, thuật toán Active-Set tự động bắt hiện tượng nhấc hở (<code>R_j = 0</code>) và phân phối phản lực không đều nhưng vẫn bảo toàn cân bằng lực (sai số <code>${bt06.equilibriumSI.relForceErr.toExponential(2)}</code>) & cân bằng mômen (sai số <code>${bt06.equilibriumSI.relMomentErr.toExponential(2)}</code>).</p>
+          <table class="w-full mt-1 border-collapse text-xs"><thead><tr class="bg-slate-200 text-left"><th class="p-1">Vị trí cọc dưới</th><th class="p-1">Trạng thái tiếp xúc</th><th class="p-1">Phản lực truyền R_j</th><th class="p-1">Độ mở khe hở</th></tr></thead><tbody>${rRows}</tbody></table>
+        </div>
+        <div class="border-t pt-2">
+          <strong>BT07 — Ràng buộc giữ ngang lý tưởng (cụm 3 cọc xếp tam giác 30°):</strong>
+          <p class="mt-0.5 font-mono">Lực tiếp xúc nghiêng giữa cọc trên và cọc đáy: <code>N_inclined = ${fmt(bt07.forcesOnPileSI.N_inclined_contact_N / 1e3, 4)} kN</code> | Phản lực biên ngang lý tưởng: <code>H_restraint = ${fmt(bt07.forcesOnPileSI.H_ideal_side_restraint_N / 1e3, 4)} kN</code> | Phản lực đứng mỗi cọc đáy: <code>${fmt(bt07.forcesOnPileSI.R_vertical_per_bottom_pile_N / 1e3, 4)} kN</code> (Sai số cân bằng = <code>${bt07.forcesOnPileSI.forceBalanceErr.toExponential(2)}</code>). Không kiểm tra sức chịu tải chèn kho.</p>
+        </div>
+        <div class="border-t pt-2">
+          <strong>BT08 — Hai tuyến kê đáy trên nền kho cứng lý tưởng, không lún:</strong>
+          <p class="mt-0.5 font-mono"><code>R_nền,1 = ${fmt(bt08.outputsSI.R_ground_1_N / 1e3, 4)} kN</code>, <code>R_nền,2 = ${fmt(bt08.outputsSI.R_ground_2_N / 1e3, 4)} kN</code>, độ lún <code>w_1 = w_2 = 0 m</code>. Không yêu cầu dữ liệu địa kỹ thuật nền kho.</p>
+        </div>
+      </div>`;
+    return;
+  }
 }
 
 /** Chạy toàn bộ chuỗi tính toán Mốc M1 (BT00 -> BT01 -> BT02). */
@@ -568,6 +685,7 @@ function runCalculationAndRender() {
     }
 
     const { x1_m, x2_m, P1_kN, P2_kN, e1_m, e2_m } = cfg.beamM1;
+    const m2 = cfg.m2Config || {};
     const bt01 = runBT01({ pileRecordOrConfig: bt00, x1_m, x2_m });
     const bt02 = runBT02({
       pileRecordOrConfig: bt00,
@@ -579,18 +697,74 @@ function runCalculationAndRender() {
       e2_m,
     });
 
-    lastResults = { bt00, bt01, bt02 };
-    const allVerified = bt00.verified && bt01.verified && bt02.verified;
+    const bt03 = runBT03({
+      bt00OrConfig: bt00,
+      beamResult: bt02,
+      processInput: {
+        L_cang_m: m2.L_cang_m || bt00.summarySI.L,
+        anchorSlip_mm: m2.anchorSlip_mm ?? 2.0,
+        measurementStage: m2.measurementStage || 'before_anchoring',
+        deltaT_K: m2.deltaT_K ?? 0,
+        zeroDeltaTJustification:
+          'Giả thiết thép DƯL và thiết bị giữ lực nằm cùng trong hầm sấy, không có chênh nhiệt (TCVN 5574:2018 Mục 9.1.4).',
+      },
+    });
+
+    const maxReaction_N = Math.max(Math.abs(bt02.reactionsSI.R1_fem), Math.abs(bt02.reactionsSI.R2_fem));
+    const bt04 = runBT04({
+      bt00,
+      normalForce_N: maxReaction_N,
+      contactType: 'pile_batten',
+      contactLengthAlongPile_m: 0.1,
+      contactArcAngle_deg: m2.contactArcAngle_deg ?? 20,
+    });
+    const bt05 = runBT05({
+      bt00,
+      x_m: x1_m,
+      normalForce_N: maxReaction_N,
+      loadCase: m2.ringLoadCase || 'two_point_diametral',
+      contactLengthAlongPile_m: 0.1,
+    });
+    const bt06 = runBT06({
+      battenLength_y_m: 3.0,
+      lowerPileCoords_y_m: [0.3, 0.9, 1.5, 2.1, 2.7],
+      upperLoads: [{ y_m: 2.4, P_N: maxReaction_N }],
+    });
+    const bt07 = runBT07({
+      Do_m: bt00.summarySI.Do,
+      pileWeightPerRow_N: bt00.summarySI.totalSelfWeight,
+      contactAngleFromVertical_deg: 30,
+      includeIdealSideRestraint: true,
+    });
+    const bt08 = runBT08({
+      L_m: bt00.summarySI.L,
+      x1_m,
+      x2_m,
+      line1TotalLoad_N: bt02.reactionsSI.R1_fem,
+      line2TotalLoad_N: bt02.reactionsSI.R2_fem,
+    });
+
+    lastResults = { bt00, bt01, bt02, bt03, bt04, bt05, bt06, bt07, bt08 };
+    const allVerified =
+      bt00.verified &&
+      bt01.verified &&
+      bt02.verified &&
+      bt03.verified &&
+      bt04.verified &&
+      bt05.verified &&
+      bt06.verified &&
+      bt07.verified &&
+      bt08.verified;
     statusBox.className = allVerified
       ? 'rounded-xl p-3.5 text-sm font-semibold border bg-emerald-50 border-emerald-300 text-emerald-900'
       : 'rounded-xl p-3.5 text-sm font-semibold border bg-red-50 border-red-300 text-red-900';
     statusBox.innerHTML = `
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <span>✅ <strong>Kiểm chứng phương pháp Mốc M1 (BT00 – BT02):</strong> ${allVerified ? 'KHỚP ĐỐI CHỨNG GIẢI TÍCH ĐỘC LẬP (Sai số < 10⁻¹⁰)' : 'CẦN RÀ SOÁT'}</span>
-        <span class="text-xs font-mono">Chuẩn chính: TCVN 5574:2018 • L = ${bt00.summarySI.L} m • q = ${fmt(fromSI(bt00.summarySI.selfWeightPerMeter, 'kN/m'), 4)} kN/m</span>
+        <span>✅ <strong>Kiểm chứng Mốc M1 & M2 (BT00 – BT08):</strong> ${allVerified ? 'ĐÃ KIỂM CHỨNG ĐỘC LẬP • TCVN 5574:2018' : 'CẦN RÀ SOÁT'}</span>
+        <span class="text-xs font-mono">σ_pe = ${fmt(bt03.prestress.effective.sigma_pe_Pa / 1e6, 4)} MPa • Mcrc = ${fmt(bt03.capacitiesSI.Mcrc_Nm / 1e3, 4)} kN·m • MRd = ${fmt(bt03.capacitiesSI.MRd_design_Nm / 1e3, 4)} kN·m</span>
       </div>`;
 
-    renderComputedSummary(bt00, bt01, bt02);
+    renderComputedSummary(bt00, bt01, bt02, bt03);
     renderCrossSectionPlot(bt00);
     renderBeamSchematicPlot(bt00, bt01, bt02);
     renderInternalForcePlots(bt01, bt02);
@@ -691,7 +865,7 @@ async function initApp() {
   el('btn-run-calc').addEventListener('click', runCalculationAndRender);
   el('ui-unit-mode').addEventListener('change', () => {
     if (lastResults) {
-      renderComputedSummary(lastResults.bt00, lastResults.bt01, lastResults.bt02);
+      renderComputedSummary(lastResults.bt00, lastResults.bt01, lastResults.bt02, lastResults.bt03);
       renderInternalForcePlots(lastResults.bt01, lastResults.bt02);
     }
   });
