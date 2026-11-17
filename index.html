@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hệ thống Phần mềm Tính toán FEM & Kết cấu (Web-based)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+  <header class="bg-slate-900 text-white border-b border-slate-800 shadow">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider bg-blue-600/30 text-blue-200 border border-blue-500/40 px-2.5 py-0.5 rounded mb-1">
+          TCVN 5574:2018 • Hệ đơn vị lõi SI (m–kg–s–N–Pa)
+        </span>
+        <h1 class="text-2xl font-bold tracking-tight">Hệ thống Phần mềm Tính toán FEM & Kết cấu</h1>
+        <p class="text-sm text-slate-300 mt-0.5">Ứng dụng Web tĩnh (100% Client-side) • Có kiểm chứng nghiệm giải tích độc lập</p>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <a href="./src/ui/xep-coc.html" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-4 py-2.5 rounded-lg shadow transition">
+          Mở Module Xếp Cọc PHC →
+        </a>
+        <a href="./tests/m1_benchmark.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-3.5 py-2.5 rounded-lg border border-slate-700 transition">
+          Chạy Bộ Kiểm Chứng Tự Động (M1)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded">
+            Module 01 • Đang hoạt động (Mốc M1: BT00 – BT02)
+          </span>
+          <span class="text-xs font-mono text-slate-500">Phiên bản kế hoạch v0.5.0</span>
+        </div>
+        <h2 class="text-xl font-bold text-slate-900 mb-2">
+          Tính toán & Đánh giá Xếp cọc Bê tông Ly tâm Ứng suất trước (PHC) trong Kho
+        </h2>
+        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+          Phân tích cơ học kết cấu cọc ống bê tông ly tâm dự ứng lực theo <strong>TCVN 5574:2018</strong> (ưu tiên mặc định),
+          tách biệt nghiêm ngặt 3 nhóm dữ liệu (<code>reference</code> tham khảo, <code>input</code> đầu vào do người dùng xác lập với chiều dài <code>L &gt; 0</code>,
+          và <code>computed</code> tự tính chỉ đọc theo chuẩn SI).
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 text-xs">
+          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-slate-900 mb-1">BT00 • Chuẩn hóa & Tiết diện</div>
+            <p class="text-slate-600">Tự tính <code>t, Ag, Ab, Ap, Ared, Ig, Ired, Wred, q</code>; phân vùng đai <code>section(x)</code>; bỏ thép dọc gia cường đầu cọc.</p>
+          </div>
+          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-slate-900 mb-1">BT01 • Một cọc, hai gối, tự trọng</div>
+            <p class="text-slate-600">Giải FEM dầm Euler–Bernoulli hai đầu hẫng & đối chứng nghiệm giải tích đóng <code>R1, R2, M(x), Q(x), w(x)</code>.</p>
+          </div>
+          <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-slate-900 mb-1">BT02 • Tải đúng gối & lệch gối</div>
+            <p class="text-slate-600">Khảo sát tải tập trung tầng trên đặt đúng gối (không sinh mômen giả) và lệch gối độc lập trên hai tuyến kê.</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="./src/ui/xep-coc.html" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm transition">
+            Truy cập Module Xếp Cọc (BT00 – BT02)
+          </a>
+          <a href="./tests/m1_benchmark.html" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-sm font-semibold px-4 py-2.5 rounded-lg transition">
+            Bảng Kiểm Chứng Tự Động (Benchmark M1)
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+        <div>
+          <h3 class="text-base font-bold text-slate-900 mb-3">Tài liệu & Cấu trúc chuẩn</h3>
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            <li class="flex items-start gap-2">
+              <span class="text-blue-600 font-bold">•</span>
+              <span><strong>Thư viện bản vẽ tham khảo:</strong> <code>data_in/pile_specs.json</code> (33 bản vẽ Phan Vũ D300–D1000: 24 bản v1.2, 9 bản v2.2 — chỉ dùng đối chiếu).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-blue-600 font-bold">•</span>
+              <span><strong>Cấu hình kê & biên lý tưởng:</strong> <code>data_in/support_ground_specs.json</code> (thanh kê gỗ 100×100 mm tuyệt đối cứng, nền không lún).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-blue-600 font-bold">•</span>
+              <span><strong>Tài liệu hướng dẫn:</strong> <code>docs/HDSD_xep-coc.md</code> & <code>docs/co-so-tinh-toan_xep-coc.md</code>.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500">
+          Mặc định: <code>primaryStandard = "TCVN"</code> (TCVN 5574:2018).
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

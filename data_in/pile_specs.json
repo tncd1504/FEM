@@ -1,0 +1,2511 @@
+{
+  "schemaVersion": "0.5.0",
+  "unitSystem": "SI_core_with_explicit_field_units",
+  "standardPriority": {
+    "primaryStandard": "TCVN",
+    "structuralStandard": "TCVN 5574:2018",
+    "productReferenceStandard": "TCVN 7888:2014",
+    "comparisonStandards": []
+  },
+  "libraryRole": "reference_and_geometry_preset_only",
+  "summary": {
+    "totalDrawings": 33,
+    "revisionCounts": {
+      "1.2": 24,
+      "2.2": 9
+    },
+    "note": "Gồm 24 bản vẽ D300–D700 phiên bản 1.2 và 9 bản vẽ D800–D1000 phiên bản 2.2. Các thông số Mcr, Mu, tải thi công công bố trong `reference` chỉ dùng để đối chiếu sau tính, tuyệt đối không đi vào lõi tính."
+  },
+  "piles": [
+    {
+      "id": "PV-01-PHC-A300",
+      "code": "PHC-A300",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A300 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A300-D-CO30260000",
+        "drawingFile": "01. COC DONG_PHC_D300A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 60.0,
+        "publishedMcr_kNm": 24.5,
+        "publishedMu_kNm": 36.7,
+        "publishedInstallLoad_T": 130.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 300.0,
+          "Dp_mm": 240.0,
+          "Di_mm": 180.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 6,
+          "diameter_mm": 7.1,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-02-PHC-B300",
+      "code": "PHC-B300",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B300 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B300-D-CO30260000",
+        "drawingFile": "02. COC DONG_PHC_D300B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 60.0,
+        "publishedMcr_kNm": 34.3,
+        "publishedMu_kNm": 61.7,
+        "publishedInstallLoad_T": 125.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 300.0,
+          "Dp_mm": 240.0,
+          "Di_mm": 180.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 8,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-03-PHC-C300",
+      "code": "PHC-C300",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C300 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C300-D-CO30260000",
+        "drawingFile": "03. COC DONG_PHC_D300C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 60.0,
+        "publishedMcr_kNm": 39.2,
+        "publishedMu_kNm": 78.4,
+        "publishedInstallLoad_T": 120.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 300.0,
+          "Dp_mm": 240.0,
+          "Di_mm": 180.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 10,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-04-PHC-A350",
+      "code": "PHC-A350",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A350 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A350-D-CO35260000",
+        "drawingFile": "04. COC DONG_PHC_D350A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 65.0,
+        "publishedMcr_kNm": 34.3,
+        "publishedMu_kNm": 51.5,
+        "publishedInstallLoad_T": 180.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 350.0,
+          "Dp_mm": 285.0,
+          "Di_mm": 220.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 7,
+          "diameter_mm": 7.1,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-05-PHC-B350",
+      "code": "PHC-B350",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B350 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B350-D-CO35260000",
+        "drawingFile": "05. COC DONG_PHC_D350B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 65.0,
+        "publishedMcr_kNm": 49.0,
+        "publishedMu_kNm": 88.2,
+        "publishedInstallLoad_T": 175.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 350.0,
+          "Dp_mm": 285.0,
+          "Di_mm": 220.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 10,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-06-PHC-C350",
+      "code": "PHC-C350",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C350 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C350-D-CO35260000",
+        "drawingFile": "06. COC DONG_PHC_D350C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 65.0,
+        "publishedMcr_kNm": 58.9,
+        "publishedMu_kNm": 117.8,
+        "publishedInstallLoad_T": 170.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 350.0,
+          "Dp_mm": 285.0,
+          "Di_mm": 220.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 12,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-07-PHC-A400",
+      "code": "PHC-A400",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A400 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A400-D-CO40260000",
+        "drawingFile": "07. COC DONG_PHC_D400A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 70.0,
+        "publishedMcr_kNm": 54.0,
+        "publishedMu_kNm": 81.0,
+        "publishedInstallLoad_T": 225.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 400.0,
+          "Dp_mm": 320.0,
+          "Di_mm": 260.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 10,
+          "diameter_mm": 7.1,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-08-PHC-AB400",
+      "code": "PHC-AB400",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-AB400 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-AB400-D-CO40260000",
+        "drawingFile": "08. COC DONG_PHC_D400AB.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "AB",
+        "publishedTbt_mm": 70.0,
+        "publishedMcr_kNm": 64.0,
+        "publishedMu_kNm": 105.6,
+        "publishedInstallLoad_T": 220.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 400.0,
+          "Dp_mm": 320.0,
+          "Di_mm": 260.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 10,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-09-PHC-B400",
+      "code": "PHC-B400",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B400 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B400-D-CO40260000",
+        "drawingFile": "09. COC DONG_PHC_D400B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 70.0,
+        "publishedMcr_kNm": 73.6,
+        "publishedMu_kNm": 132.5,
+        "publishedInstallLoad_T": 215.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 400.0,
+          "Dp_mm": 320.0,
+          "Di_mm": 260.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 12,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-10-PHC-C400",
+      "code": "PHC-C400",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C400 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C400-D-CO40260000",
+        "drawingFile": "10. COC DONG_PHC_D400C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 70.0,
+        "publishedMcr_kNm": 88.3,
+        "publishedMu_kNm": 176.6,
+        "publishedInstallLoad_T": 210.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 400.0,
+          "Dp_mm": 320.0,
+          "Di_mm": 260.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 15,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-11-PHC-A450",
+      "code": "PHC-A450",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A450 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A450-D-CO45260000",
+        "drawingFile": "11. COC DONG_PHC_D450A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 80.0,
+        "publishedMcr_kNm": 73.6,
+        "publishedMu_kNm": 110.4,
+        "publishedInstallLoad_T": 285.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 450.0,
+          "Dp_mm": 370.0,
+          "Di_mm": 290.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 7,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 3.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 3.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-12-PHC-B450",
+      "code": "PHC-B450",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B450 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B450-D-CO45260000",
+        "drawingFile": "12. COC DONG_PHC_D450B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 80.0,
+        "publishedMcr_kNm": 107.9,
+        "publishedMu_kNm": 194.2,
+        "publishedInstallLoad_T": 270.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 450.0,
+          "Dp_mm": 370.0,
+          "Di_mm": 290.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 14,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-13-PHC-C450",
+      "code": "PHC-C450",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C450 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C450-D-CO45260000",
+        "drawingFile": "13. COC DONG_PHC_D450C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 80.0,
+        "publishedMcr_kNm": 122.6,
+        "publishedMu_kNm": 245.2,
+        "publishedInstallLoad_T": 265.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 450.0,
+          "Dp_mm": 370.0,
+          "Di_mm": 290.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 14,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-14-PHC-A500",
+      "code": "PHC-A500",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A500 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A500-D-CO50260000",
+        "drawingFile": "14. COC DONG_PHC_D500A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 90.0,
+        "publishedMcr_kNm": 103.0,
+        "publishedMu_kNm": 154.0,
+        "publishedInstallLoad_T": 365.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 500.0,
+          "Dp_mm": 400.0,
+          "Di_mm": 320.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 14,
+          "diameter_mm": 7.1,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-15-PHC-AB500",
+      "code": "PHC-AB500",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-AB500 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-AB500-D-CO50260000",
+        "drawingFile": "15. COC DONG_PHC_D500AB.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "AB",
+        "publishedTbt_mm": 90.0,
+        "publishedMcr_kNm": 125.0,
+        "publishedMu_kNm": 206.25,
+        "publishedInstallLoad_T": 350.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 500.0,
+          "Dp_mm": 400.0,
+          "Di_mm": 320.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 14,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-16-PHC-B500",
+      "code": "PHC-B500",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B500 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B500-D-CO50260000",
+        "drawingFile": "16. COC DONG_PHC_D500B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 90.0,
+        "publishedMcr_kNm": 147.2,
+        "publishedMu_kNm": 265.0,
+        "publishedInstallLoad_T": 345.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 500.0,
+          "Dp_mm": 400.0,
+          "Di_mm": 320.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 14,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-17-PHC-C500",
+      "code": "PHC-C500",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C500 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C500-D-CO50260000",
+        "drawingFile": "17. COC DONG_PHC_D500C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 90.0,
+        "publishedMcr_kNm": 166.8,
+        "publishedMu_kNm": 333.5,
+        "publishedInstallLoad_T": 340.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": null
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 500.0,
+          "Dp_mm": 400.0,
+          "Di_mm": 320.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 16,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-18-PHC-A600",
+      "code": "PHC-A600",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A600 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A600-D-CO60260000",
+        "drawingFile": "18. COC DONG_PHC_D600A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 100.0,
+        "publishedMcr_kNm": 166.8,
+        "publishedMu_kNm": 250.2,
+        "publishedInstallLoad_T": 490.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 600.0,
+          "Dp_mm": 500.0,
+          "Di_mm": 400.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 18,
+          "diameter_mm": 7.1,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-19-PHC-AB600",
+      "code": "PHC-AB600",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-AB600 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-AB600-D-CO60260000",
+        "drawingFile": "19. COC DONG_PHC_D600AB.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "AB",
+        "publishedTbt_mm": 100.0,
+        "publishedMcr_kNm": 206.0,
+        "publishedMu_kNm": 340.0,
+        "publishedInstallLoad_T": 480.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 600.0,
+          "Dp_mm": 500.0,
+          "Di_mm": 400.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 18,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-20-PHC-B600",
+      "code": "PHC-B600",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B600 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B600-D-CO60260000",
+        "drawingFile": "20. COC DONG_PHC_D600B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 100.0,
+        "publishedMcr_kNm": 245.2,
+        "publishedMu_kNm": 441.4,
+        "publishedInstallLoad_T": 470.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 600.0,
+          "Dp_mm": 500.0,
+          "Di_mm": 400.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 18,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-21-PHC-C600",
+      "code": "PHC-C600",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C600 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C600-D-CO60260000",
+        "drawingFile": "21. COC DONG_PHC_D600C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 100.0,
+        "publishedMcr_kNm": 284.5,
+        "publishedMu_kNm": 569.0,
+        "publishedInstallLoad_T": 460.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 600.0,
+          "Dp_mm": 500.0,
+          "Di_mm": 400.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 24,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-22-PHC-A700",
+      "code": "PHC-A700",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A700 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A700-D-CO70260000",
+        "drawingFile": "22. COC DONG_PHC_D700A.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 110.0,
+        "publishedMcr_kNm": 264.9,
+        "publishedMu_kNm": 397.3,
+        "publishedInstallLoad_T": 620.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 700.0,
+          "Dp_mm": 600.0,
+          "Di_mm": 480.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 15,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 4.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 4.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-23-PHC-B700",
+      "code": "PHC-B700",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B700 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B700-D-CO70260000",
+        "drawingFile": "23. COC DONG_PHC_D700B.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 110.0,
+        "publishedMcr_kNm": 372.8,
+        "publishedMu_kNm": 671.0,
+        "publishedInstallLoad_T": 595.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 700.0,
+          "Dp_mm": 600.0,
+          "Di_mm": 480.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 21,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-24-PHC-C700",
+      "code": "PHC-C700",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C700 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C700-D-CO70260000",
+        "drawingFile": "24. COC DONG_PHC_D700C.pdf",
+        "revision": "1.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 110.0,
+        "publishedMcr_kNm": 441.4,
+        "publishedMu_kNm": 882.8,
+        "publishedInstallLoad_T": 580.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 700.0,
+          "Dp_mm": 600.0,
+          "Di_mm": 480.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 30,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-25-PHC-A800",
+      "code": "PHC-A800",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A800 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A800-D-CO80260000",
+        "drawingFile": "25. COC DONG_PHC_D800A.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 120.0,
+        "publishedMcr_kNm": 392.4,
+        "publishedMu_kNm": 588.6,
+        "publishedInstallLoad_T": 780.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 800.0,
+          "Dp_mm": 680.0,
+          "Di_mm": 560.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 21,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-26-PHC-B800",
+      "code": "PHC-B800",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B800 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B800-D-CO80260000",
+        "drawingFile": "26. COC DONG_PHC_D800B.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 120.0,
+        "publishedMcr_kNm": 539.6,
+        "publishedMu_kNm": 971.2,
+        "publishedInstallLoad_T": 750.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 800.0,
+          "Dp_mm": 680.0,
+          "Di_mm": 560.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 27,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-27-PHC-C800",
+      "code": "PHC-C800",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C800 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C800-D-CO80260000",
+        "drawingFile": "27. COC DONG_PHC_D800C.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 120.0,
+        "publishedMcr_kNm": 637.6,
+        "publishedMu_kNm": 1275.0,
+        "publishedInstallLoad_T": 730.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 800.0,
+          "Dp_mm": 680.0,
+          "Di_mm": 560.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 36,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-28-PHC-A900",
+      "code": "PHC-A900",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A900 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A900-D-CO90260000",
+        "drawingFile": "28. COC DONG_PHC_D900A.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 130.0,
+        "publishedMcr_kNm": 539.6,
+        "publishedMu_kNm": 809.6,
+        "publishedInstallLoad_T": 960.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 900.0,
+          "Dp_mm": 800.0,
+          "Di_mm": 640.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 24,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-29-PHC-B900",
+      "code": "PHC-B900",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B900 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B900-D-CO90260000",
+        "drawingFile": "29. COC DONG_PHC_D900B.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 130.0,
+        "publishedMcr_kNm": 735.8,
+        "publishedMu_kNm": 1324.0,
+        "publishedInstallLoad_T": 915.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 900.0,
+          "Dp_mm": 800.0,
+          "Di_mm": 640.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 34,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 6.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 6.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-30-PHC-C900",
+      "code": "PHC-C900",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C900 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C900-D-CO90260000",
+        "drawingFile": "30. COC DONG_PHC_D900C.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 130.0,
+        "publishedMcr_kNm": 833.8,
+        "publishedMu_kNm": 1668.0,
+        "publishedInstallLoad_T": 895.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 900.0,
+          "Dp_mm": 800.0,
+          "Di_mm": 640.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 44,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 6.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 6.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-31-PHC-A1000",
+      "code": "PHC-A1000",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-A1000 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-A1000-D-CO10260000",
+        "drawingFile": "31. COC DONG_PHC_D1000A.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "A",
+        "publishedTbt_mm": 140.0,
+        "publishedMcr_kNm": 735.8,
+        "publishedMu_kNm": 1104.0,
+        "publishedInstallLoad_T": 1150.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 1000.0,
+          "Dp_mm": 880.0,
+          "Di_mm": 720.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 28,
+          "diameter_mm": 9.0,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 5.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 5.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-32-PHC-B1000",
+      "code": "PHC-B1000",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-B1000 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-B1000-D-CO10260000",
+        "drawingFile": "32. COC DONG_PHC_D1000B.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "B",
+        "publishedTbt_mm": 140.0,
+        "publishedMcr_kNm": 1030.0,
+        "publishedMu_kNm": 1854.0,
+        "publishedInstallLoad_T": 1100.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 1000.0,
+          "Dp_mm": 880.0,
+          "Di_mm": 720.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 44,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 6.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 6.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    },
+    {
+      "id": "PV-33-PHC-C1000",
+      "code": "PHC-C1000",
+      "name": "Cọc ống bê tông ly tâm DƯL PHC-C1000 (TCVN 7888)",
+      "dataRole": "reference_preset",
+      "reference": {
+        "roleNote": "CHỈ THAM KHẢO & ĐỐI CHIẾU SAU TÍNH — Tuyệt đối không đưa Mcr, Mu, tải thi công hay ứng suất cấp tải vào bộ giải hoặc làm ngưỡng kiểm tra.",
+        "manufacturer": "Công ty Cổ phần Đầu tư Phan Vũ",
+        "productStandard": "TCVN 7888:2014",
+        "drawingNo": "PHC-C1000-D-CO10260000",
+        "drawingFile": "33. COC DONG_PHC_D1000C.pdf",
+        "revision": "2.2",
+        "issuedDate": "11/2026",
+        "pileClass": "C",
+        "publishedTbt_mm": 140.0,
+        "publishedMcr_kNm": 1177.0,
+        "publishedMu_kNm": 2354.0,
+        "publishedInstallLoad_T": 1065.0,
+        "concreteSpecimenNote": "80 MPa trên mẫu trụ D150 x H300 (TCVN 7888 / JIS)",
+        "pcBarStandardNote": "TCVN 6284-3 (JIS G3137), fpu = 1420 MPa, fpy = 1275 MPa",
+        "spiralStandardNote": "SWM-C (JIS G 3532)",
+        "nonPrestressedRebarNote": {
+          "includedInCalculation": false,
+          "note": "Thép dọc gia cường đầu cọc trên bản vẽ chỉ lưu để đối chiếu hình thức bản vẽ; mô hình tính hiện tại bỏ qua N2, ØGC, L2 theo Plan v0.5.0."
+        }
+      },
+      "templateInput": {
+        "unitSystem": "display_mm_MPa",
+        "geometry": {
+          "Do_mm": 1000.0,
+          "Dp_mm": 880.0,
+          "Di_mm": 720.0,
+          "L_m": null,
+          "L_note": "Chiều dài L (m) > 0 bắt buộc do người dùng nhập."
+        },
+        "concrete": {
+          "designStandard": "TCVN 5574:2018",
+          "gradeB": "B60",
+          "gradeSelectionNote": "Người dùng xác lập cấp độ bền chịu nén B theo TCVN 5574:2018 (ví dụ B60, B70, B80, B90); không tự coi 80 MPa mẫu trụ trên bản vẽ là B80 tương đương nếu chưa quy đổi.",
+          "cylinderStrength_MPa": 80.0,
+          "specimenType": "cylinder_D150xH300",
+          "density_kg_m3": 2500.0
+        },
+        "pcReinforcement": {
+          "count_N1": 55,
+          "diameter_mm": 10.7,
+          "fpu_MPa": 1420.0,
+          "fpy_MPa": 1275.0,
+          "Ep_MPa": 200000.0
+        },
+        "spiralZones": {
+          "endZoneLengthFactor_Do": 2,
+          "endZone": {
+            "wireCount": 2,
+            "diameter_mm": 6.0,
+            "pitch_mm": 50.0
+          },
+          "midZone": {
+            "wireCount": 1,
+            "diameter_mm": 6.0,
+            "pitch_mm": 100.0
+          },
+          "Rswn_MPa": 540.0,
+          "Esw_MPa": 200000.0
+        },
+        "ignoredReinforcement": {
+          "ignoreNonPrestressedHeadBars": true,
+          "reason": "Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2) trong tiết diện quy đổi, độ cứng, tổn hao và sức kháng theo Plan v0.5.0."
+        },
+        "prestressProcess": {
+          "method": "pre_tension_mechanical_factory",
+          "curing": "steam_chamber_few_hours_then_demold_then_natural_curing",
+          "deltaT_assumed_K": 0.0,
+          "deltaT_note": "Giả thiết ΔT = 0 K chỉ khi thép và thiết bị giữ lực cùng trong vùng nhiệt; có thể thay đổi ở BT03."
+        }
+      }
+    }
+  ]
+}

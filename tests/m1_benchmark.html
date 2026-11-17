@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kiểm chứng tự động Mốc M1 (BT00 – BT02)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 p-6 font-sans">
+  <div class="max-w-5xl mx-auto bg-white shadow rounded-xl p-6 border border-slate-200">
+    <h1 class="text-2xl font-bold text-slate-900 mb-2">Bộ kiểm chứng & Hồi quy tự động — Mốc M1 (BT00, BT01, BT02)</h1>
+    <p id="status-banner" class="text-sm font-medium text-amber-700 bg-amber-50 p-3 rounded mb-4">Đang chạy bộ kiểm thử...</p>
+    <table class="w-full text-sm border-collapse">
+      <thead>
+        <tr class="bg-slate-100 text-left border-b border-slate-300">
+          <th class="p-2">#</th>
+          <th class="p-2">Bài kiểm tra nghiệm thu</th>
+          <th class="p-2">Trạng thái</th>
+          <th class="p-2">Chi tiết định lượng</th>
+        </tr>
+      </thead>
+      <tbody id="test-rows"></tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import { runM1VerificationSuite } from './m1_verification.js';
+
+    const banner = document.getElementById('status-banner');
+    const tbody = document.getElementById('test-rows');
+
+    try {
+      const resp = await fetch('../data_in/pile_specs.json');
+      const db = await resp.json();
+      const report = await runM1VerificationSuite(db);
+
+      banner.textContent = report.allPassed
+        ? `ALL_TESTS_PASSED (${report.passedCount}/${report.totalTests})`
+        : `TESTS_FAILED (${report.passedCount}/${report.totalTests})`;
+      banner.className = report.allPassed
+        ? 'text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 p-3 rounded mb-4'
+        : 'text-sm font-bold text-red-800 bg-red-50 border border-red-300 p-3 rounded mb-4';
+
+      report.results.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-slate-200';
+        tr.innerHTML = `
+          <td class="p-2 font-mono">${idx + 1}</td>
+          <td class="p-2 font-medium">${r.name}</td>
+          <td class="p-2 font-bold ${r.passed ? 'text-emerald-700' : 'text-red-700'}">${r.passed ? 'PASS' : 'FAIL'}</td>
+          <td class="p-2 font-mono text-xs text-slate-600">${r.detail}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      banner.textContent = 'TEST_EXECUTION_ERROR: ' + err.message;
+      banner.className = 'text-sm font-bold text-red-800 bg-red-50 border border-red-300 p-3 rounded mb-4';
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module Xếp Cọc Bê Tông Ly Tâm (PHC) — Mốc M1 (BT00 – BT02)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen font-sans">
+  <!-- Header -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30 shadow">
+    <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../../index.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded border border-slate-700 transition">
+          ← Trang chủ
+        </a>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold leading-tight">
+            Tính toán & Đánh giá Xếp cọc Bê tông Ly tâm (PHC) — Mốc M1: BT00 • BT01 • BT02
+          </h1>
+          <p class="text-xs text-slate-300">
+            Cơ sở chính: <strong class="text-blue-300">TCVN 5574:2018</strong> • Lõi tính chuẩn SI (<code>m, kg, s, N, Pa</code>) • Bỏ thép dọc gia cường đầu cọc • Kê gỗ cứng <code>100×100 mm</code>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <label class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1.5 rounded border border-slate-700">
+          <span class="text-slate-300">Đơn vị hiển thị:</span>
+          <select id="ui-unit-mode" class="bg-slate-900 text-white font-semibold px-1.5 py-0.5 rounded border border-slate-600">
+            <option value="engineering">Kỹ thuật (mm, MPa, kN, kN·m)</option>
+            <option value="SI">SI chuẩn (m, Pa, N, N·m)</option>
+          </select>
+        </label>
+        <button id="btn-export-json" class="bg-slate-800 hover:bg-slate-700 text-slate-100 px-3 py-1.5 rounded border border-slate-600 transition">
+          Xuất JSON
+        </button>
+        <label class="bg-slate-800 hover:bg-slate-700 text-slate-100 px-3 py-1.5 rounded border border-slate-600 cursor-pointer transition">
+          Nạp JSON
+          <input id="input-import-json" type="file" accept=".json" class="hidden" />
+        </label>
+        <a href="../../tests/m1_benchmark.html" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded shadow transition">
+          Kiểm chứng tự động (M1)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="max-w-[1440px] mx-auto px-4 py-5 grid grid-cols-1 xl:grid-cols-12 gap-5">
+    <!-- Left Column: Reference + Input -->
+    <section class="xl:col-span-4 space-y-4">
+      <!-- 1. Nhóm REFERENCE -->
+      <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300">
+            1. Nhóm REFERENCE (Chỉ tham khảo / đối chiếu)
+          </span>
+          <span id="ref-rev-badge" class="text-xs font-mono text-slate-500">33 bản vẽ</span>
+        </div>
+        <p class="text-xs text-slate-600 mb-2.5">
+          Chọn bản vẽ tham khảo để xem thông số công bố và nạp gợi ý cấu tạo hình học. Các giá trị <code>Mcr, Mu</code>, tải thi công hay thép <code>N2, ØGC, L2</code> trên bản vẽ <strong>không đi vào bộ giải</strong>.
+        </p>
+        <div class="space-y-2">
+          <select id="select-preset" class="w-full text-sm border border-slate-300 rounded-lg px-2.5 py-2 bg-slate-50 font-medium"></select>
+          <div class="flex gap-2">
+            <button id="btn-apply-preset" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold py-2 px-3 rounded-lg transition">
+              Nạp cấu tạo hình học vào INPUT
+            </button>
+            <button id="btn-test-ref-isolation" title="Thử thay đổi Mcr, Mu và N2/ØGC/L2 trong nhóm reference để chứng minh kết quả tự tính không đổi" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium py-2 px-2.5 rounded-lg border border-slate-300 transition">
+              Test cô lập Reference
+            </button>
+          </div>
+          <div id="ref-summary-box" class="text-xs bg-amber-50/70 border border-amber-200 rounded-lg p-2.5 font-mono space-y-1 text-slate-700"></div>
+        </div>
+      </div>
+
+      <!-- 2. Nhóm INPUT -->
+      <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-900 border border-blue-300">
+            2. Nhóm INPUT (Đầu vào phương án do người dùng xác lập)
+          </span>
+          <span class="text-[11px] font-semibold text-blue-700">TCVN 5574:2018</span>
+        </div>
+
+        <!-- Hình học & Chiều dài L -->
+        <div>
+          <h3 class="text-xs font-bold uppercase text-slate-700 mb-2 border-b pb-1">A. Hình học cọc & Chiều dài L (bắt buộc nhập L &gt; 0)</h3>
+          <div class="grid grid-cols-2 gap-2.5 text-xs">
+            <label class="block">
+              <span class="text-slate-600">Đường kính ngoài <code>Do</code> (mm):</span>
+              <input id="inp-Do" type="number" step="1" value="600" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đường kính vòng thép <code>Dp</code> (mm):</span>
+              <input id="inp-Dp" type="number" step="1" value="500" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đường kính trong <code>Di</code> (mm):</span>
+              <input id="inp-Di" type="number" step="1" value="400" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-blue-800 font-bold">Chiều dài cọc <code>L</code> (m) *:</span>
+              <input id="inp-L" type="number" step="0.1" value="12.0" class="mt-0.5 w-full border-2 border-blue-500 bg-blue-50/40 rounded px-2 py-1.5 font-mono font-bold" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Vật liệu & Cốt thép -->
+        <div>
+          <h3 class="text-xs font-bold uppercase text-slate-700 mb-2 border-b pb-1">B. Vật liệu (TCVN 5574:2018) & Thép DƯL / Đai xoắn</h3>
+          <div class="grid grid-cols-2 gap-2.5 text-xs">
+            <label class="block">
+              <span class="text-slate-600">Cấp độ bền chịu nén <code>B</code>:</span>
+              <select id="inp-gradeB" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+                <option value="">-- Chọn cấp B --</option>
+                <option value="B40">B40 (Rb=22 MPa)</option>
+                <option value="B45">B45 (Rb=25 MPa)</option>
+                <option value="B50">B50 (Rb=27.5 MPa)</option>
+                <option value="B55">B55 (Rb=30 MPa)</option>
+                <option value="B60" selected>B60 (Rb=33 MPa)</option>
+                <option value="B70">B70 (Rb=37 MPa)</option>
+                <option value="B80">B80 (Rb=41 MPa)</option>
+                <option value="B90">B90 (Rb=44 MPa)</option>
+                <option value="B100">B100 (Rb=47.5 MPa)</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Khối lượng riêng <code>ρ</code> (kg/m³):</span>
+              <input id="inp-rho" type="number" step="10" value="2500" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Số thanh DƯL <code>N1</code> (thanh):</span>
+              <input id="inp-N1" type="number" step="1" value="18" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đường kính <code>ØPC</code> (mm):</span>
+              <input id="inp-dPC" type="number" step="0.1" value="7.1" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Giới hạn bền <code>fpu</code> (MPa):</span>
+              <input id="inp-fpu" type="number" step="10" value="1420" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Giới hạn chảy <code>fpy</code> (MPa):</span>
+              <input id="inp-fpy" type="number" step="10" value="1275" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Môđun thép <code>Ep</code> (MPa):</span>
+              <input id="inp-Ep" type="number" step="1000" value="200000" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đường kính đai <code>ØFs</code> (mm):</span>
+              <input id="inp-dFs" type="number" step="0.5" value="4.0" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đai đầu cọc (số dây × bước mm):</span>
+              <div class="grid grid-cols-2 gap-1 mt-0.5">
+                <input id="inp-endWires" type="number" step="1" value="2" title="Số dây đai vùng đầu cọc" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+                <input id="inp-endPitch" type="number" step="5" value="50" title="Bước đai vùng đầu cọc (mm)" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+              </div>
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Đai thân giữa (số dây × bước mm):</span>
+              <div class="grid grid-cols-2 gap-1 mt-0.5">
+                <input id="inp-midWires" type="number" step="1" value="1" title="Số dây đai vùng giữa thân" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+                <input id="inp-midPitch" type="number" step="5" value="100" title="Bước đai vùng giữa thân (mm)" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+              </div>
+            </label>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1.5">
+            * Chiều dài vùng gia cường đai đầu cọc <code>L_đầu = 2·Do</code> mỗi đầu. Thép dọc gia cường đầu cọc (<code>N2, ØGC, L2</code>) bị bỏ qua hoàn toàn trong mô hình tính theo Plan v0.5.0.
+          </p>
+        </div>
+
+        <!-- Thông số gối kê & tải tập trung (BT01 & BT02) -->
+        <div>
+          <div class="flex items-center justify-between border-b pb-1 mb-2">
+            <h3 class="text-xs font-bold uppercase text-slate-700">C. Vị trí hai gối kê (BT01) & Tải tầng trên (BT02)</h3>
+            <button id="btn-optimal-supports" class="text-[11px] bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded border border-blue-200">
+              Đặt x1 = 0.2071L
+            </button>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5 text-xs">
+            <label class="block">
+              <span class="text-slate-600">Vị trí gối trái <code>x1</code> (m):</span>
+              <input id="inp-x1" type="number" step="0.05" value="2.485" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Vị trí gối phải <code>x2</code> (m):</span>
+              <input id="inp-x2" type="number" step="0.05" value="9.515" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Tải tập trung tuyến 1 <code>P1</code> (kN):</span>
+              <input id="inp-P1" type="number" step="5" value="120" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Tải tập trung tuyến 2 <code>P2</code> (kN):</span>
+              <input id="inp-P2" type="number" step="5" value="120" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Độ lệch tải 1 <code>e1 = xP1 - x1</code> (m):</span>
+              <input id="inp-e1" type="number" step="0.05" value="0.30" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+            <label class="block">
+              <span class="text-slate-600">Độ lệch tải 2 <code>e2 = xP2 - x2</code> (m):</span>
+              <input id="inp-e2" type="number" step="0.05" value="-0.30" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </label>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <button id="btn-ecc-zero" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
+              Đúng gối (e1=0, e2=0)
+            </button>
+            <button id="btn-ecc-inward" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
+              Lệch vào nhịp (+0.30 / -0.30m)
+            </button>
+            <button id="btn-ecc-outward" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
+              Lệch ra đầu hẫng (-0.25 / +0.25m)
+            </button>
+            <button id="btn-ecc-single" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded border border-slate-300">
+              Chỉ lệch tuyến 1 (+0.35 / 0m)
+            </button>
+          </div>
+        </div>
+
+        <button id="btn-run-calc" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-lg shadow transition">
+          Chạy Tính Toán & Đối Chứng Mốc M1 (BT00 → BT02)
+        </button>
+      </div>
+    </section>
+
+    <!-- Right Column: Computed + Charts + 8-Step Reports -->
+    <section class="xl:col-span-8 space-y-5">
+      <!-- Validation / Status Alert -->
+      <div id="calc-status-box" class="rounded-xl p-3.5 text-sm font-medium border"></div>
+
+      <!-- 3. Nhóm COMPUTED (Chỉ đọc) -->
+      <div class="bg-white rounded-xl shadow-sm border border-emerald-200 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300">
+            3. Nhóm COMPUTED — Kết quả tự tính từ INPUT (Chỉ đọc • Object.freeze)
+          </span>
+          <span id="computed-unit-badge" class="text-xs font-mono text-slate-500"></span>
+        </div>
+        <div id="bt00-summary-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs"></div>
+      </div>
+
+      <!-- Sơ đồ hình học tiết diện & sơ đồ dọc cọc -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+          <h3 class="text-xs font-bold uppercase text-slate-700 mb-2">Mặt cắt ngang & Bố trí thép DƯL</h3>
+          <div id="plot-cross-section" class="w-full h-64"></div>
+        </div>
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+          <h3 class="text-xs font-bold uppercase text-slate-700 mb-2">Sơ đồ dọc cọc, Phân vùng đai <code>section(x)</code>, Kê gỗ cứng 100×100 mm & Tải đặt</h3>
+          <div id="plot-beam-schematic" class="w-full h-64"></div>
+        </div>
+      </div>
+
+      <!-- Biểu đồ Nội lực & Chuyển vị (BT01 vs BT02 & Giải tích) -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-sm font-bold text-slate-900">
+            Biểu đồ Nội lực <code>M(x), Q(x)</code> và Chuyển vị <code>w(x)</code> — So sánh BT01 (Tự trọng), BT02 (Thêm tải tầng trên) & Nghiệm giải tích
+          </h3>
+          <span class="text-xs text-slate-500">Quy ước: <code>M &gt; 0</code> căng thớ dưới • <code>w &lt; 0</code> võng xuống</span>
+        </div>
+        <div id="plot-moment" class="w-full h-72"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div id="plot-shear" class="w-full h-64"></div>
+          <div id="plot-deflection" class="w-full h-64"></div>
+        </div>
+      </div>
+
+      <!-- Thuyết minh 8 mục chuẩn theo Mục 11.4 Plan cho BT00, BT01, BT02 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3 mb-4">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Thuyết minh & Đối chứng độc lập theo cấu trúc 8 mục (Mục 11.4 Plan v0.5.0)</h3>
+            <p class="text-xs text-slate-500">Tách bạch trạng thái kiểm chứng phương pháp với trạng thái chịu lực của cọc</p>
+          </div>
+          <div class="flex gap-1.5 text-xs">
+            <button data-tab="BT00" class="tab-btn bg-blue-600 text-white font-semibold px-3 py-1.5 rounded-lg">BT00 • Dữ liệu & Tiết diện</button>
+            <button data-tab="BT01" class="tab-btn bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-lg">BT01 • Tự trọng 2 gối</button>
+            <button data-tab="BT02" class="tab-btn bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-lg">BT02 • Tải đúng gối & lệch gối</button>
+          </div>
+        </div>
+        <div id="report-8steps-container" class="text-xs space-y-3 leading-relaxed"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

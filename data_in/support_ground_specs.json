@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.5.0",
+  "unitSystem": "SI",
+  "scopeNote": "Chỉ xét khả năng chịu lực của cọc dưới điều kiện biên kho lý tưởng theo Plan v0.5.0. Không kiểm tra sức chịu tải hay biến dạng của thanh kê gỗ, chèn giữ hoặc nền kho.",
+  "woodenSupportBatten": {
+    "id": "TIMBER_RIGID_100x100",
+    "name": "Thanh kê gỗ 100 × 100 mm tuyệt đối cứng",
+    "material": "timber_rigid_idealized",
+    "modelType": "rigid_body_unilateral_contact",
+    "bx_m": 0.1,
+    "hz_m": 0.1,
+    "crossSectionArea_m2": 0.01,
+    "bx_mm": 100.0,
+    "hz_mm": 100.0,
+    "checkStrengthOrDeformation": false,
+    "requireTimberModulusOrStrength": false,
+    "note": "Mô hình vật rắn tuyệt đối cứng (tiết diện 0,1 × 0,1 m, A = 0,01 m²). Không đồng nhất A = 0,01 m² với diện tích tiếp xúc thực tế phía cọc; không tự chia đều tải cho các cọc bên dưới."
+  },
+  "warehouseBoundaryIdealization": {
+    "groundModel": "rigid_unyielding_no_settlement",
+    "sideRestraintModel": "ideal_unlimited_capacity_normal_contact",
+    "frictionRequiredForEquilibrium": false,
+    "checkGroundOrChockCapacity": false,
+    "optimizeWarehouseAreaOrTimberVolume": false
+  }
+}

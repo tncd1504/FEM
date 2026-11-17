@@ -1,6 +1,11 @@
 # Tài liệu tham khảo cục bộ cho AI (không đồng bộ lên GitHub)
 Ref/
 
+# Antigravity & Agent skills (không đồng bộ lên GitHub)
+.agents/
+.agent/
+*skill*.md
+
 # Python cache & môi trường
 __pycache__/
 *.py[cod]
