@@ -9,7 +9,6 @@ import { runBT03 } from '../modules/xep-coc/section_checker.js';
 import { runBT04, runBT05 } from '../modules/xep-coc/contact_checker.js';
 import { runBT06, runBT07, runBT08 } from '../modules/xep-coc/support_checker.js';
 import { solveS1Stack, solveS2Stack, solveS3Stack } from '../modules/xep-coc/stacking_model.js';
-import { runBT13ToleranceScan } from '../modules/xep-coc/tolerance_scan.js';
 import { runBT14ParetoOptimizer } from '../modules/xep-coc/optimizer.js';
 import { normalizeStandardsConfig, evaluateBT03Eurocode2Reference } from '../modules/xep-coc/standards/standards_manager.js';
 
@@ -100,7 +99,19 @@ function readFormConfig() {
       measurementStage: el('inp-measureStage')?.value ?? 'before_anchoring',
       deltaT_K: Number(el('inp-deltaT')?.value ?? 0),
       contactArcAngle_deg: Number(el('inp-contactAngle')?.value ?? 20),
-      ringLoadCase: el('inp-ringCase')?.value ?? 'two_point_diametral',
+      ringLoadCase:
+        el('inp-scheme')?.value === 'S1' || el('inp-scheme')?.value === 'S3'
+          ? 'three_point_triangular'
+          : 'two_point_diametral',
+    },
+    stackConfig: {
+      scheme: el('inp-scheme')?.value ?? 'S2',
+      nLayers: Number(el('inp-nLayers')?.value ?? 3),
+      baseCount: Number(el('inp-baseCount')?.value ?? 5),
+      s3Blocks: el('inp-s3Blocks')?.value ?? '2,2',
+      sysEcc_m: Number(el('inp-sysEcc')?.value ?? 0),
+      sysScenario: el('inp-sysScenario')?.value ?? 'alternating',
+      tolMode: el('inp-tolMode')?.value ?? 'global_axis',
     },
   };
 }
@@ -150,6 +161,16 @@ function writeFormConfig(cfg) {
     if (Number.isFinite(b.P2_kN)) el('inp-P2').value = b.P2_kN;
     if (Number.isFinite(b.e1_m)) el('inp-e1').value = b.e1_m;
     if (Number.isFinite(b.e2_m)) el('inp-e2').value = b.e2_m;
+  }
+  if (cfg.stackConfig) {
+    const sc = cfg.stackConfig;
+    if (sc.scheme && el('inp-scheme')) el('inp-scheme').value = sc.scheme;
+    if (Number.isFinite(sc.nLayers) && el('inp-nLayers')) el('inp-nLayers').value = sc.nLayers;
+    if (Number.isFinite(sc.baseCount) && el('inp-baseCount')) el('inp-baseCount').value = sc.baseCount;
+    if (sc.s3Blocks && el('inp-s3Blocks')) el('inp-s3Blocks').value = sc.s3Blocks;
+    if (Number.isFinite(sc.sysEcc_m) && el('inp-sysEcc')) el('inp-sysEcc').value = sc.sysEcc_m;
+    if (sc.sysScenario && el('inp-sysScenario')) el('inp-sysScenario').value = sc.sysScenario;
+    if (sc.tolMode && el('inp-tolMode')) el('inp-tolMode').value = sc.tolMode;
   }
 }
 
@@ -337,8 +358,8 @@ function renderBeamSchematicPlot(bt00, bt01, bt02) {
   );
 }
 
-/** Vẽ 3 biểu đồ M(x), Q(x), w(x) so sánh BT01, BT02 (FEM) và Nghiệm giải tích. */
-function renderInternalForcePlots(bt01, bt02) {
+/** Vẽ 3 biểu đồ M(x), Q(x), w(x) so sánh BT01 (Tự trọng) và Cọc chi phối của sơ đồ đang chọn (hoặc BT02). */
+function renderInternalForcePlots(bt01, bt02, stackRes = null) {
   const mode = getDisplayMode();
   const mFactor = mode === 'SI' ? 1 : 1e-3; // N·m hoặc kN·m
   const qFactor = mode === 'SI' ? 1 : 1e-3; // N hoặc kN
@@ -347,11 +368,30 @@ function renderInternalForcePlots(bt01, bt02) {
   const qUnit = mode === 'SI' ? 'N' : 'kN';
   const wUnit = mode === 'SI' ? 'm' : 'mm';
 
+  // Chọn biểu đồ cọc chi phối theo sơ đồ hệ đang chọn (S1 -> bottomLayerDiagram, S2 -> tầng đáy BT02, S3 -> theo khối/quy dẫn)
+  let activeDiagram = bt02.diagram;
+  let activeName = 'BT02 • Cọc chịu tải tầng trên (FEM)';
+  if ((stackRes?.scheme === 'S1' || stackRes?.reducedTo === 'S1') && Array.isArray(stackRes.bottomLayerDiagram)) {
+    activeDiagram = stackRes.bottomLayerDiagram;
+    activeName = `${stackRes.scheme} (${stackRes.nLayers} tầng) • Cọc đáy tiếp xúc dọc thân (FEM)`;
+  } else if ((stackRes?.scheme === 'S2' || stackRes?.reducedTo === 'S2') && stackRes.layers?.[0]?.bt02?.diagram) {
+    activeDiagram = stackRes.layers[0].bt02.diagram;
+    activeName = `${stackRes.scheme} (${stackRes.nLayers} tầng, ${stackRes.scenario}) • Cọc tầng đáy (FEM)`;
+  } else if (stackRes?.scheme === 'S3') {
+    activeName = `S3 [${(stackRes.blocks || []).join(',')}] • Cọc tầng chi phối (BT02)`;
+  }
+
+  const titleEl = el('internal-force-title');
+  if (titleEl) {
+    titleEl.innerHTML = `Biểu đồ Nội lực <code>M(x), Q(x)</code> và Chuyển vị <code>w(x)</code> — <strong>${activeName}</strong> vs. BT01 (Tự trọng)`;
+  }
+
   const xs1 = bt01.diagram.map(d => d.x);
-  const xs2 = bt02.diagram.map(d => d.x);
+  const xs2 = activeDiagram.map(d => d.x);
   const anaPts = bt02.comparisonRows;
 
-  // 1. Mômen M(x)
+  // 1. Mômen M(x) — Quy ước Cơ học kết cấu: M < 0 hướng lên, M > 0 hướng xuống
+  Plotly.purge('plot-moment');
   Plotly.newPlot(
     'plot-moment',
     [
@@ -359,23 +399,25 @@ function renderInternalForcePlots(bt01, bt02) {
         x: xs1,
         y: bt01.diagram.map(d => d.M * mFactor),
         mode: 'lines',
-        name: 'BT01 • Chỉ tự trọng (FEM)',
+        name: 'BT01 • Chỉ tự trọng 1 cọc (FEM)',
         line: { color: '#64748b', width: 2, dash: 'dash' },
       },
       {
         x: xs2,
-        y: bt02.diagram.map(d => d.M * mFactor),
+        y: activeDiagram.map(d => d.M * mFactor),
         mode: 'lines',
-        name: 'BT02 • Tự trọng + Tải tầng trên (FEM)',
+        name: activeName,
         line: { color: '#2563eb', width: 2.5 },
       },
-      {
-        x: anaPts.map(r => r.x_m),
-        y: anaPts.map(r => r.M_ana_Nm * mFactor),
-        mode: 'markers',
-        name: 'Nghiệm giải tích đóng (Macaulay)',
-        marker: { color: '#dc2626', size: 7, symbol: 'circle-open', line: { width: 2 } },
-      },
+      ...(stackRes?.scheme === 'S1'
+        ? []
+        : [{
+            x: anaPts.map(r => r.x_m),
+            y: anaPts.map(r => r.M_ana_Nm * mFactor),
+            mode: 'markers',
+            name: 'Đối chứng giải tích BT02 (Macaulay)',
+            marker: { color: '#dc2626', size: 6, symbol: 'circle-open', line: { width: 2 } },
+          }]),
     ],
     {
       title: { text: `Biểu đồ Mômen uốn M(x) [${mUnit}] (Vẽ về thớ căng: M < 0 hướng lên, M > 0 hướng xuống)`, font: { size: 13 } },
@@ -390,6 +432,7 @@ function renderInternalForcePlots(bt01, bt02) {
   );
 
   // 2. Lực cắt Q(x)
+  Plotly.purge('plot-shear');
   Plotly.newPlot(
     'plot-shear',
     [
@@ -402,17 +445,10 @@ function renderInternalForcePlots(bt01, bt02) {
       },
       {
         x: xs2,
-        y: bt02.diagram.map(d => d.Q * qFactor),
+        y: activeDiagram.map(d => d.Q * qFactor),
         mode: 'lines',
-        name: 'BT02 • Có tải tầng trên (FEM)',
+        name: activeName,
         line: { color: '#059669', width: 2.2 },
-      },
-      {
-        x: anaPts.map(r => r.x_m),
-        y: anaPts.map(r => r.Q_ana_N * qFactor),
-        mode: 'markers',
-        name: 'Giải tích Q(x)',
-        marker: { color: '#dc2626', size: 6, symbol: 'diamond-open', line: { width: 2 } },
       },
     ],
     {
@@ -428,6 +464,7 @@ function renderInternalForcePlots(bt01, bt02) {
   );
 
   // 3. Chuyển vị đứng w(x)
+  Plotly.purge('plot-deflection');
   Plotly.newPlot(
     'plot-deflection',
     [
@@ -440,17 +477,10 @@ function renderInternalForcePlots(bt01, bt02) {
       },
       {
         x: xs2,
-        y: bt02.diagram.map(d => d.w * wFactor),
+        y: activeDiagram.map(d => d.w * wFactor),
         mode: 'lines',
-        name: 'BT02 • Có tải tầng trên (FEM)',
+        name: activeName,
         line: { color: '#7c3aed', width: 2.2 },
-      },
-      {
-        x: anaPts.map(r => r.x_m),
-        y: anaPts.map(r => r.w_ana_m * wFactor),
-        mode: 'markers',
-        name: 'Giải tích w(x)',
-        marker: { color: '#dc2626', size: 6, symbol: 'circle-open', line: { width: 2 } },
       },
     ],
     {
@@ -540,8 +570,8 @@ function render8StepReport(tab, { bt00, bt01, bt02 }) {
     return;
   }
 
-  // Tab BT02
-  const zc = bt02.zeroEccentricityCheck;
+  if (tab === 'BT02') {
+    const zc = bt02.zeroEccentricityCheck;
   const rows2 = bt02.comparisonRows
     .map(
       (r) => `
@@ -803,6 +833,7 @@ async function initApp() {
     )
     .join('');
 
+  // Nạp mẫu chỉ điền thông số vào form (không chạy lắc nhắc)
   const applySelectedPreset = () => {
     const p = pileDb.piles[Number(sel.value)];
     if (!p) return;
@@ -812,7 +843,6 @@ async function initApp() {
       reference: p.reference,
       input: p.templateInput,
     });
-    runCalculationAndRender();
   };
 
   sel.addEventListener('change', () => {
@@ -849,36 +879,18 @@ async function initApp() {
       const a = ((Math.sqrt(2) - 1) / 2) * L;
       el('inp-x1').value = Number(a.toFixed(4));
       el('inp-x2').value = Number((L - a).toFixed(4));
-      runCalculationAndRender();
     }
   });
 
-  el('btn-ecc-zero').addEventListener('click', () => {
-    el('inp-e1').value = 0;
-    el('inp-e2').value = 0;
-    runCalculationAndRender();
-  });
-  el('btn-ecc-inward').addEventListener('click', () => {
-    el('inp-e1').value = 0.30;
-    el('inp-e2').value = -0.30;
-    runCalculationAndRender();
-  });
-  el('btn-ecc-outward').addEventListener('click', () => {
-    el('inp-e1').value = -0.25;
-    el('inp-e2').value = 0.25;
-    runCalculationAndRender();
-  });
-  el('btn-ecc-single').addEventListener('click', () => {
-    el('inp-e1').value = 0.35;
-    el('inp-e2').value = 0.0;
-    runCalculationAndRender();
-  });
+  el('btn-ecc-zero').addEventListener('click', () => { el('inp-e1').value = 0; el('inp-e2').value = 0; });
+  el('btn-ecc-inward').addEventListener('click', () => { el('inp-e1').value = 0.30; el('inp-e2').value = -0.30; });
+  el('btn-ecc-outward').addEventListener('click', () => { el('inp-e1').value = -0.25; el('inp-e2').value = 0.25; });
+  el('btn-ecc-single').addEventListener('click', () => { el('inp-e1').value = 0.35; el('inp-e2').value = 0.0; });
 
-  el('btn-run-calc').addEventListener('click', runCalculationAndRender);
   el('ui-unit-mode').addEventListener('change', () => {
     if (lastResults) {
       renderComputedSummary(lastResults.bt00, lastResults.bt01, lastResults.bt02, lastResults.bt03);
-      renderInternalForcePlots(lastResults.bt01, lastResults.bt02);
+      renderInternalForcePlots(lastResults.bt01, lastResults.bt02, lastStackResult);
     }
   });
 
@@ -915,8 +927,7 @@ async function initApp() {
     if (el('chk-report-tcvn')) el('chk-report-tcvn').checked = std.reportStandards.includes('TCVN');
     if (el('chk-report-ec2')) el('chk-report-ec2').checked = std.reportStandards.includes('EC2');
     writeFormConfig(parsed);
-    runCalculationAndRender();
-    runStackAndRender();
+    runAllPipeline();
   });
 
   // Xuất CSV có nhãn tiêu chuẩn
@@ -1004,81 +1015,207 @@ async function initApp() {
   });
 
   function renderStackCrossSectionPlot(stackRes, Do_m) {
-    if (!stackRes?.crossSectionPiles?.length) return;
+    const container = el('plot-stack-yz');
+    if (!container || !stackRes?.crossSectionPiles?.length) return;
+
     const r = Do_m / 2;
-    const shapes = stackRes.crossSectionPiles.map((p) => ({
-      type: 'circle',
-      xref: 'x',
-      yref: 'y',
-      x0: p.y_m - r,
-      x1: p.y_m + r,
-      y0: p.z_m - r,
-      y1: p.z_m + r,
-      fillcolor: p.U <= 1.0 ? 'rgba(16,185,129,0.28)' : 'rgba(239,68,68,0.28)',
-      line: { color: p.U <= 1.0 ? '#047857' : '#b91c1c', width: 2 },
-    }));
-    const ys = stackRes.crossSectionPiles.map(p => p.y_m);
-    const zs = stackRes.crossSectionPiles.map(p => p.z_m);
-    Plotly.newPlot(
-      'plot-stack-yz',
-      [{
-        x: ys,
-        y: zs,
-        mode: 'text',
-        text: stackRes.crossSectionPiles.map(p => `T${p.layer}`),
-        textfont: { size: 9, color: '#0f172a' },
-      }],
-      {
-        title: { text: `Mặt cắt ngang đống cọc y–z (${stackRes.scheme}, ${stackRes.nLayers} tầng, ${stackRes.totalPiles} cọc)`, font: { size: 12 } },
-        shapes,
-        margin: { l: 45, r: 15, t: 35, b: 35 },
-        xaxis: { title: 'Ngang bãi y (m)', scaleanchor: 'y', scaleratio: 1 },
-        yaxis: { title: 'Cao độ z (m)', rangemode: 'tozero' },
-        paper_bgcolor: 'transparent',
-        plot_bgcolor: '#f8fafc',
-      },
-      { responsive: true, displayModeBar: false }
+    const rIn = lastResults?.bt00?.summarySI?.Di ? lastResults.bt00.summarySI.Di / 2 : r * 0.65;
+    const hz = 0.1; // thanh kê gỗ cứng 100 × 100 mm
+
+    const piles = stackRes.crossSectionPiles;
+    const ysAll = piles.map(p => p.y_m);
+    const zsAll = piles.map(p => p.z_m);
+    const yMinRaw = Math.min(...ysAll) - r;
+    const yMaxRaw = Math.max(...ysAll) + r;
+    const zMaxRaw = Math.max(...zsAll) + r;
+
+    const padY = Math.max(0.32, r * 0.9);
+    const yMin = yMinRaw - padY;
+    const yMax = yMaxRaw + padY;
+    const zMin = -0.18;
+    const zMax = zMaxRaw + 0.25;
+
+    // Hệ tọa độ SVG (px): 1 m = scale px, trục z hướng lên trên (invert Y trong SVG)
+    const svgW = 540;
+    const svgH = 290;
+    const plotTop = 34;
+    const plotBottom = 252;
+    const plotLeft = 24;
+    const plotRight = svgW - 24;
+    const scale = Math.min(
+      (plotRight - plotLeft) / Math.max(yMax - yMin, 0.5),
+      (plotBottom - plotTop) / Math.max(zMax - zMin, 0.5)
     );
+    const yCenterWorld = (yMin + yMax) / 2;
+    const xCenterSvg = (plotLeft + plotRight) / 2;
+    const toX = (y) => xCenterSvg + (y - yCenterWorld) * scale;
+    const toY = (z) => plotBottom - (z - zMin) * scale;
+
+    const battens = [];
+    const chocks = [];
+    const battenLeft = yMinRaw - 0.14;
+    const battenRight = yMaxRaw + 0.14;
+
+    if (stackRes.scheme === 'S1' || stackRes.reducedTo === 'S1') {
+      // S1: Chỉ có 1 lớp thanh kê gỗ ở đáy [0, 0.1m] + 2 nêm chèn biên lý tưởng ở 2 mép đáy
+      battens.push({ z0: 0, z1: hz, y0: battenLeft, y1: battenRight });
+      chocks.push({ side: 'left', yEdge: yMinRaw, zBase: hz });
+      chocks.push({ side: 'right', yEdge: yMaxRaw, zBase: hz });
+    } else if (stackRes.scheme === 'S2' || stackRes.reducedTo === 'S2') {
+      // S2: Có thanh kê gỗ cứng 100×100 mm ở MỌI tầng
+      for (let k = 0; k < stackRes.nLayers; k++) {
+        const z0 = k * (Do_m + hz);
+        battens.push({ z0, z1: z0 + hz, y0: battenLeft, y1: battenRight });
+      }
+    } else if (stackRes.scheme === 'S3' && Array.isArray(stackRes.blocks)) {
+      // S3: Có thanh kê gỗ ở đáy và ở các mặt chuyển tiếp giữa các khối
+      const dzRow = Do_m * Math.cos(Math.PI / 6);
+      let zCur = 0;
+      for (let b = 0; b < stackRes.blocks.length; b++) {
+        battens.push({ z0: zCur, z1: zCur + hz, y0: battenLeft, y1: battenRight });
+        if (stackRes.blocks[b] >= 2) {
+          chocks.push({ side: 'left', yEdge: yMinRaw, zBase: zCur + hz });
+          chocks.push({ side: 'right', yEdge: yMaxRaw, zBase: zCur + hz });
+        }
+        zCur += hz + Do_m + (stackRes.blocks[b] - 1) * dzRow;
+      }
+    }
+
+    const schemeDesc =
+      stackRes.scheme === 'S1'
+        ? `S1 — XẾP TAM GIÁC TỲ TRỰC TIẾP (chỉ kê đáy, ${stackRes.nLayers} tầng, ${stackRes.totalPiles} cọc)`
+        : stackRes.scheme === 'S3'
+          ? `S3 — HỖN HỢP KHỐI [${(stackRes.blocks || []).join(',')}] (${stackRes.nLayers} tầng, ${stackRes.totalPiles} cọc)`
+          : `S2 — KÊ GỖ 100×100 mm MỌI TẦNG (${stackRes.nLayers} tầng, ${stackRes.totalPiles} cọc)`;
+
+    const groundY = toY(0);
+    const battensSvg = battens
+      .map(
+        (b) =>
+          `<rect x="${toX(b.y0).toFixed(1)}" y="${toY(b.z1).toFixed(1)}" width="${((b.y1 - b.y0) * scale).toFixed(1)}" height="${Math.max(5, (b.z1 - b.z0) * scale).toFixed(1)}" fill="#b45309" stroke="#78350f" stroke-width="1.5" rx="1" />`
+      )
+      .join('');
+
+    const chocksSvg = chocks
+      .map((c) => {
+        const w = 0.20;
+        const h = 0.22;
+        const pts =
+          c.side === 'left'
+            ? `${toX(c.yEdge).toFixed(1)},${toY(c.zBase).toFixed(1)} ${toX(c.yEdge - w).toFixed(1)},${toY(c.zBase).toFixed(1)} ${toX(c.yEdge).toFixed(1)},${toY(c.zBase + h).toFixed(1)}`
+            : `${toX(c.yEdge).toFixed(1)},${toY(c.zBase).toFixed(1)} ${toX(c.yEdge + w).toFixed(1)},${toY(c.zBase).toFixed(1)} ${toX(c.yEdge).toFixed(1)},${toY(c.zBase + h).toFixed(1)}`;
+        return `<polygon points="${pts}" fill="#334155" stroke="#0f172a" stroke-width="1.4" />`;
+      })
+      .join('');
+
+    const rPx = Math.max(4, r * scale);
+    const rInPx = Math.max(2, rIn * scale);
+    const pilesSvg = piles
+      .map((p) => {
+        const cx = toX(p.y_m).toFixed(1);
+        const cy = toY(p.z_m).toFixed(1);
+        const ok = p.U <= 1.0;
+        const fillOuter = ok ? '#a7f3d0' : '#fecaca';
+        const strokeOuter = ok ? '#047857' : '#b91c1c';
+        return `
+          <circle cx="${cx}" cy="${cy}" r="${rPx.toFixed(1)}" fill="${fillOuter}" stroke="${strokeOuter}" stroke-width="2" />
+          <circle cx="${cx}" cy="${cy}" r="${rInPx.toFixed(1)}" fill="#ffffff" stroke="#64748b" stroke-width="1" />
+          <text x="${cx}" y="${(Number(cy) + 3).toFixed(1)}" text-anchor="middle" font-size="${Math.max(8, Math.min(11, rInPx * 0.75)).toFixed(1)}" font-weight="700" fill="#0f172a">T${p.layer}</text>`;
+      })
+      .join('');
+
+    container.innerHTML = `
+      <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-full select-none" preserveAspectRatio="xMidYMid meet">
+        <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="#f8fafc" />
+        <text x="${svgW / 2}" y="19" text-anchor="middle" font-size="12" font-weight="700" fill="#1e1b4b">${schemeDesc}</text>
+        <!-- Nền kho cứng lý tưởng -->
+        <rect x="${plotLeft}" y="${groundY.toFixed(1)}" width="${plotRight - plotLeft}" height="8" fill="#cbd5e1" />
+        <line x1="${plotLeft}" y1="${groundY.toFixed(1)}" x2="${plotRight}" y2="${groundY.toFixed(1)}" stroke="#334155" stroke-width="2" />
+        <text x="${svgW / 2}" y="${(groundY + 19).toFixed(1)}" text-anchor="middle" font-size="9.5" fill="#475569">Nền kho cứng lý tưởng (z = 0, không lún)</text>
+        <!-- Thanh kê gỗ 100x100 mm -->
+        ${battensSvg}
+        <!-- Chèn biên lý tưởng (S1 / S3) -->
+        ${chocksSvg}
+        <!-- Các cọc ống PHC -->
+        ${pilesSvg}
+        <!-- Chú giải màu -->
+        <g transform="translate(24, ${svgH - 14})" font-size="9.5" fill="#334155">
+          <rect x="0" y="-8" width="14" height="7" fill="#b45309" stroke="#78350f" />
+          <text x="19" y="-1">Kê gỗ 100×100 mm (${battens.length} lớp)</text>
+          <polygon points="165,-1 177,-1 177,-10" fill="#334155" />
+          <text x="182" y="-1">Chèn biên lý tưởng (${chocks.length > 0 ? 'có' : 'không'})</text>
+          <circle cx="330" cy="-4" r="5" fill="#a7f3d0" stroke="#047857" stroke-width="1.5" />
+          <text x="339" y="-1">U ≤ 1,0 (Đạt)</text>
+          <circle cx="420" cy="-4" r="5" fill="#fecaca" stroke="#b91c1c" stroke-width="1.5" />
+          <text x="429" y="-1">U &gt; 1,0 (Vượt)</text>
+        </g>
+      </svg>`;
   }
 
   function runStackAndRender() {
     if (!lastResults?.bt00?.valid) return;
-    const cfg = readFormConfig();
-    const scheme = el('inp-scheme')?.value || 'S2';
-    const nLayers = Number(el('inp-nLayers')?.value || 3);
-    const baseCount = Number(el('inp-baseCount')?.value || 5);
-    const ecc = Number(el('inp-sysEcc')?.value || 0);
-    const scenario = el('inp-sysScenario')?.value || 'alternating';
-    const toleranceMode = el('inp-tolMode')?.value || 'global_axis';
-    const blocks = (el('inp-s3Blocks')?.value || '2,2').split(',').map(s => parseInt(s.trim(), 10)).filter(n => n > 0);
-    const m2 = cfg.m2Config || {};
-    const processInput = {
-      L_cang_m: m2.L_cang_m || lastResults.bt00.summarySI.L,
-      anchorSlip_mm: m2.anchorSlip_mm ?? 2.0,
-      measurementStage: m2.measurementStage || 'before_anchoring',
-      deltaT_K: m2.deltaT_K ?? 0,
-      zeroDeltaTJustification: 'Giả thiết thép DƯL và thiết bị giữ lực cùng trong hầm sấy (TCVN 5574:2018 Mục 9.1.4).',
-    };
+    try {
+      const cfg = readFormConfig();
+      const scheme = el('inp-scheme')?.value || 'S2';
+      const nLayers = Math.max(2, Number(el('inp-nLayers')?.value || 3));
+      const baseCount = Math.max(2, Number(el('inp-baseCount')?.value || 5));
+      const ecc = Number(el('inp-sysEcc')?.value || 0);
+      const scenario = el('inp-sysScenario')?.value || 'alternating';
+      const toleranceMode = el('inp-tolMode')?.value || 'global_axis';
+      const blocks = (el('inp-s3Blocks')?.value || '2,2').split(',').map(s => parseInt(s.trim(), 10)).filter(n => n > 0);
+      const m2 = cfg.m2Config || {};
+      const processInput = {
+        L_cang_m: m2.L_cang_m || lastResults.bt00.summarySI.L,
+        anchorSlip_mm: m2.anchorSlip_mm ?? 2.0,
+        measurementStage: m2.measurementStage || 'before_anchoring',
+        deltaT_K: m2.deltaT_K ?? 0,
+        zeroDeltaTJustification: 'Giả thiết thép DƯL và thiết bị giữ lực cùng trong hầm sấy (TCVN 5574:2018 Mục 9.1.4).',
+      };
 
-    if (scheme === 'S1') {
-      lastStackResult = solveS1Stack({ bt00: lastResults.bt00, nLayers, baseCount, x1_m: cfg.beamM1.x1_m, x2_m: cfg.beamM1.x2_m, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
-    } else if (scheme === 'S3') {
-      lastStackResult = solveS3Stack({ bt00: lastResults.bt00, blocks: blocks.length ? blocks : [2, 2], baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
-    } else {
-      lastStackResult = solveS2Stack({ bt00: lastResults.bt00, nLayers, pilesPerLayer: baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+      if (scheme === 'S1') {
+        lastStackResult = solveS1Stack({ bt00: lastResults.bt00, nLayers, baseCount, x1_m: cfg.beamM1.x1_m, x2_m: cfg.beamM1.x2_m, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+      } else if (scheme === 'S3') {
+        lastStackResult = solveS3Stack({ bt00: lastResults.bt00, blocks: blocks.length ? blocks : [2, 2], baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+      } else {
+        lastStackResult = solveS2Stack({ bt00: lastResults.bt00, nLayers, pilesPerLayer: baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+      }
+
+      // Nếu bật đối chiếu song song Eurocode 2
+      lastEC2Result = el('chk-compare-ec2')?.checked
+        ? evaluateBT03Eurocode2Reference({ bt00: lastResults.bt00, bt03TCVN: lastResults.bt03, beamResult: lastResults.bt02 })
+        : null;
+
+      // Trích xuất hệ số sử dụng chi tiết của tầng/khối chi phối
+      const govU =
+        lastStackResult.utilization ||
+        lastStackResult.layers?.[lastStackResult.governingLayerIndex - 1]?.utilization ||
+        lastStackResult.blockResults?.[lastStackResult.governingBlockIndex - 1]?.utilization ||
+        {};
+      const extraForceInfo =
+        lastStackResult.scheme === 'S1' && lastStackResult.forcesSI
+          ? ` | Lực tiếp xúc nghiêng max: <strong>${fmt(lastStackResult.forcesSI.maxInclinedContact_N / 1e3, 3)} kN</strong> | Lực đẩy ngang biên lý tưởng: <strong>${fmt(lastStackResult.forcesSI.maxHorizontalRestraint_N / 1e3, 3)} kN</strong> | Mômen uốn xiên 2 phương: <strong>${fmt(lastStackResult.forcesSI.M_combined_ser_Nm / 1e3, 3)} kN·m</strong>`
+          : lastStackResult.scheme === 'S2' && lastStackResult.layers?.[0]
+            ? ` | Phản lực gối đáy: <strong>${fmt(lastStackResult.layers[0].R1_N / 1e3, 3)} kN</strong> | Mômen max tầng đáy: <strong>${fmt(Math.max(Math.abs(lastStackResult.layers[0].M_max_sag_Nm), Math.abs(lastStackResult.layers[0].M_min_hog_Nm)) / 1e3, 3)} kN·m</strong>`
+            : '';
+
+      const nowStr = new Date().toLocaleTimeString('vi-VN');
+      el('stack-status-badge').textContent = `Đã giải ${lastStackResult.scheme} (${lastStackResult.code}) lúc ${nowStr}`;
+      el('stack-summary-box').innerHTML = `
+        <div><strong>${lastStackResult.scheme} (${lastStackResult.code}):</strong> ${lastStackResult.nLayers} tầng, tổng ${lastStackResult.totalPiles} cọc | Cơ chế chi phối: <strong>${lastStackResult.governingMechanism}</strong> | U_max = <strong>${fmt(lastStackResult.maxUtilization, 3)}</strong> → <strong class="${lastStackResult.structuralPass ? 'text-emerald-700' : 'text-red-700'}">${lastStackResult.structuralPass ? 'CỌC ĐÁP ỨNG (TCVN 5574:2018)' : 'CỌC VƯỢT GIỚI HẠN'}</strong></div>
+        <div class="mt-1 text-[11px] text-slate-700">Chi tiết U: U_uốn=${fmt(govU.flexureULS, 3)} • U_nứt=${fmt(govU.crackingSLS, 3)} • U_cắt=${fmt(govU.shearMidZoneULS, 3)} • U_nén cục bộ=${fmt(govU.contactLocal, 3)} • U_ép vòng nứt=${fmt(govU.ringCrack, 3)} • U_ép vòng ULS=${fmt(govU.ringULS, 3)}${extraForceInfo}</div>
+        ${lastEC2Result ? `<div class="mt-1 text-amber-900"><strong>Đối chiếu song song Eurocode 2 (Tham khảo, γ_G=1,35):</strong> U_uốn(EC2)=${fmt(lastEC2Result.utilization.flexureULS, 3)}, U_nứt(EC2)=${fmt(lastEC2Result.utilization.crackingSLS, 3)} (Không thay thế kết luận chính TCVN).</div>` : ''}
+      `;
+      renderStackCrossSectionPlot(lastStackResult, lastResults.bt00.summarySI.Do);
+      renderInternalForcePlots(lastResults.bt01, lastResults.bt02, lastStackResult);
+
+      if (lastBT14Result?.scans?.[scheme]) {
+        lastBT13Result = lastBT14Result.scans[scheme];
+        renderBT13AndBT14Plots(lastBT13Result, lastBT14Result);
+      }
+    } catch (err) {
+      el('stack-status-badge').textContent = 'Lỗi giải hệ xếp cọc';
+      el('stack-summary-box').innerHTML = `<div class="text-red-700 font-bold">Lỗi giải hệ xếp cọc: ${err.message}</div>`;
     }
-
-    // Nếu bật đối chiếu song song Eurocode 2
-    lastEC2Result = el('chk-compare-ec2')?.checked
-      ? evaluateBT03Eurocode2Reference({ bt00: lastResults.bt00, bt03TCVN: lastResults.bt03, beamResult: lastResults.bt02 })
-      : null;
-
-    el('stack-status-badge').textContent = `Đã giải ${lastStackResult.scheme} (${lastStackResult.code})`;
-    el('stack-summary-box').innerHTML = `
-      <div><strong>${lastStackResult.scheme} (${lastStackResult.code}):</strong> ${lastStackResult.nLayers} tầng, tổng ${lastStackResult.totalPiles} cọc | Cơ chế chi phối: <strong>${lastStackResult.governingMechanism}</strong> | U_max = <strong>${fmt(lastStackResult.maxUtilization, 3)}</strong> → <strong class="${lastStackResult.structuralPass ? 'text-emerald-700' : 'text-red-700'}">${lastStackResult.structuralPass ? 'CỌC ĐÁP ỨNG (TCVN 5574:2018)' : 'CỌC VƯỢT GIỚI HẠN'}</strong></div>
-      ${lastEC2Result ? `<div class="mt-1 text-amber-900"><strong>Đối chiếu song song Eurocode 2 (Tham khảo, γ_G=1,35):</strong> U_uốn(EC2)=${fmt(lastEC2Result.utilization.flexureULS, 3)}, U_nứt(EC2)=${fmt(lastEC2Result.utilization.crackingSLS, 3)} (Không thay thế kết luận chính TCVN).</div>` : ''}
-    `;
-    renderStackCrossSectionPlot(lastStackResult, lastResults.bt00.summarySI.Do);
   }
 
   function renderBT13AndBT14Plots(bt13, bt14) {
@@ -1210,9 +1347,52 @@ async function initApp() {
     renderBT13AndBT14Plots(lastBT13Result, lastBT14Result);
   }
 
-  el('btn-run-stack')?.addEventListener('click', runStackAndRender);
-  el('btn-run-sweep-pareto')?.addEventListener('click', runSweepAndPareto);
-  el('chk-compare-ec2')?.addEventListener('change', runStackAndRender);
+  /** Đồng bộ hiển thị các ô nhập phụ theo sơ đồ S1/S2/S3 (chỉ cập nhật UI nhập liệu, không chạy tính). */
+  function syncSchemeInputUI() {
+    const scheme = el('inp-scheme')?.value || 'S2';
+    const wrapS3 = el('wrap-s3Blocks');
+    const wrapEcc = el('wrap-sysEcc');
+    const wrapScen = el('wrap-sysScenario');
+    const wrapTol = el('wrap-tolMode');
+    const hint = el('scheme-hint');
+    if (wrapS3) wrapS3.classList.toggle('hidden', scheme !== 'S3');
+    const isS1 = scheme === 'S1';
+    [wrapEcc, wrapScen, wrapTol].forEach((w) => {
+      if (w) w.classList.toggle('opacity-45', isS1);
+    });
+    if (hint) {
+      hint.textContent =
+        scheme === 'S1'
+          ? 'S1: Xếp tam giác tỳ trực tiếp (chỉ kê gỗ ở đáy + 2 chèn biên lý tưởng; không dùng lệch kê trung gian e_sys).'
+          : scheme === 'S3'
+            ? 'S3: Ghép các khối tam giác qua thanh kê gỗ trung gian (nhập cấu trúc khối ở ô Chia khối S3, ví dụ 2,2 hoặc 3,2).'
+            : 'S2: Đặt thanh kê gỗ cứng 100×100 mm ở mọi tầng; xét đầy đủ độ lệch kê e_sys và kịch bản sai lệch.';
+    }
+  }
+
+  el('inp-scheme')?.addEventListener('change', syncSchemeInputUI);
+
+  /** Chạy 1 lần toàn bộ quy trình tính toán: BT00 → BT08 → Hệ S1/S2/S3 (BT09–BT12) → Quét (n,e) BT13 & Pareto BT14. */
+  function runAllPipeline() {
+    runCalculationAndRender();
+    if (lastResults?.bt00?.valid) {
+      runStackAndRender();
+      runSweepAndPareto();
+    }
+  }
+
+  el('btn-run-all')?.addEventListener('click', runAllPipeline);
+  el('btn-run-all-top')?.addEventListener('click', runAllPipeline);
+
+  // Tự động co giãn biểu đồ Plotly khi thay đổi kích thước cửa sổ
+  window.addEventListener('resize', () => {
+    ['plot-bt13-heatmap', 'plot-bt14-pareto', 'plot-moment', 'plot-shear', 'plot-deflection', 'plot-cross-section', 'plot-beam-schematic'].forEach((id) => {
+      const node = el(id);
+      if (node && node.data && typeof Plotly !== 'undefined') {
+        Plotly.Plots.resize(node);
+      }
+    });
+  });
 
   // Khôi phục từ LocalStorage hoặc nạp mặc định PHC-A600
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -1227,8 +1407,8 @@ async function initApp() {
     currentReference = structuredClone(p600.reference);
     renderReferenceBox(currentReference);
   }
-  runCalculationAndRender();
-  runStackAndRender();
+  syncSchemeInputUI();
+  runAllPipeline();
 }
 
 initApp();
