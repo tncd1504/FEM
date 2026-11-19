@@ -10,6 +10,7 @@
  * - Không tự đồng nhất cường độ mẫu trụ (ví dụ 80 MPa D150xH300) với cấp B của TCVN 5574:2018.
  */
 import { G_STANDARD, toSI } from '../../core/units.js';
+import { TCVN5574, gradeBToMPa } from './standards/tcvn5574_factors.js';
 
 /**
  * Bảng đặc trưng bê tông nặng theo TCVN 5574:2018 (Bảng 6, Bảng 7, Bảng 9, Mục 6.1.3.4, Mục 9.1.8).
@@ -36,6 +37,11 @@ export const TCVN_5574_2018_CONCRETE_TABLE = Object.freeze({
 /**
  * Tra cứu đặc trưng bê tông thiết kế theo TCVN 5574:2018 (trả về đơn vị SI: Pa).
  * Không tự động biến cường độ mẫu trụ (ví dụ 80 MPa) thành B80 nếu người dùng không khai báo gradeB hoặc quy tắc quy đổi.
+ *
+ * Hệ số điều kiện làm việc γb1 (Mục 6.1.2) áp dụng cho Rb, Rbt:
+ * - loadDuration = 'long_term' (mặc định của module lưu kho — tải bản thân tác dụng dài hạn): γb1 = 0,9
+ * - loadDuration = 'short_term': γb1 = 1,0
+ * - Có thể khai báo trực tiếp gamma_b1 (ghi đè, phải ghi nguồn trong phương án).
  */
 export function resolveConcreteTCVN5574(concreteInput = {}) {
   const gradeB = concreteInput.gradeB ? String(concreteInput.gradeB).trim().toUpperCase() : null;
@@ -46,7 +52,13 @@ export function resolveConcreteTCVN5574(concreteInput = {}) {
     );
   }
   const row = TCVN_5574_2018_CONCRETE_TABLE[gradeB];
-  const gamma_b1 = Number.isFinite(concreteInput.gamma_b1) ? concreteInput.gamma_b1 : 1.0;
+  const loadDuration = concreteInput.loadDuration || 'long_term';
+  if (loadDuration !== 'long_term' && loadDuration !== 'short_term') {
+    throw new Error(`loadDuration không hợp lệ: "${loadDuration}" (chỉ nhận 'long_term' | 'short_term')`);
+  }
+  const gamma_b1_byDuration =
+    loadDuration === 'long_term' ? TCVN5574.concrete.gamma_b1_longTerm : TCVN5574.concrete.gamma_b1_shortTerm;
+  const gamma_b1 = Number.isFinite(concreteInput.gamma_b1) ? concreteInput.gamma_b1 : gamma_b1_byDuration;
   const rhGroup = concreteInput.rhGroup || '75'; // '75' (>=75%), '40' (40..75%), '0' (<40%)
   const phi_b_cr = rhGroup === '0' ? row.phi_cr_0 : rhGroup === '40' ? row.phi_cr_40 : row.phi_cr_75;
 
@@ -55,28 +67,31 @@ export function resolveConcreteTCVN5574(concreteInput = {}) {
   const Rb = toSI(row.Rb_MPa, 'MPa') * gamma_b1;
   const Rbt = toSI(row.Rbt_MPa, 'MPa') * gamma_b1;
   const Eb = toSI(row.Eb_GPa, 'GPa');
-  const transferFactor = Number.isFinite(concreteInput.transferRatioToRb) ? concreteInput.transferRatioToRb : 0.6;
-  const Rbp = transferFactor * Rb;
+  const B_MPa = gradeBToMPa(gradeB);
 
   return Object.freeze({
     standard: 'TCVN 5574:2018',
-    clauses: 'Bảng 6, Bảng 7, Bảng 9, Bảng 11, Mục 6.1.3–6.1.4 & Mục 9.1.8',
+    clauses: 'Bảng 6, Bảng 7, Bảng 9, Bảng 11, Mục 6.1.2–6.1.4 & Mục 9.1.8',
     gradeB,
+    B_MPa,
     specimenBasis: 'Mẫu lập phương chuẩn 150×150×150 mm (xác suất đảm bảo 95% theo TCVN 5574:2018)',
     cylinderNote: concreteInput.cylinderStrength_MPa
       ? `Cường độ mẫu trụ D150×H300 tham khảo = ${concreteInput.cylinderStrength_MPa} MPa; tính toán sử dụng cấp ${gradeB} đã xác lập.`
       : null,
+    loadDuration,
     gamma_b1,
+    gamma_b1_clause: TCVN5574.concrete.clauseGammaB1,
     Rbn,      // Pa (Rb,ser)
     Rbtn,     // Pa (Rbt,ser)
-    Rb,       // Pa
-    Rbt,      // Pa
-    Rbp,      // Pa (ứng suất nén cho phép khi truyền lực ứng suất trước)
+    Rb,       // Pa (đã nhân γb1)
+    Rbt,      // Pa (đã nhân γb1)
     Eb,       // Pa
-    eps_b0: 0.002,
-    eps_b2: 0.0035,
-    eps_bt0: 0.0001,
-    eps_bt2: 0.00015,
+    eps_b0: TCVN5574.concrete.eps_b0,
+    eps_b2: TCVN5574.concrete.eps_b2,
+    eps_bt0: TCVN5574.concrete.eps_bt0,
+    eps_bt2: TCVN5574.concrete.eps_bt2,
+    // εb0, εb2 ở trên áp dụng cho B ≤ B60; cấp cao hơn cần hiệu chỉnh theo bảng tiêu chuẩn trước khi kết luận
+    strainLimitsValidated: B_MPa <= TCVN5574.concrete.epsLimitsValidUpToGradeB,
     eps_b_sh: row.eps_b_sh,
     phi_b_cr,
     rhGroup,
@@ -84,26 +99,67 @@ export function resolveConcreteTCVN5574(concreteInput = {}) {
 }
 
 /**
+ * Cường độ bê tông lúc truyền lực (buông thép) theo cấp B do người dùng khai báo.
+ * Không tự gán từ mô tả "dưỡng hộ hầm sấy vài giờ" (Plan Mục 6.3.1). Trả về null khi chưa khai báo.
+ */
+export function resolveTransferConcreteTCVN5574(transferGradeB, designConcrete) {
+  if (transferGradeB === undefined || transferGradeB === null || String(transferGradeB).trim() === '') return null;
+  const gradeB = String(transferGradeB).trim().toUpperCase();
+  const row = TCVN_5574_2018_CONCRETE_TABLE[gradeB];
+  if (!row) {
+    throw new Error(`Cấp bê tông lúc truyền lực "${transferGradeB}" không có trong bảng TCVN 5574:2018`);
+  }
+  const B_MPa = gradeBToMPa(gradeB);
+  const minRequired_MPa = Math.max(
+    TCVN5574.prestress.transferMinStrength_Pa / 1e6,
+    TCVN5574.prestress.transferMinRatioToB * (designConcrete?.B_MPa ?? 0)
+  );
+  return Object.freeze({
+    gradeB,
+    B_MPa,
+    Rbn: toSI(row.Rbn_MPa, 'MPa'),
+    Rb: toSI(row.Rb_MPa, 'MPa'),
+    Eb: toSI(row.Eb_GPa, 'GPa'),
+    minRequired_MPa,
+    meetsMinimumTransferStrength: B_MPa >= minRequired_MPa,
+    clause: TCVN5574.prestress.clauseTransferStrength,
+  });
+}
+
+/**
  * Xác lập đặc trưng thép dự ứng lực (PC Bar) và thép đai xoắn (Spiral) theo hệ SI (Pa).
+ * Giới hạn ứng suất căng σsp theo phân loại thép (TCVN 5574:2018 Mục 9.1):
+ * 0,9·Rs,n với thép thanh nhiệt luyện/cán nóng; 0,8·Rs,n với thép sợi kéo nguội/cáp.
+ * Khi chưa phân loại thép, sigma_sp_limit = null và bài tính tổn hao sẽ yêu cầu khai báo.
  */
 export function resolveSteelTCVN5574(pcInput = {}, spiralInput = {}) {
   const fpu = Number.isFinite(pcInput.fpu_Pa) ? pcInput.fpu_Pa : toSI(pcInput.fpu_MPa, 'MPa');
   const fpy = Number.isFinite(pcInput.fpy_Pa) ? pcInput.fpy_Pa : toSI(pcInput.fpy_MPa, 'MPa');
   const Ep  = Number.isFinite(pcInput.Ep_Pa)  ? pcInput.Ep_Pa  : toSI(pcInput.Ep_MPa ?? 200000, 'MPa');
-  const gamma_sp = Number.isFinite(pcInput.gamma_sp) ? pcInput.gamma_sp : 1.2; // TCVN 5574:2018 mục 6.2.2.2
+  const gamma_sp = Number.isFinite(pcInput.gamma_sp) ? pcInput.gamma_sp : TCVN5574.steel.gamma_s_prestressing;
 
   // Theo TCVN 5574:2018 mục 6.2.2.1: Rsn lấy theo giới hạn chảy quy ước Rpy (hoặc 0.85 fpu nếu không có fpy)
   const Rsn = Number.isFinite(fpy) && fpy > 0 ? fpy : 0.85 * fpu;
   const Rs = Rsn / gamma_sp;
 
+  const steelCategory = pcInput.steelCategory ?? null;
+  const categoryDef = steelCategory ? TCVN5574.prestress.steelCategories[steelCategory] : null;
+  if (steelCategory && !categoryDef) {
+    throw new Error(
+      `Phân loại thép DƯL "${steelCategory}" không hợp lệ (chỉ nhận: ${Object.keys(TCVN5574.prestress.steelCategories).join(', ')})`
+    );
+  }
+
   const Rswn = Number.isFinite(spiralInput.Rswn_Pa)
     ? spiralInput.Rswn_Pa
     : toSI(spiralInput.Rswn_MPa ?? 540, 'MPa');
-  const gamma_sw = Number.isFinite(spiralInput.gamma_sw) ? spiralInput.gamma_sw : 1.15;
-  const coeff_sw = Number.isFinite(spiralInput.workConditionFactor) ? spiralInput.workConditionFactor : 0.8;
-  // Rsw dùng cho tính cắt theo TCVN 5574:2018 (kể hệ số điều kiện làm việc cốt đai)
+  const gamma_sw = Number.isFinite(spiralInput.gamma_sw) ? spiralInput.gamma_sw : TCVN5574.steel.gamma_s_spiral;
+  const coeff_sw = Number.isFinite(spiralInput.workConditionFactor)
+    ? spiralInput.workConditionFactor
+    : TCVN5574.shear.Rsw_factor_of_Rs;
+  // Rsw dùng cho tính cắt theo TCVN 5574:2018 (Rsw = 0,8·Rs ≤ 300 MPa)
   const Rsw_base = Rswn / gamma_sw;
-  const Rsw = Math.min(coeff_sw * Rsw_base, toSI(300, 'MPa'));
+  const Rsw = Math.min(coeff_sw * Rsw_base, TCVN5574.shear.Rsw_max_Pa);
   const Esw = Number.isFinite(spiralInput.Esw_Pa)
     ? spiralInput.Esw_Pa
     : toSI(spiralInput.Esw_MPa ?? 200000, 'MPa');
@@ -117,14 +173,16 @@ export function resolveSteelTCVN5574(pcInput = {}, spiralInput = {}) {
       Rs,        // Pa
       Ep,        // Pa
       gamma_sp,
-      sigma_sp_max_by_Rpy: 0.8 * fpy,
-      sigma_sp_max_by_Rpu: 0.7 * fpu,
-      sigma_sp_limit: Math.min(0.8 * fpy, 0.7 * fpu), // Pa
+      steelCategory,
+      steelCategoryLabel: categoryDef?.label ?? null,
+      relaxationFormula: categoryDef?.relaxationFormula ?? null,
+      sigma_sp_limit: categoryDef ? categoryDef.sigmaSpLimitFactorRsn * Rsn : null, // Pa
+      sigma_sp_limit_clause: TCVN5574.prestress.clauseSigmaSpLimit,
     }),
     spiral: Object.freeze({
       standard: 'SWM-C (JIS G 3532) & TCVN 5574:2018',
       Rswn,      // Pa
-      Rsw_base,  // Pa (Rswn / gamma_sw)
+      Rsw_base,  // Pa (Rswn / gamma_sw) — dùng làm cường độ tính toán của đai khi chịu uốn vòng
       Rsw,       // Pa (cường độ tính toán cốt ngang chịu cắt có xét điều kiện làm việc)
       Esw,       // Pa
       gamma_sw,
@@ -239,6 +297,11 @@ export function computeSectionPropertiesSI(siInput) {
     const nWires = z.wireCount;
     const d_sw = z.diameter;
     const s = z.pitch;
+    // Đai xoắn quấn ngoài vòng thép DƯL: bán kính trục dây đai r_sw = rp + d_pc/2 + d_sw/2
+    const r_sw = rp + d_pc / 2 + d_sw / 2;
+    if (!(r_sw + d_sw / 2 < ro)) {
+      throw new Error(`Đai xoắn vùng ${zoneName} (r_sw = ${r_sw} m) vượt ra ngoài mặt ngoài cọc ro = ${ro} m`);
+    }
     const Asw1 = (Math.PI / 4) * d_sw * d_sw;
     const Asw_per_pitch = nWires * Asw1;
     const asw_per_m = s > 0 ? Asw_per_pitch / s : 0; // m²/m (trên 1 mặt cắt thành)
@@ -247,6 +310,7 @@ export function computeSectionPropertiesSI(siInput) {
       wireCount: nWires,
       diameter_m: d_sw,
       pitch_m: s,
+      radius_m: r_sw,
       Asw1_m2: Asw1,
       Asw_per_pitch_m2: Asw_per_pitch,
       asw_per_m_m2_per_m: asw_per_m,

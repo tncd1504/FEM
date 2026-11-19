@@ -39,6 +39,7 @@ function evaluatePoint({
       x2_m: x2_nom_m - eccentricity_m,
       processInput,
       contactArcAngle_deg,
+      runStiffnessSensitivity: false, // độ nhạy độ cứng tiếp xúc khảo sát riêng ở lời giải đơn, không lặp trong vòng quét
     });
     return res;
   }
@@ -54,6 +55,7 @@ function evaluatePoint({
       toleranceMode,
       processInput,
       contactArcAngle_deg,
+      runStiffnessSensitivity: false,
     });
     return res;
   }
@@ -89,9 +91,12 @@ export function runBT13ToleranceScan({
   scenario = 'alternating',
   toleranceMode = 'global_axis',
   processInput = {},
-  contactArcAngle_deg = 20,
+  contactArcAngle_deg,
 }) {
   if (!bt00 || !bt00.valid) throw new Error('BT13 yêu cầu BT00 hợp lệ');
+  if (!Number.isFinite(Number(contactArcAngle_deg))) {
+    throw new Error('BT13 thiếu góc ôm tiếp xúc cọc–kê contactArcAngle_deg (độ); không tự gán giá trị mặc định.');
+  }
   const sec = bt00.record.computed.section;
   const L = sec.L;
   const x1Nom = Number.isFinite(x1_nom_m) ? x1_nom_m : ((Math.sqrt(2) - 1) / 2) * L;

@@ -6,10 +6,13 @@
  * Nguyên tắc bắt buộc (Plan v0.5.0):
  * - Tự xác định mômen nứt Mcrc, sức kháng uốn thiết kế MRd, mômen cực hạn tiêu chuẩn Mu_ser
  *   và sức kháng cắt QRd(x) từ cấu tạo/vật liệu và dự ứng lực sau đầy đủ tổn hao.
+ * - Dự ứng lực đưa vào kiểm tra nứt và TTGH I nhân hệ số độ chính xác căng γsp = 0,9 (có lợi).
  * - Tuyệt đối không lấy Mcr, Mu công bố trên bản vẽ làm kết quả hay ngưỡng kiểm tra.
  * - Bỏ thép dọc gia cường đầu cọc (N2, ØGC, L2); giữ phân vùng đai xoắn section(x) giữa đầu cọc và thân giữa.
+ * - Quy trình căng (L_cang, σ_sp0, ΔT...) bắt buộc khai báo qua processInput; không tự điền mặc định ngầm.
  */
 import { computePrestressLossesTCVN5574 } from './prestress_losses.js';
+import { TCVN5574 } from './standards/tcvn5574_factors.js';
 
 function deepFreeze(obj) {
   if (!obj || typeof obj !== 'object' || Object.isFrozen(obj)) return obj;
@@ -22,7 +25,7 @@ function deepFreeze(obj) {
 
 /**
  * Tích phân mặt cắt vành khăn thành nSlices dải ngang để giải cân bằng biến dạng mặt cắt phẳng
- * theo TCVN 5574:2018 (Mục 8.1.2 & 8.2.2) — khớp phương pháp giải phi tuyến trong tài liệu đối chứng.
+ * theo TCVN 5574:2018 (Mục 8.1.2 & 8.2.2).
  */
 function chordWidthCircle(R, z) {
   const a = Math.abs(z);
@@ -43,29 +46,45 @@ function createAnnulusSlices(ro, ri, nSlices = 120) {
   return slices;
 }
 
+/** Biến dạng tại cao độ z của mặt cắt phẳng có biến dạng thớ trên (z = +ro) và thớ dưới (z = -ro). */
+function planeStrain(ro, eps_top, eps_bot) {
+  return (z) => eps_top + ((ro - z) / (2 * ro)) * (eps_bot - eps_top);
+}
+
+/**
+ * Biểu đồ trạng thái 3 đoạn thẳng của cốt thép có giới hạn chảy quy ước (TCVN 5574:2018 Mục 6.2):
+ * đàn hồi tới σs1 = 0,9·Rs; tăng tuyến tính tới Rs tại εs0 = Rs/Es + 0,002; sau đó nằm ngang.
+ * Vùng nén: tuyến tính tới Rsc (≤ 400 MPa).
+ */
+export function conditionalYieldSteelStress(eps, Rs, Es, Rsc = TCVN5574.steel.Rsc_max_Pa) {
+  if (eps < 0) return -Math.min(Rsc, Es * -eps);
+  const k1 = TCVN5574.steel.sigma_s1_ratio;
+  const eps_s1 = (k1 * Rs) / Es;
+  const eps_s0 = Rs / Es + TCVN5574.steel.eps_offset_conditionalYield;
+  if (eps <= eps_s1) return Es * eps;
+  if (eps < eps_s0) return Rs * (k1 + (1 - k1) * (eps - eps_s1) / (eps_s0 - eps_s1));
+  return Rs;
+}
+
 /**
  * Tự tính Mômen kháng nứt Mcrc (N·m) theo TCVN 5574:2018 Mục 8.2.2:
- * - Phương pháp 1 (Giải tích đàn hồi - dẻo Mục 8.2.2.2):
- *   Mcrc_analytical = W_pl * (sigma_pc_red + Rbt_ser), với W_pl = gamma_pl * W_red
- * - Phương pháp 2 (Giải phi tuyến biến dạng mặt cắt phẳng Mục 8.2.2.3 với giới hạn biến dạng kéo cực hạn
- *   của bê tông eps_bt2 = 0,00015 và mô hình đàn-dẻo kéo Rbt_ser): dùng để đối chứng độc lập!
+ * - Phương pháp chính: biến dạng phi tuyến mặt cắt phẳng (Mục 8.2.2.3), thớ kéo đạt εbt2 = 0,00015,
+ *   bê tông kéo đàn–dẻo Rbt,ser.
+ * - Đối chứng: công thức đàn hồi Mcrc_el = (σpc + Rbt,ser)·Wred (không xét biến dạng dẻo — cận dưới).
+ * Dự ứng lực lấy với γsp = 0,9 (có lợi).
  */
 export function computeCrackingMomentTCVN5574({ section, concrete, steel, prestress, N_ext_N = 0 }) {
   const { ro, ri, bars, Wred, Ared } = section;
   const { Rbn, Rbtn, Eb, eps_bt0, eps_bt2 } = concrete;
   const { Ep } = steel.pcBar;
-  const { sigma_pe_Pa, P_eff_N, sigma_pc_red_Pa } = prestress.effective;
+  const { sigma_pe_favourable_Pa, P_eff_favourable_N, sigma_pc_favourable_Pa } = prestress.effective;
 
-  // 1. Công thức giải tích tiết diện quy đổi (TCVN 5574:2018 Mục 8.2.2.2)
-  // Với tiết diện vành khăn, hệ số xét biến dạng dẻo vùng kéo γ ≈ 1,25..1,35 (mặc định chuẩn đàn hồi γ=1,0 và đàn-dẻo γ=1,27)
   const sigma_ext = N_ext_N / Ared;
-  const Mcrc_elastic_Nm = (sigma_pc_red_Pa + sigma_ext + Rbtn) * Wred;
+  const Mcrc_elastic_Nm = (sigma_pc_favourable_Pa + sigma_ext + Rbtn) * Wred;
 
-  // 2. Giải phi tuyến biến dạng mặt cắt phẳng (TCVN 5574:2018 Mục 8.2.2.3)
-  // Thớ kéo ngoài cùng z = -ro đạt biến dạng giới hạn kéo eps_bot = +eps_bt2 (quy ước kéo +, nén -)
   const slices = createAnnulusSlices(ro, ri, 120);
   const eps_bot = eps_bt2; // +0.00015 (kéo)
-  const eps_p0 = sigma_pe_Pa / Ep;
+  const eps_p0 = sigma_pe_favourable_Pa / Ep;
 
   function concreteStressSLS(eps) {
     if (eps > 0) {
@@ -73,39 +92,33 @@ export function computeCrackingMomentTCVN5574({ section, concrete, steel, prestr
       return Rbtn; // nhánh dẻo kéo từ eps_bt0 (0.0001) đến eps_bt2 (0.00015)
     }
     const eps_c = -eps;
-    const eps_b0 = 0.002;
-    if (eps_c <= eps_b0) return -Math.min(Rbn, Eb * eps_c);
+    if (eps_c <= concrete.eps_b0) return -Math.min(Rbn, Eb * eps_c);
     return -Rbn;
   }
 
   function evalAxialAtTopStrain(eps_top) {
     let N_int = 0; // quy ước nén âm, kéo dương
     let M_int = 0;
-    const curvature = (eps_bot - eps_top) / (2 * ro);
-    const strainAt = (z) => eps_top + ((ro - z) / (2 * ro)) * (eps_bot - eps_top);
-
+    const strainAt = planeStrain(ro, eps_top, eps_bot);
     for (const s of slices) {
-      const eps = strainAt(s.z);
-      const sig = concreteStressSLS(eps);
-      const dF = sig * s.dA;
+      const dF = concreteStressSLS(strainAt(s.z)) * s.dA;
       N_int += dF;
       M_int -= dF * s.z;
     }
-
     for (const bar of bars) {
       const eps_b = strainAt(bar.z_m);
       const sig_c_overlap = concreteStressSLS(eps_b);
-      const sig_p = Math.min(steel.pcBar.fpu, Math.max(-400e6, (eps_p0 + eps_b) * Ep));
+      const sig_p = Math.min(steel.pcBar.fpu, Math.max(-TCVN5574.steel.Rsc_max_Pa, (eps_p0 + eps_b) * Ep));
       const dF_bar = (sig_p - sig_c_overlap) * bar.area_m2;
       N_int += dF_bar;
       M_int -= dF_bar * bar.z_m;
     }
-    return { N_int, M_int, curvature };
+    return { N_int, M_int };
   }
 
   // Tìm eps_top sao cho N_int + N_ext_N = 0 (với N_ext_N dương là lực nén ngoài)
-  let lo = -0.0035, hi = eps_bt2;
-  for (let iter = 0; iter < 60; iter++) {
+  let lo = -concrete.eps_b2, hi = eps_bt2;
+  for (let iter = 0; iter < 80; iter++) {
     const mid = 0.5 * (lo + hi);
     const { N_int } = evalAxialAtTopStrain(mid);
     if (N_int + N_ext_N > 0) hi = mid;
@@ -113,32 +126,37 @@ export function computeCrackingMomentTCVN5574({ section, concrete, steel, prestr
   }
   const sol = evalAxialAtTopStrain(0.5 * (lo + hi));
   const Mcrc_nonlinear_Nm = Math.abs(sol.M_int);
-  const gamma_plastic_equiv = Mcrc_nonlinear_Nm / Math.max(Mcrc_elastic_Nm, 1);
+  const residualN_rel = Math.abs(sol.N_int + N_ext_N) / Math.max(P_eff_favourable_N, 1);
 
   return Object.freeze({
     Mcrc_Nm: Mcrc_nonlinear_Nm,
     Mcrc_elastic_Nm,
     Mcrc_nonlinear_Nm,
-    gamma_plastic_equiv,
-    P_eff_N,
+    gamma_plastic_equiv: Mcrc_nonlinear_Nm / Math.max(Mcrc_elastic_Nm, 1),
+    P_eff_favourable_N,
+    gamma_sp: prestress.effective.gamma_sp_favourable,
+    residualN_rel,
   });
 }
 
 /**
- * Tự tính Sức kháng uốn thiết kế MRd (TTGH I, dùng Rb và Rs = Rsn/γs) và Mômen cực hạn tiêu chuẩn Mu_ser
- * (dùng Rbn và fpu) theo mô hình biến dạng phi tuyến 2 đoạn thẳng của TCVN 5574:2018 (Mục 8.1.2.7).
+ * Tự tính Sức kháng uốn thiết kế MRd (TTGH I) theo mô hình biến dạng phi tuyến (TCVN 5574:2018 Mục 8.1.2):
+ * - Bê tông: đoạn tăng tuyến tính tới εb0 = 0,002 rồi nằm ngang tới εb2 = 0,0035 (Rb đã gồm γb1).
+ * - Thép DƯL: biểu đồ 3 đoạn thẳng có giới hạn chảy quy ước, tổng biến dạng (εp0 + Δε) ≤ εs2 = 0,015.
+ * - Trạng thái giới hạn là trạng thái đến trước: bê tông đạt εb2 hoặc thanh thép chịu kéo nhiều nhất đạt εs2.
+ * Dự ứng lực đưa vào với γsp = 0,9.
  */
-export function computeFlexuralCapacityTCVN5574({ section, concrete, steel, prestress, N_ext_N = 0, longTerm = false }) {
+export function computeFlexuralCapacityTCVN5574({ section, concrete, steel, prestress, N_ext_N = 0 }) {
   const { ro, ri, bars } = section;
   const { Ep } = steel.pcBar;
-  const { sigma_pe_Pa } = prestress.effective;
   const slices = createAnnulusSlices(ro, ri, 120);
-  const eps_p0 = sigma_pe_Pa / Ep;
+  const eps_p0 = prestress.effective.sigma_pe_favourable_Pa / Ep;
+  const eps_cu = concrete.eps_b2;
+  const eps_c0 = concrete.eps_b0;
+  const eps_s2 = TCVN5574.steel.eps_s2_conditionalYield;
+  const zBarMin = Math.min(...bars.map(b => b.z_m)); // thanh chịu kéo nhiều nhất (thớ dưới)
 
-  function solveUltimateForStrengths({ f_c_max, f_s_tens, f_s_comp, eps_cu = 0.0035, eps_c0 = 0.002 }) {
-    // Thớ nén ngoài cùng z = +ro đạt biến dạng nén cực hạn eps_top = -eps_cu
-    const eps_top = -eps_cu;
-
+  function solveUltimate({ f_c_max, Rs_tens }) {
     const concreteStressULS = (eps) => {
       if (eps >= 0) return 0; // Bỏ qua bê tông vùng kéo ở TTGH I
       const ec = -eps;
@@ -146,78 +164,93 @@ export function computeFlexuralCapacityTCVN5574({ section, concrete, steel, pres
       return -f_c_max;
     };
 
-    const evalAtBotStrain = (eps_bot) => {
+    const evalPlane = (eps_top, eps_bot) => {
       let N_int = 0;
       let M_int = 0;
-      const strainAt = (z) => eps_top + ((ro - z) / (2 * ro)) * (eps_bot - eps_top);
-
+      const strainAt = planeStrain(ro, eps_top, eps_bot);
       for (const s of slices) {
-        const eps = strainAt(s.z);
-        const sig = concreteStressULS(eps);
+        const sig = concreteStressULS(strainAt(s.z));
         if (sig !== 0) {
           const dF = sig * s.dA;
           N_int += dF;
           M_int -= dF * s.z;
         }
       }
-
       for (const bar of bars) {
         const eps_b = strainAt(bar.z_m);
         const sig_c_overlap = concreteStressULS(eps_b);
-        const eps_total = eps_p0 + eps_b;
-        const sig_s = Math.min(f_s_tens, Math.max(-f_s_comp, eps_total * Ep));
+        const sig_s = conditionalYieldSteelStress(eps_p0 + eps_b, Rs_tens, Ep);
         const dF_bar = (sig_s - sig_c_overlap) * bar.area_m2;
         N_int += dF_bar;
         M_int -= dF_bar * bar.z_m;
       }
-      const x_neutral = (eps_cu / Math.max(eps_cu + eps_bot, 1e-9)) * (2 * ro);
-      return { N_int, M_int: Math.abs(M_int), x_neutral };
+      return {
+        N_int,
+        M_int: Math.abs(M_int),
+        maxBarTotalStrain: eps_p0 + strainAt(zBarMin),
+        eps_top,
+        eps_bot,
+      };
     };
 
+    // Trạng thái A: bê tông thớ trên đạt εb2, tìm eps_bot cân bằng lực dọc
     let lo = -eps_cu, hi = 0.05;
-    for (let iter = 0; iter < 70; iter++) {
+    for (let iter = 0; iter < 80; iter++) {
       const mid = 0.5 * (lo + hi);
-      const { N_int } = evalAtBotStrain(mid);
-      if (N_int + N_ext_N > 0) hi = mid;
+      if (evalPlane(-eps_cu, mid).N_int + N_ext_N > 0) hi = mid;
       else lo = mid;
     }
-    return evalAtBotStrain(0.5 * (lo + hi));
+    const solA = evalPlane(-eps_cu, 0.5 * (lo + hi));
+    if (solA.maxBarTotalStrain <= eps_s2) {
+      return { ...solA, mode: 'concrete_crushing_eps_b2', residualN: Math.abs(solA.N_int + N_ext_N) };
+    }
+
+    // Trạng thái B: thanh thép chịu kéo nhiều nhất đạt εs2, tìm eps_top cân bằng lực dọc
+    const e_target = eps_s2 - eps_p0;
+    const w = (ro - zBarMin) / (2 * ro);
+    const botFromTop = (eps_top) => eps_top + (e_target - eps_top) / w;
+    let lo2 = -eps_cu, hi2 = e_target;
+    for (let iter = 0; iter < 80; iter++) {
+      const mid = 0.5 * (lo2 + hi2);
+      if (evalPlane(mid, botFromTop(mid)).N_int + N_ext_N > 0) hi2 = mid;
+      else lo2 = mid;
+    }
+    const tB = 0.5 * (lo2 + hi2);
+    const solB = evalPlane(tB, botFromTop(tB));
+    return { ...solB, mode: 'steel_strain_limit_eps_s2', residualN: Math.abs(solB.N_int + N_ext_N) };
   }
 
-  const gamma_b_long = longTerm ? 0.9 : 1.0;
-  const f_s_comp_limit = 400e6; // TCVN 5574:2018 giới hạn ứng suất nén cốt thép Rsc <= 400 MPa
+  const designSol = solveUltimate({ f_c_max: concrete.Rb, Rs_tens: steel.pcBar.Rs });
+  const designFpuSol = solveUltimate({ f_c_max: concrete.Rb, Rs_tens: steel.pcBar.fpu / 1.15 });
+  const characteristicSol = solveUltimate({ f_c_max: concrete.Rbn, Rs_tens: steel.pcBar.fpu });
 
-  // 1. Sức kháng uốn thiết kế MRd (dùng cường độ tính toán Rb và Rs = Rsn / gamma_sp)
-  const designSol = solveUltimateForStrengths({
-    f_c_max: gamma_b_long * concrete.Rb,
-    f_s_tens: steel.pcBar.Rs,
-    f_s_comp: f_s_comp_limit,
-  });
-
-  // 2. Sức kháng uốn thiết kế theo giới hạn bền chia hệ số 1,15 (như trong bảng tính tham khảo)
-  const designFpuSol = solveUltimateForStrengths({
-    f_c_max: gamma_b_long * concrete.Rb,
-    f_s_tens: steel.pcBar.fpu / 1.15,
-    f_s_comp: f_s_comp_limit,
-  });
-
-  // 3. Mômen cực hạn tiêu chuẩn Mu_ser (dùng cường độ tiêu chuẩn Rbn và fpu)
-  const characteristicSol = solveUltimateForStrengths({
-    f_c_max: concrete.Rbn,
-    f_s_tens: steel.pcBar.fpu,
-    f_s_comp: f_s_comp_limit,
-  });
-
+  const P_ref = Math.max(prestress.effective.P_eff_favourable_N, 1);
   return Object.freeze({
     MRd_design_Nm: designSol.M_int,
     MRd_fpuOver115_Nm: designFpuSol.M_int,
     Mu_characteristic_Nm: characteristicSol.M_int,
-    x_neutral_design_m: designSol.x_neutral,
+    designLimitMode: designSol.mode,
+    designMaxBarTotalStrain: designSol.maxBarTotalStrain,
+    eps_s2,
+    designResidualN_rel: designSol.residualN / P_ref,
+    strainLimitsValidated: concrete.strainLimitsValidated !== false,
   });
+}
+
+/** Hệ số φn xét ảnh hưởng ứng suất nén trước σcp (TCVN 5574:2018 Mục 8.1.3) — dạng từng đoạn. */
+function phiNForCompression(sigma_cp, Rb) {
+  const r = Math.max(0, sigma_cp / Rb);
+  if (r <= 0.25) return 1 + r;
+  if (r <= 0.75) return 1.25;
+  return Math.max(0, 5 * (1 - r));
 }
 
 /**
  * Tự tính Sức kháng cắt QRd(x) theo vùng đai xoắn sectionAt(x) (TCVN 5574:2018 Mục 8.1.3).
+ * - Tiết diện vành khăn quy về 2 thành: b = 2t, h0 = 0,9·Do (giả thiết công bố).
+ * - Cốt ngang chỉ được kể khi qsw ≥ 0,25·Rbt·b; Qsw = φsw·qsw·min(c, 2h0).
+ * - Kiểm tra với hình chiếu c bất lợi nhất trong [h0; 3h0] (tác động lấy bằng lực cắt lớn nhất trong vùng).
+ * - Đai xoắn tính 1 nhánh/bước trên tiết diện (thiên an toàn; chưa kể nhánh đối diện).
  * Bỏ qua hoàn toàn thép dọc gia cường đầu cọc (N2, ØGC, L2).
  */
 export function computeShearCapacityAtXTCVN5574({ section, concrete, steel, prestress, x_m }) {
@@ -225,34 +258,50 @@ export function computeShearCapacityAtXTCVN5574({ section, concrete, steel, pres
   const { t, Do } = section;
   const { Rb, Rbt } = concrete;
   const { Rsw, Rsw_base } = steel.spiral;
-  const { sigma_pc_Pa } = prestress.effective;
+  const S = TCVN5574.shear;
+  const sigma_cp = prestress.effective.sigma_pc_favourable_Pa;
 
-  const bw = 2 * t;          // Bề rộng chịu cắt của 2 thành ống (m)
-  const h0 = 0.9 * Do;       // Chiều cao làm việc quy đổi của tiết diện vòng (m)
-  const phi_b2 = 1.5;        // Hệ số đối với bê tông nặng (TCVN 5574:2018 Mục 8.1.3.3)
-  const phi_n = Math.min(1.5, 1 + sigma_pc_Pa / Rb); // Hệ số xét ảnh hưởng ứng suất nén trước
+  const bw = 2 * t;
+  const h0 = 0.9 * Do;
+  const phi_b2 = S.phi_b2;
+  const phi_n = phiNForCompression(sigma_cp, Rb);
 
   const Asw_pitch = secX.spiral.Asw_per_pitch_m2;
   const s = secX.spiral.pitch_m;
-  const q_sw_design = (Asw_pitch * Rsw) / s;          // N/m (dùng Rsw có hệ số điều kiện làm việc 0,8)
-  const q_sw_base = (Asw_pitch * Rsw_base) / s;       // N/m (dùng Rswn / 1,15)
+  const q_sw_min = S.qswMinRatio * Rbt * bw;
 
-  const calcForQsw = (q_sw) => {
+  const calcForQsw = (q_sw_raw) => {
+    const counted = q_sw_raw >= q_sw_min;
+    const q_sw = counted ? q_sw_raw : 0;
     const num = phi_b2 * phi_n * Rbt * bw * h0 * h0;
-    const c_raw = q_sw > 0 ? Math.sqrt(num / (0.75 * q_sw)) : 3 * h0;
-    const c = Math.min(Math.max(c_raw, h0), 3 * h0);
-    const Qb_min = 0.5 * Rbt * bw * h0;
-    const Qb_max = 2.5 * Rbt * bw * h0;
-    const Qb = Math.min(Qb_max, Math.max(Qb_min, num / c));
-    const Qsw = 0.75 * q_sw * c;
-    // Kiểm tra điều kiện phá hoại dải bê tông giữa các vết nứt xiên: Q <= 0,3 * Rb * bw * h0
-    const Q_crush_limit = 0.3 * Rb * bw * h0;
-    const QRd = Math.min(Q_crush_limit, Qb + Qsw);
-    return { c, Qb, Qsw, Q_crush_limit, QRd };
+    const Qb_min = S.Qb_min_factor * Rbt * bw * h0;
+    const Qb_max = S.Qb_max_factor * Rbt * bw * h0;
+    const Q_crush_limit = S.crushFactor * Rb * bw * h0;
+    const cMin = S.cMinFactor_h0 * h0;
+    const cMax = S.cMaxFactor_h0 * h0;
+    const nScan = 240;
+    let best = null;
+    for (let i = 0; i <= nScan; i++) {
+      const c = cMin + ((cMax - cMin) * i) / nScan;
+      const Qb = Math.min(Qb_max, Math.max(Qb_min, num / c));
+      const Qsw = S.phi_sw * q_sw * Math.min(c, S.cSwMaxFactor_h0 * h0);
+      const Qsum = Qb + Qsw;
+      if (!best || Qsum < best.Qsum) best = { c, Qb, Qsw, Qsum };
+    }
+    return {
+      stirrupsCounted: counted,
+      q_sw_raw,
+      q_sw_used: q_sw,
+      c: best.c,
+      Qb: best.Qb,
+      Qsw: best.Qsw,
+      Q_crush_limit,
+      QRd: Math.min(Q_crush_limit, best.Qsum),
+    };
   };
 
-  const designShear = calcForQsw(q_sw_design);
-  const baseShear = calcForQsw(q_sw_base);
+  const designShear = calcForQsw((Asw_pitch * Rsw) / s);
+  const baseShear = calcForQsw((Asw_pitch * Rsw_base) / s);
 
   return Object.freeze({
     x_m: secX.x_m,
@@ -264,19 +313,23 @@ export function computeShearCapacityAtXTCVN5574({ section, concrete, steel, pres
     h0_m: h0,
     phi_b2,
     phi_n,
-    q_sw_design_N_per_m: q_sw_design,
-    q_sw_base_N_per_m: q_sw_base,
+    sigma_cp_Pa: sigma_cp,
+    q_sw_min_N_per_m: q_sw_min,
+    q_sw_design_N_per_m: designShear.q_sw_raw,
+    stirrupsCounted: designShear.stirrupsCounted,
     c_m: designShear.c,
     Qb_N: designShear.Qb,
     Qsw_N: designShear.Qsw,
     Q_crush_limit_N: designShear.Q_crush_limit,
     QRd_design_N: designShear.QRd,
     QRd_base_N: baseShear.QRd,
+    clause: S.clause,
   });
 }
 
 /**
  * Chạy bài tính độc lập BT03: Tự tính tổn hao/dự ứng lực hữu hiệu và kiểm tra uốn, cắt, ứng suất, nứt dọc cọc.
+ * processInput bắt buộc chứa dữ liệu căng/dưỡng hộ (L_cang_m, σ_sp0, ΔT và giả thiết nếu ΔT = 0...).
  */
 export function runBT03({
   bt00OrConfig,
@@ -295,44 +348,19 @@ export function runBT03({
   const sec = bt00.record.computed.section;
   const conc = bt00.record.computed.concrete;
   const steel = bt00.record.computed.steel;
+  const gamma_f = TCVN5574.loads.gamma_f_selfWeight;
 
-  const defaultProcess = {
-    L_cang_m: processInput.L_cang_m ?? sec.L,
-    deltaT_K: processInput.deltaT_K ?? 0,
-    zeroDeltaTJustification:
-      processInput.zeroDeltaTJustification ??
-      'Giả thiết thép DƯL và khuôn/bệ giữ lực nằm cùng trong hầm sấy, không có chênh nhiệt (TCVN 5574:2018 Mục 9.1.4).',
-    anchorSlip_mm: processInput.anchorSlip_mm ?? 2.0,
-    moldDeformation_mm: processInput.moldDeformation_mm ?? 0.0,
-    curingMode: processInput.curingMode ?? 'steam_chamber_then_natural',
-    measurementStage: processInput.measurementStage ?? 'before_anchoring',
-    ...processInput,
-  };
-
-  const prestress = computePrestressLossesTCVN5574({ bt00, processInput: defaultProcess });
+  const prestress = computePrestressLossesTCVN5574({ bt00, processInput });
   const cracking = computeCrackingMomentTCVN5574({ section: sec, concrete: conc, steel, prestress });
   const flexure = computeFlexuralCapacityTCVN5574({ section: sec, concrete: conc, steel, prestress });
-  const shearEnd = computeShearCapacityAtXTCVN5574({
-    section: sec,
-    concrete: conc,
-    steel,
-    prestress,
-    x_m: 0.5 * sec.L_end,
-  });
-  const shearMid = computeShearCapacityAtXTCVN5574({
-    section: sec,
-    concrete: conc,
-    steel,
-    prestress,
-    x_m: 0.5 * sec.L,
-  });
+  const shearEnd = computeShearCapacityAtXTCVN5574({ section: sec, concrete: conc, steel, prestress, x_m: 0.5 * sec.L_end });
+  const shearMid = computeShearCapacityAtXTCVN5574({ section: sec, concrete: conc, steel, prestress, x_m: 0.5 * sec.L });
 
-  // Xác định nội lực tác dụng để kiểm tra (từ kết quả dầm BT01/BT02 hoặc nội lực truyền vào)
+  // Xác định nội lực tác dụng (từ kết quả dầm BT01/BT02 hoặc nội lực truyền vào ở trạng thái tiêu chuẩn)
   let M_ser_max = serviceMoment_Nm;
   let M_uls_max = designMoment_Nm;
   let Q_end_max = designShearEnd_N;
   let Q_mid_max = designShearMid_N;
-  const gamma_f_self = 1.1; // Hệ số độ tin cậy về tải trọng bản thân theo TCVN 2737 / TCVN 5574
 
   if (beamResult && beamResult.diagram) {
     let maxM = 0, maxQEnd = 0, maxQMid = 0;
@@ -343,22 +371,19 @@ export function runBT03({
       else maxQMid = Math.max(maxQMid, Math.abs(pt.Q));
     }
     if (!Number.isFinite(M_ser_max)) M_ser_max = maxM;
-    if (!Number.isFinite(M_uls_max)) M_uls_max = gamma_f_self * maxM;
-    if (!Number.isFinite(Q_end_max)) Q_end_max = gamma_f_self * maxQEnd;
-    if (!Number.isFinite(Q_mid_max)) Q_mid_max = gamma_f_self * maxQMid;
-  } else {
-    M_ser_max = Number.isFinite(M_ser_max) ? M_ser_max : 0.5 * cracking.Mcrc_Nm;
-    M_uls_max = Number.isFinite(M_uls_max) ? M_uls_max : gamma_f_self * M_ser_max;
-    Q_end_max = Number.isFinite(Q_end_max) ? Q_end_max : 0.3 * shearEnd.QRd_design_N;
-    Q_mid_max = Number.isFinite(Q_mid_max) ? Q_mid_max : 0.4 * shearMid.QRd_design_N;
+    if (!Number.isFinite(M_uls_max)) M_uls_max = gamma_f * maxM;
+    if (!Number.isFinite(Q_end_max)) Q_end_max = gamma_f * maxQEnd;
+    if (!Number.isFinite(Q_mid_max)) Q_mid_max = gamma_f * maxQMid;
+  }
+  if (![M_ser_max, M_uls_max, Q_end_max, Q_mid_max].every(Number.isFinite)) {
+    throw new Error('BT03 thiếu nội lực tác dụng: cần beamResult (BT01/BT02) hoặc serviceMoment/designMoment/designShear.');
   }
 
   // Ứng suất thớ bê tông ở trạng thái sử dụng (chưa nứt): σ = σ_pc ± M_ser / W_red
   const sigma_top_max_comp_Pa = prestress.effective.sigma_pc_red_Pa + M_ser_max / sec.Wred;
-  const sigma_bot_min_Pa = prestress.effective.sigma_pc_red_Pa - M_ser_max / sec.Wred; // < 0 là kéo
+  const sigma_bot_min_Pa = prestress.effective.sigma_pc_favourable_Pa - M_ser_max / sec.Wred; // < 0 là kéo
 
   const utilization = {
-    transferCompression: prestress.stage1.transferStressRatio,
     crackingSLS: M_ser_max / cracking.Mcrc_Nm,
     flexureULS: M_uls_max / flexure.MRd_design_Nm,
     shearEndZoneULS: Q_end_max / shearEnd.QRd_design_N,
@@ -368,18 +393,29 @@ export function runBT03({
 
   const governingEntry = Object.entries(utilization).reduce((best, cur) => (cur[1] > best[1] ? cur : best));
   const allChecksPass = Object.values(utilization).every(u => u <= 1.0);
+  const validityDomainOk = flexure.strainLimitsValidated;
+  const numericResidualOk = cracking.residualN_rel < 1e-6 && flexure.designResidualN_rel < 1e-6;
 
   return deepFreeze({
     code: 'BT03',
     title: 'BT03: Tự tính tổn hao/dự ứng lực hữu hiệu và kiểm tra uốn, cắt, ứng suất, nứt theo TCVN 5574:2018',
     valid: true,
-    verified: true,
+    verified: numericResidualOk,
     standard: 'TCVN 5574:2018',
+    factors: {
+      gamma_f,
+      gamma_f_clause: TCVN5574.loads.clause,
+      gamma_sp_favourable: prestress.effective.gamma_sp_favourable,
+      gamma_b1: conc.gamma_b1,
+      gamma_b1_clause: conc.gamma_b1_clause,
+    },
     prestress,
     capacitiesSI: {
       Mcrc_Nm: cracking.Mcrc_Nm,
       Mcrc_elastic_Nm: cracking.Mcrc_elastic_Nm,
       MRd_design_Nm: flexure.MRd_design_Nm,
+      MRd_limitMode: flexure.designLimitMode,
+      MRd_maxBarTotalStrain: flexure.designMaxBarTotalStrain,
       MRd_fpuOver115_Nm: flexure.MRd_fpuOver115_Nm,
       Mu_characteristic_Nm: flexure.Mu_characteristic_Nm,
       QRd_endZone_N: shearEnd.QRd_design_N,
@@ -396,9 +432,23 @@ export function runBT03({
       sigma_bot_min_Pa,
     },
     utilization,
-    governingMechanism: governingEntry[0],
+    // Kiểm tra giai đoạn truyền lực (sản xuất) — tách khỏi kết luận lưu kho
+    stageChecks: {
+      transfer: prestress.transferCheck,
+    },
+    numericChecks: {
+      crackingResidualN_rel: cracking.residualN_rel,
+      flexureResidualN_rel: flexure.designResidualN_rel,
+    },
+    validityDomain: {
+      ok: validityDomainOk,
+      note: validityDomainOk
+        ? 'Biến dạng giới hạn bê tông εb0, εb2 áp dụng trong miền cấp B ≤ B60.'
+        : `Cấp ${conc.gradeB} > B60: chưa hiệu chỉnh εb0, εb2 cho bê tông cường độ cao — không xuất kết luận đạt.`,
+    },
+    governingMechanism: validityDomainOk ? governingEntry[0] : 'ngoài miền hiệu lực (B > B60)',
     maxUtilization: governingEntry[1],
-    structuralPass: allChecksPass,
+    structuralPass: allChecksPass && validityDomainOk,
     referenceDiagnosticOnly: {
       note: 'Chỉ dùng để chẩn đoán sau tính — không dùng làm ngưỡng thiết kế',
       publishedMcr_Nm: bt00.record.reference.publishedMcr_kNm ? bt00.record.reference.publishedMcr_kNm * 1e3 : null,

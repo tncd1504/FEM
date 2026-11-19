@@ -62,7 +62,9 @@
           "diameter_mm": 7.1,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -136,7 +138,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -210,7 +214,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -284,7 +290,9 @@
           "diameter_mm": 7.1,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -358,7 +366,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -432,7 +442,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -506,7 +518,9 @@
           "diameter_mm": 7.1,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -580,7 +594,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -654,7 +670,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -728,7 +746,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -802,7 +822,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -876,7 +898,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -950,7 +974,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1024,7 +1050,9 @@
           "diameter_mm": 7.1,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1098,7 +1126,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1172,7 +1202,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1246,7 +1278,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1323,7 +1357,9 @@
           "diameter_mm": 7.1,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1400,7 +1436,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1477,7 +1515,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1554,7 +1594,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1631,7 +1673,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1708,7 +1752,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1785,7 +1831,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1862,7 +1910,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -1939,7 +1989,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2016,7 +2068,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2093,7 +2147,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2170,7 +2226,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2247,7 +2305,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2324,7 +2384,9 @@
           "diameter_mm": 9.0,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2401,7 +2463,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,
@@ -2478,7 +2542,9 @@
           "diameter_mm": 10.7,
           "fpu_MPa": 1420.0,
           "fpy_MPa": 1275.0,
-          "Ep_MPa": 200000.0
+          "Ep_MPa": 200000.0,
+          "steelCategory": "heat_treated_bar",
+          "steelCategoryNote": "PC bar JIS G3137 (SBPD, nhiệt luyện) — thép thanh: σsp ≤ 0,9·Rs,n, chùng ứng suất theo công thức thép thanh; người dùng xác nhận theo chứng chỉ thép"
         },
         "spiralZones": {
           "endZoneLengthFactor_Do": 2,

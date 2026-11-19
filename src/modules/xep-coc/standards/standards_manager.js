@@ -76,13 +76,61 @@ export function evaluateBT03Eurocode2Reference({ bt00, bt03TCVN, beamResult }) {
   const P_eff_EC2 = sigma_pe_EC2 * sec.Ap;
   const sigma_cp_EC2 = P_eff_EC2 / sec.Ared;
 
-  // Mômen kháng nứt theo EC2 (Mục 7.3.2): M_cr = (sigma_cp + fctm) * W_red
-  const Mcr_EC2_Nm = (sigma_cp_EC2 + fctm) * sec.Wred;
+  // Mômen kháng nứt theo EC2 (Mục 7.1, 5.10.9): M_cr = (r_inf·σ_cp + f_ctm)·W_red, r_inf = 0,95 (căng trước)
+  const r_inf_EC2 = 0.95;
+  const Mcr_EC2_Nm = (r_inf_EC2 * sigma_cp_EC2 + fctm) * sec.Wred;
 
-  // Sức kháng uốn thiết kế MRd theo EC2 (dùng fcd, fpd; xấp xỉ tích phân mặt cắt tương tự TCVN với tỷ lệ fpd/Rs)
-  const MRd_EC2_Nm = bt03TCVN.capacitiesSI.MRd_design_Nm * (fpd / steelPC.Rs);
+  // Sức kháng uốn thiết kế MRd theo EC2 tính độc lập (Mục 3.1.7 parabol–chữ nhật, Mục 3.3.6 thép DƯL nhánh ngang,
+  // giới hạn ε_ud = 0,9·ε_uk với ε_uk = 3,5% — giá trị khuyến nghị), tích phân mặt cắt vành khăn.
+  const ecFactor = Math.pow((90 - fck_MPa) / 100, 4);
+  const eps_c2 = fck_MPa <= 50 ? 0.002 : (2.0 + 0.085 * Math.pow(fck_MPa - 50, 0.53)) / 1000;
+  const eps_cu2 = fck_MPa <= 50 ? 0.0035 : (2.6 + 35 * ecFactor) / 1000;
+  const n_pr = fck_MPa <= 50 ? 2.0 : 1.4 + 23.4 * ecFactor;
+  const eps_ud = 0.9 * 0.035;
+  const MRd_EC2 = (() => {
+    const ro = sec.ro, ri = sec.ri;
+    const nS = 120, dz = (2 * ro) / nS;
+    const slices = [];
+    for (let i = 0; i < nS; i++) {
+      const z = -ro + (i + 0.5) * dz;
+      const w = (Math.abs(z) < ro ? 2 * Math.sqrt(ro * ro - z * z) : 0) - (Math.abs(z) < ri ? 2 * Math.sqrt(ri * ri - z * z) : 0);
+      slices.push({ z, dA: Math.max(0, w) * dz });
+    }
+    const eps_p0 = sigma_pe_EC2 / steelPC.Ep;
+    const sigC = (eps) => {
+      if (eps >= 0) return 0;
+      const ec = -eps;
+      return ec < eps_c2 ? -fcd * (1 - Math.pow(1 - ec / eps_c2, n_pr)) : -fcd;
+    };
+    const sigP = (eps) => (eps >= 0 ? Math.min(fpd, steelPC.Ep * eps) : -Math.min(fpd, steelPC.Ep * -eps));
+    const zMin = Math.min(...sec.bars.map(b => b.z_m));
+    const evalPlane = (eT, eB) => {
+      const st = (z) => eT + ((ro - z) / (2 * ro)) * (eB - eT);
+      let N = 0, M = 0;
+      for (const s of slices) { const dF = sigC(st(s.z)) * s.dA; N += dF; M -= dF * s.z; }
+      for (const b of sec.bars) {
+        const e = st(b.z_m);
+        const dF = (sigP(eps_p0 + e) - sigC(e)) * b.area_m2;
+        N += dF; M -= dF * b.z_m;
+      }
+      return { N, M: Math.abs(M), maxBar: eps_p0 + st(zMin) };
+    };
+    let lo = -eps_cu2, hi = 0.05;
+    for (let i = 0; i < 80; i++) { const m = 0.5 * (lo + hi); if (evalPlane(-eps_cu2, m).N > 0) hi = m; else lo = m; }
+    const solA = evalPlane(-eps_cu2, 0.5 * (lo + hi));
+    if (solA.maxBar <= eps_ud) return { M: solA.M, mode: 'concrete_eps_cu2' };
+    const eT_target = eps_ud - eps_p0;
+    const wB = (ro - zMin) / (2 * ro);
+    const bot = (eT) => eT + (eT_target - eT) / wB;
+    let lo2 = -eps_cu2, hi2 = eT_target;
+    for (let i = 0; i < 80; i++) { const m = 0.5 * (lo2 + hi2); if (evalPlane(m, bot(m)).N > 0) hi2 = m; else lo2 = m; }
+    const t = 0.5 * (lo2 + hi2);
+    return { M: evalPlane(t, bot(t)).M, mode: 'steel_eps_ud' };
+  })();
+  const MRd_EC2_Nm = MRd_EC2.M;
 
-  // Sức kháng cắt tối thiểu không cốt đai + cốt đai theo EC2 Mục 6.2.2 & 6.2.3 (θ = 45°, cotθ = 1,0)
+  // Sức kháng cắt theo EC2: vùng không nứt do uốn dùng Mục 6.2.2(2) (kéo chính cho cấu kiện DƯL),
+  // vùng nứt dùng Mục 6.2.2(1); cốt đai Mục 6.2.3 (cotθ = 1,0). VRd = max(VRd,c ; VRd,s).
   const bw = 2 * sec.t;
   const d_eff = 0.85 * sec.Do;
   const z_ec2 = 0.9 * d_eff;
@@ -91,10 +139,16 @@ export function evaluateBT03Eurocode2Reference({ bt00, bt03TCVN, beamResult }) {
   const VRds_mid_EC2_N = (secMid.spiral.asw_per_m_m2_per_m * z_ec2 * fywd_EC2);
   const k_ec2 = Math.min(2.0, 1 + Math.sqrt(0.2 / d_eff));
   const rho_l = Math.min(0.02, sec.Ap / (bw * d_eff));
-  const VRdc_EC2_N = Math.max(
-    (0.18 / gamma_c_EC2) * k_ec2 * Math.pow(100 * rho_l * fck_MPa, 1 / 3) * 1e6 + 0.15 * sigma_cp_EC2,
-    (0.035 * Math.pow(k_ec2, 1.5) * Math.sqrt(fck_MPa) * 1e6 + 0.15 * sigma_cp_EC2)
+  const sigma_cp_shear = Math.min(P_eff_EC2 / sec.Ag, 0.2 * fcd);
+  const VRdc_cracked_EC2_N = Math.max(
+    (0.18 / gamma_c_EC2) * k_ec2 * Math.pow(100 * rho_l * fck_MPa, 1 / 3) * 1e6 + 0.15 * sigma_cp_shear,
+    (0.035 * Math.pow(k_ec2, 1.5) * Math.sqrt(fck_MPa) * 1e6 + 0.15 * sigma_cp_shear)
   ) * bw * d_eff;
+  const fctd = (1.0 * 0.7 * fctm) / gamma_c_EC2;
+  const S_half_annulus = (2 / 3) * (sec.ro ** 3 - sec.ri ** 3);
+  const VRdc_uncracked_EC2_N = ((sec.Ig * bw) / S_half_annulus) * Math.sqrt(fctd * fctd + 1.0 * sigma_cp_shear * fctd);
+  const uncrackedInFlexure = bt03TCVN.demandsSI.M_ser_max_Nm <= Mcr_EC2_Nm;
+  const VRdc_EC2_N = uncrackedInFlexure ? VRdc_uncracked_EC2_N : VRdc_cracked_EC2_N;
   const VRd_mid_EC2_N = Math.max(VRdc_EC2_N, VRds_mid_EC2_N);
 
   // Hệ số tải trọng bản thân ULS của EC2 là γ_G = 1,35 (khác 1,1 của TCVN!)
@@ -116,12 +170,18 @@ export function evaluateBT03Eurocode2Reference({ bt00, bt03TCVN, beamResult }) {
     version: 'EN 1992-1-1:2004 (Eurocode 2)',
     clauses: 'Bảng 3.1, Mục 3.3, Mục 5.10, Mục 6.2 & Mục 7.3',
     loadFactorULS: gamma_G_EC2,
-    materialSI: { fck, fcd, fctm, Ecm, fpd },
+    materialSI: { fck, fcd, fctm, Ecm, fpd, eps_c2, eps_cu2, n_parabola: n_pr, eps_ud },
     capacitiesSI: {
       Mcrc_Nm: Mcr_EC2_Nm,
       MRd_design_Nm: MRd_EC2_Nm,
+      MRd_limitMode: MRd_EC2.mode,
       VRd_midZone_N: VRd_mid_EC2_N,
+      VRdc_basis: uncrackedInFlexure ? 'EN 1992-1-1 Mục 6.2.2(2) — vùng không nứt do uốn' : 'EN 1992-1-1 Mục 6.2.2(1) — vùng nứt',
     },
+    limitations: [
+      'Tổn hao dự ứng lực chưa tính riêng theo EC2 Mục 5.10.4–5.10.6: dùng tỷ lệ tổn hao của bộ TCVN áp lên σp0 giới hạn theo EC2.',
+      'f_ck lấy theo cường độ mẫu trụ khai báo, nếu không có thì ước lượng 0,8·B.',
+    ],
     demandsSI: {
       M_ser_Nm: M_ser,
       M_Ed_EC2_Nm: M_Ed_EC2,

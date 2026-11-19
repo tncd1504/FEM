@@ -132,7 +132,9 @@ export function buildPileRecord(raw = {}) {
       gradeB,
       density_kg_m3: rho,
       rhGroup: conc.rhGroup || '75',
-      gamma_b1: conc.gamma_b1 ?? 1.0,
+      // Lưu kho: tải bản thân tác dụng dài hạn → γb1 = 0,9 (TCVN 5574:2018 Mục 6.1.2); ghi đè khi có cơ sở
+      loadDuration: conc.loadDuration || 'long_term',
+      gamma_b1: Number.isFinite(conc.gamma_b1) ? conc.gamma_b1 : null,
       cylinderStrength_MPa: conc.cylinderStrength_MPa ?? null,
     },
     pcReinforcementSI: {
@@ -142,6 +144,8 @@ export function buildPileRecord(raw = {}) {
       fpy_Pa: fpy,
       Ep_Pa: Ep,
       gamma_sp: pc.gamma_sp ?? 1.2,
+      // Phân loại thép DƯL quyết định giới hạn σsp và công thức chùng ứng suất (bắt buộc khi tính tổn hao)
+      steelCategory: pc.steelCategory ?? null,
     },
     spiralZonesSI: {
       endZoneLengthFactor_Do,
@@ -329,8 +333,10 @@ export function runBT00(rawConfig) {
         gradeB: rec.input.concreteSI.gradeB,
         density_kg_m3: rec.input.concreteSI.density_kg_m3,
         rhGroup: rec.input.concreteSI.rhGroup,
+        loadDuration: rec.input.concreteSI.loadDuration,
       },
       pcReinforcement: {
+        steelCategory: rec.input.pcReinforcementSI.steelCategory,
         count_N1: rec.computed.section.N1,
         diameter_mm: fromSI(rec.computed.section.d_pc, 'mm'),
         fpu_MPa: fromSI(fpu, 'MPa'),

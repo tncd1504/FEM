@@ -288,6 +288,37 @@
                 <span class="text-slate-600">Góc ôm tiếp xúc <code>θ_c</code> (độ):</span>
                 <input id="inp-contactAngle" type="number" step="1" value="20" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white" />
               </label>
+              <label class="col-span-2 block">
+                <span class="text-slate-600">Giả thiết khi lấy <code>ΔT = 0</code> (bắt buộc ghi rõ, TCVN 5574:2018 Mục 9.1.4):</span>
+                <input id="inp-zeroDeltaTJust" type="text" value="" placeholder="VD: Thép căng và khuôn thép giữ lực cùng nằm trong hầm sấy, không chênh nhiệt" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 bg-white" />
+              </label>
+              <label class="block">
+                <span class="text-slate-600">Ứng suất căng ban đầu <code>σ_sp0</code> (MPa):</span>
+                <input id="inp-sigmaSp0" type="number" step="1" value="994" title="Nhập theo lực căng thực tế của nhà máy; không vượt 0,9·Rs,n (thép thanh) / 0,8·Rs,n (sợi, cáp)" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white" />
+              </label>
+              <label class="block">
+                <span class="text-slate-600">Phân loại thép DƯL:</span>
+                <select id="inp-pcSteelCategory" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+                  <option value="heat_treated_bar" selected>Thép thanh nhiệt luyện (PC bar) — 0,9·Rs,n</option>
+                  <option value="cold_drawn_wire_or_strand">Thép sợi kéo nguội / cáp — 0,8·Rs,n</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-slate-600">Cấp bê tông lúc truyền lực:</span>
+                <select id="inp-transferGradeB" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+                  <option value="" selected>— Chưa khai báo —</option>
+                  <option value="B20">B20</option><option value="B25">B25</option><option value="B30">B30</option>
+                  <option value="B35">B35</option><option value="B40">B40</option><option value="B45">B45</option>
+                  <option value="B50">B50</option><option value="B55">B55</option><option value="B60">B60</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-slate-600">Thời hạn tải (γb1):</span>
+                <select id="inp-loadDuration" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+                  <option value="long_term" selected>Dài hạn — lưu kho (γb1 = 0,9)</option>
+                  <option value="short_term">Ngắn hạn (γb1 = 1,0)</option>
+                </select>
+              </label>
             </div>
 
             <div class="pt-2 border-t border-purple-200/70 space-y-2">

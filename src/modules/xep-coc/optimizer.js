@@ -46,9 +46,12 @@ export function runBT14ParetoOptimizer({
   scenario = 'alternating',
   toleranceMode = 'global_axis',
   processInput = {},
-  contactArcAngle_deg = 20,
+  contactArcAngle_deg,
 }) {
   if (!bt00 || !bt00.valid) throw new Error('BT14 yêu cầu BT00 hợp lệ');
+  if (!Number.isFinite(Number(contactArcAngle_deg))) {
+    throw new Error('BT14 thiếu góc ôm tiếp xúc cọc–kê contactArcAngle_deg (độ); không tự gán giá trị mặc định.');
+  }
 
   const scanS1 = runBT13ToleranceScan({
     bt00, scheme: 'S1', nMin, nMax, baseCount, x1_nom_m, x2_nom_m, eccMax_m, eccStep_m, scenario, toleranceMode, processInput, contactArcAngle_deg,
