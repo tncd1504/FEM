@@ -2,6 +2,23 @@
 
 Mọi thay đổi đáng kể của phần mềm được ghi nhận tại đây theo chuẩn [Semantic Versioning (SemVer)](https://semver.org/).
 
+## [1.0.0] - 2026-11-19 (Hoàn thành toàn bộ Mốc M3, M4, M5 & M6: `BT09 – BT14`, Web Worker, Đối chiếu tiêu chuẩn & Báo cáo)
+
+### Added
+- **Lõi tiếp xúc một phía dọc thân (`src/core/contact_solver.js`):**
+  - Bộ giải hệ nhiều tầng dầm có tiếp xúc một phía (chỉ chịu nén, tự động tách hở) dọc trục `x` bằng Active-Set Iteration, bắt hiện tượng tập trung lực tiếp xúc gần gối đáy `x1, x2`.
+- **Mô hình hệ xếp cọc nhiều tầng `BT09 – BT12` (`src/modules/xep-coc/stacking_model.js`):**
+  - `BT10 & BT11 (S2)`: Giải S2 kê thẳng hàng và S2 lệch kê (phân biệt 2 định nghĩa mốc sai lệch: theo trục chuẩn chung vs. theo 2 mặt kê liên tiếp; hỗ trợ 5 kịch bản lệch kê).
+  - `BT09 (S1)`: Giải cân bằng lưới tiếp xúc tam giác nghiêng `30°`, kết hợp tiếp xúc một phía dọc thân (`contact_solver.js`) và uốn xiên 2 phương (đứng + ngang do lực đẩy ngang biên).
+  - `BT12 (S3)`: Giải sơ đồ hỗn hợp ghép nhiều khối qua thanh kê gỗ cứng trung gian, bảo toàn 100% tải tích lũy và đối chứng quy đúng về `S1` (khi 1 khối) và `S2` (khi các khối 1 tầng).
+- **Khảo sát miền dung sai `BT13` & Tối ưu Pareto `BT14` (`tolerance_scan.js`, `optimizer.js`, `src/workers/calculation_worker.js`):**
+  - `BT13`: Quét miền `(n, e)` tìm vùng chấp nhận liên thông chứa trạng thái danh định (`e = 0`) và tinh chỉnh biên, công bố rõ trạng thái *dung sai khảo sát*.
+  - `BT14`: Trích xuất tập phương án Pareto theo 3 chỉ tiêu khả năng chịu lực của cọc (`nLayers ↑`, `allowableEccentricity_m ↑`, `nominalMaxU ↓`) trên nền Web Worker.
+- **Quản lý tiêu chuẩn, Đối chiếu song song & Báo cáo (`standards_manager.js`, `data_out/report_template.html`):**
+  - Mặc định `TCVN 5574:2018` làm cơ sở chính; bổ sung bộ đối chiếu song song độc lập theo **Eurocode 2 (EN 1992-1-1:2004)** với lựa chọn in độc lập (`reportStandards`), xuất CSV có nhãn tiêu chuẩn và xuất Báo cáo HTML / In PDF.
+- **Kiểm chứng tự động toàn hệ thống (`tests/m3_m6_verification.js`):**
+  - Đạt **27/27** bài test nghiệm thu toàn bộ Mốc M1 → M6 (`BT00 – BT14`).
+
 ## [0.2.0] - 2026-11-17 (Hoàn thành Mốc M2: `BT03 – BT08` & Chuẩn hóa biểu đồ Mômen)
 
 ### Changed

@@ -17,7 +17,7 @@
         </a>
         <div>
           <h1 class="text-base sm:text-lg font-bold leading-tight">
-            Tính toán & Đánh giá Xếp cọc Bê tông Ly tâm (PHC) — Mốc M1 & M2 (BT00 – BT08)
+            Tính toán & Đánh giá Xếp cọc Bê tông Ly tâm (PHC) — Đầy đủ Mốc M1 → M6 (BT00 – BT14)
           </h1>
           <p class="text-xs text-slate-300">
             Cơ sở chính: <strong class="text-blue-300">TCVN 5574:2018</strong> • Lõi tính chuẩn SI (<code>m, kg, s, N, Pa</code>) • Bỏ thép dọc gia cường đầu cọc • Kê gỗ cứng <code>100×100 mm</code>
@@ -40,8 +40,14 @@
           Nạp JSON
           <input id="input-import-json" type="file" accept=".json" class="hidden" />
         </label>
+        <button id="btn-export-csv" class="bg-slate-800 hover:bg-slate-700 text-slate-100 px-3 py-1.5 rounded border border-slate-600 transition">
+          Xuất CSV
+        </button>
+        <button id="btn-print-report" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3 py-1.5 rounded shadow transition">
+          Xuất Báo cáo HTML / In PDF
+        </button>
         <a href="../../tests/m1_benchmark.html" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded shadow transition">
-          Kiểm chứng tự động (M1)
+          Kiểm chứng tự động (27 tests)
         </a>
       </div>
     </div>
@@ -273,6 +279,84 @@
           * Quy trình đã chốt: Căng trước cơ khí tại nhà máy → Hầm sấy áp suất khí quyển (ζ = 0,85) → Tháo khuôn → Dưỡng hộ tự nhiên.
         </p>
       </div>
+
+      <!-- Cấu hình Hệ xếp cọc S1 / S2 / S3 & Quét Dung sai / Pareto (Mốc M3 – M6) -->
+      <div class="bg-white rounded-xl shadow-sm border border-indigo-200 p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-300">
+            Mốc M3 – M6 (BT09 – BT14): Hệ S1/S2/S3, Quét (n, e) & Pareto
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5 text-xs">
+          <label class="block">
+            <span class="text-slate-600">Sơ đồ hệ xếp cọc:</span>
+            <select id="inp-scheme" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+              <option value="S2" selected>S2 — Kê gỗ mọi tầng</option>
+              <option value="S1">S1 — Xếp tam giác tỳ trực tiếp</option>
+              <option value="S3">S3 — Hỗn hợp ghép khối</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-slate-600">Số tầng <code>n</code> / Số cọc đáy:</span>
+            <div class="grid grid-cols-2 gap-1 mt-0.5">
+              <input id="inp-nLayers" type="number" min="2" max="10" value="3" title="Số tầng cọc" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+              <input id="inp-baseCount" type="number" min="2" max="12" value="5" title="Số cọc hàng đáy" class="border border-slate-300 rounded px-2 py-1.5 font-mono" />
+            </div>
+          </label>
+          <label class="block">
+            <span class="text-slate-600">Chia khối S3 (vd <code>2,2</code>):</span>
+            <input id="inp-s3Blocks" type="text" value="2,2" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+          </label>
+          <label class="block">
+            <span class="text-slate-600">Độ lệch kê hệ <code>e_sys</code> (m):</span>
+            <input id="inp-sysEcc" type="number" step="0.05" value="0.20" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono" />
+          </label>
+          <label class="block">
+            <span class="text-slate-600">Kịch bản sai lệch kê:</span>
+            <select id="inp-sysScenario" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+              <option value="zero">Thẳng hàng (e = 0)</option>
+              <option value="alternating" selected>Lệch xen kẽ (alternating)</option>
+              <option value="same_direction">Lệch cùng chiều</option>
+              <option value="cumulative">Cộng dồn theo chiều cao</option>
+              <option value="single_layer">Lệch 1 mặt kê</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-slate-600">Định nghĩa mốc dung sai:</span>
+            <select id="inp-tolMode" class="mt-0.5 w-full border border-slate-300 rounded px-2 py-1.5 font-mono bg-white">
+              <option value="global_axis" selected>Theo trục chuẩn chung</option>
+              <option value="adjacent_layers">Theo 2 mặt kê liên tiếp</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Khu vực Tiêu chuẩn đối chiếu & In báo cáo -->
+        <div class="pt-2 border-t border-slate-200 text-xs space-y-1.5">
+          <div class="font-bold text-slate-700">Tiêu chuẩn tính & Lựa chọn In báo cáo (TCVN là cơ sở chính mặc định):</div>
+          <div class="flex flex-wrap gap-3">
+            <label class="inline-flex items-center gap-1.5 font-semibold text-blue-800">
+              <input type="checkbox" checked disabled /> TCVN 5574:2018 (Chính)
+            </label>
+            <label class="inline-flex items-center gap-1.5">
+              <input id="chk-compare-ec2" type="checkbox" /> Đối chiếu song song Eurocode 2 (Tham khảo)
+            </label>
+          </div>
+          <div class="flex flex-wrap gap-3 text-[11px] text-slate-600">
+            <span>Chọn bộ để in báo cáo:</span>
+            <label class="inline-flex items-center gap-1"><input id="chk-report-tcvn" type="checkbox" checked /> TCVN 5574:2018</label>
+            <label class="inline-flex items-center gap-1"><input id="chk-report-ec2" type="checkbox" /> Eurocode 2 (Tham khảo)</label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-run-stack" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2 rounded-lg shadow transition">
+            Chạy Hệ S1/S2/S3 (BT09–BT12)
+          </button>
+          <button id="btn-run-sweep-pareto" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs py-2 rounded-lg shadow transition">
+            Quét (n,e) & Pareto (Worker)
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- Right Column: Computed + Charts + 8-Step Reports -->
@@ -336,6 +420,25 @@
           </div>
         </div>
         <div id="report-8steps-container" class="text-xs space-y-3 leading-relaxed"></div>
+      </div>
+
+      <!-- Khu vực hiển thị kết quả Mốc M3 – M6: Mặt cắt đống cọc y-z, Bản đồ (n,e) BT13 & Pareto BT14 -->
+      <div class="bg-white rounded-xl shadow-sm border border-indigo-200 p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+          <h3 class="text-sm font-bold text-indigo-950">
+            Phân tích Hệ nhiều tầng (S1 / S2 / S3), Miền chấp nhận (BT13) & Tập Phương án Pareto (BT14)
+          </h3>
+          <span id="stack-status-badge" class="text-xs font-mono text-slate-500">Sẵn sàng chạy</span>
+        </div>
+        <div id="stack-summary-box" class="text-xs bg-indigo-50/60 border border-indigo-200 rounded-lg p-3 font-mono"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div id="plot-stack-yz" class="w-full h-72"></div>
+          <div id="plot-bt13-heatmap" class="w-full h-72"></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div id="plot-bt14-pareto" class="w-full h-72"></div>
+          <div id="bt14-pareto-table" class="text-xs overflow-auto max-h-72 border border-slate-200 rounded-lg p-2"></div>
+        </div>
       </div>
     </section>
   </main>

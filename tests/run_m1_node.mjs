@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runM1VerificationSuite } from './m1_verification.js';
 import { runM2VerificationSuite } from './m2_verification.js';
+import { runM3ToM6VerificationSuite } from './m3_m6_verification.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath = path.join(__dirname, '..', 'data_in', 'pile_specs.json');
@@ -20,4 +21,10 @@ for (const r of reportM2.results) {
   console.log(`[${r.passed ? 'PASS' : 'FAIL'}] ${r.name} -> ${r.detail}`);
 }
 
-if (!reportM1.allPassed || !reportM2.allPassed) process.exit(1);
+const reportM36 = await runM3ToM6VerificationSuite(db);
+console.log(`\n=== M3–M6 VERIFICATION SUITE: ${reportM36.passedCount}/${reportM36.totalTests} PASSED ===`);
+for (const r of reportM36.results) {
+  console.log(`[${r.passed ? 'PASS' : 'FAIL'}] ${r.name} -> ${r.detail}`);
+}
+
+if (!reportM1.allPassed || !reportM2.allPassed || !reportM36.allPassed) process.exit(1);

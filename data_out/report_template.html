@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Báo cáo Tính toán & Đánh giá Xếp cọc Bê tông Ly tâm (PHC)</title>
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; color: #0f172a; margin: 24px; line-height: 1.5; font-size: 13px; }
+    h1 { font-size: 20px; border-bottom: 2px solid #0f172a; padding-bottom: 6px; margin-bottom: 12px; }
+    h2 { font-size: 15px; color: #1e3a8a; margin-top: 18px; border-left: 4px solid #2563eb; padding-left: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+    th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-primary { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+    .badge-ref { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .note { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; margin: 10px 0; }
+    @media print { .no-print { display: none; } body { margin: 12mm; } }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="margin-bottom: 16px;">
+    <button onclick="window.print()" style="padding: 8px 16px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+      In Báo cáo / Lưu PDF
+    </button>
+  </div>
+  <h1>BÁO CÁO TÍNH TOÁN & ĐÁNH GIÁ XẾP CỌC BÊ TÔNG LY TÂM (PHC) TRONG KHO</h1>
+  <div class="note">
+    <strong>Phiên bản phần mềm:</strong> 1.0.0 (Kế hoạch v0.5.0) • <strong>Hệ đơn vị lõi:</strong> SI chuẩn (m, kg, s, N, Pa, K)<br/>
+    <strong>Phạm vi đánh giá:</strong> Chỉ xét khả năng chịu lực của cọc dưới điều kiện biên kho lý tưởng (thanh kê gỗ 100 × 100 mm tuyệt đối cứng, nền cứng không lún, biên giữ ngang đủ năng lực). Bỏ qua thép dọc gia cường đầu cọc (N2, ØGC, L2).<br/>
+    <strong>Quy trình công nghệ:</strong> Căng trước bằng máy cơ khí tại nhà máy → Hầm sấy vài giờ (áp suất khí quyển, ζ = 0,85) → Tháo khuôn → Dưỡng hộ tự nhiên.
+  </div>
+  {{REPORT_BODY}}
+</body>
+</html>

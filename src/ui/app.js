@@ -8,8 +8,17 @@ import { runBT00, runBT01, runBT02 } from '../modules/xep-coc/pile_specs.js';
 import { runBT03 } from '../modules/xep-coc/section_checker.js';
 import { runBT04, runBT05 } from '../modules/xep-coc/contact_checker.js';
 import { runBT06, runBT07, runBT08 } from '../modules/xep-coc/support_checker.js';
+import { solveS1Stack, solveS2Stack, solveS3Stack } from '../modules/xep-coc/stacking_model.js';
+import { runBT13ToleranceScan } from '../modules/xep-coc/tolerance_scan.js';
+import { runBT14ParetoOptimizer } from '../modules/xep-coc/optimizer.js';
+import { normalizeStandardsConfig, evaluateBT03Eurocode2Reference } from '../modules/xep-coc/standards/standards_manager.js';
 
-const STORAGE_KEY = 'fem_xep_coc_m1_m2_state_v050';
+const STORAGE_KEY = 'fem_xep_coc_full_state_v100';
+let calcWorker = null;
+let lastStackResult = null;
+let lastBT13Result = null;
+let lastBT14Result = null;
+let lastEC2Result = null;
 
 let pileDb = null;
 let supportDb = null;
@@ -29,8 +38,11 @@ function readFormConfig() {
     schemaVersion: '0.5.0',
     primaryStandard: 'TCVN',
     structuralStandard: 'TCVN 5574:2018',
-    comparisonStandards: [],
-    reportStandards: ['TCVN'],
+    comparisonStandards: el('chk-compare-ec2')?.checked ? ['EC2'] : [],
+    reportStandards: [
+      ...(el('chk-report-tcvn')?.checked !== false ? ['TCVN'] : []),
+      ...(el('chk-report-ec2')?.checked ? ['EC2'] : []),
+    ],
     reference: currentReference || {
       code: 'CUSTOM',
       manufacturer: 'Người dùng tự xác lập',
@@ -883,13 +895,13 @@ async function initApp() {
     });
   });
 
-  // Xuất / Nạp JSON
+  // Xuất / Nạp JSON (lưu đầy đủ lựa chọn tiêu chuẩn)
   el('btn-export-json').addEventListener('click', () => {
     const cfg = readFormConfig();
     const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `phuong-an-xep-coc-M1-${cfg.reference?.code || 'custom'}.json`;
+    a.download = `phuong-an-xep-coc-${cfg.reference?.code || 'custom'}.json`;
     a.click();
   });
 
@@ -898,9 +910,309 @@ async function initApp() {
     if (!file) return;
     const text = await file.text();
     const parsed = JSON.parse(text);
+    const std = normalizeStandardsConfig(parsed);
+    if (el('chk-compare-ec2')) el('chk-compare-ec2').checked = std.comparisonStandards.includes('EC2');
+    if (el('chk-report-tcvn')) el('chk-report-tcvn').checked = std.reportStandards.includes('TCVN');
+    if (el('chk-report-ec2')) el('chk-report-ec2').checked = std.reportStandards.includes('EC2');
     writeFormConfig(parsed);
     runCalculationAndRender();
+    runStackAndRender();
   });
+
+  // Xuất CSV có nhãn tiêu chuẩn
+  el('btn-export-csv')?.addEventListener('click', () => {
+    if (!lastResults) return;
+    const rows = [
+      ['TieuChuan', 'VaiTro', 'BaiTinh', 'KiemTra', 'HeSoSuDung_U', 'TrangThai'],
+      ...Object.entries(lastResults.bt03.utilization).map(([k, v]) => [
+        'TCVN 5574:2018', 'CoSoChinh', 'BT03', k, v.toFixed(4), v <= 1 ? 'DAT' : 'KHONG_DAT',
+      ]),
+      ['TCVN 5574:2018', 'CoSoChinh', 'BT04', 'contactLocal', lastResults.bt04.capacitySI.utilization.toFixed(4), lastResults.bt04.capacitySI.pass ? 'DAT' : 'KHONG_DAT'],
+      ['TCVN 5574:2018', 'CoSoChinh', 'BT05', 'ringCrack', lastResults.bt05.capacitiesSI.utilizationCrack.toFixed(4), lastResults.bt05.capacitiesSI.passCrack ? 'DAT' : 'KHONG_DAT'],
+      ['TCVN 5574:2018', 'CoSoChinh', 'BT05', 'ringULS', lastResults.bt05.capacitiesSI.utilizationULS.toFixed(4), lastResults.bt05.capacitiesSI.passULS ? 'DAT' : 'KHONG_DAT'],
+    ];
+    if (lastEC2Result) {
+      for (const [k, v] of Object.entries(lastEC2Result.utilization)) {
+        rows.push(['EN 1992-1-1:2004 (EC2)', 'ThamKhaoDoiChieu', 'BT03', k, v.toFixed(4), v <= 1 ? 'DAT_THAM_KHAO' : 'KHONG_DAT_THAM_KHAO']);
+      }
+    }
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ket-qua-xep-coc-${readFormConfig().reference?.code || 'custom'}.csv`;
+    a.click();
+  });
+
+  // Xuất báo cáo HTML / In PDF theo lựa chọn reportStandards độc lập
+  el('btn-print-report')?.addEventListener('click', async () => {
+    if (!lastResults) return;
+    const cfg = readFormConfig();
+    const repStds = cfg.reportStandards.length ? cfg.reportStandards : ['TCVN'];
+    const tplResp = await fetch('../../data_out/report_template.html');
+    const tpl = await tplResp.text();
+    const s = lastResults.bt00.summarySI;
+    const bt03 = lastResults.bt03;
+
+    let bodyHtml = `
+      <h2>1. Thông tin cấu tạo đầu vào (INPUT) & Đối chiếu bản vẽ tham khảo (REFERENCE)</h2>
+      <p>Mã tham khảo: <strong>${cfg.reference?.code || 'Tự nhập'}</strong> (Rev ${cfg.reference?.revision || '—'}) • Chiều dài nhập: <strong>L = ${s.L} m</strong> • Cấp bê tông: <strong>${lastResults.bt00.record.computed.concrete.gradeB}</strong></p>
+      <table><tr><th>Do (m)</th><th>Dp (m)</th><th>Di (m)</th><th>t tự tính (m)</th><th>Ag (m²)</th><th>Ared (m²)</th><th>Ired (m⁴)</th><th>q tự trọng (N/m)</th></tr>
+      <tr><td>${fmt(s.Do, 4)}</td><td>${fmt(s.Dp, 4)}</td><td>${fmt(s.Di, 4)}</td><td>${fmt(s.t, 4)}</td><td>${fmt(s.Ag, 5)}</td><td>${fmt(s.Ared, 5)}</td><td>${fmt(s.Ired, 5)}</td><td>${fmt(s.selfWeightPerMeter, 5)}</td></tr></table>
+    `;
+
+    if (repStds.includes('TCVN')) {
+      bodyHtml += `
+        <h2>2. Kết quả kiểm tra theo <span class="badge badge-primary">CƠ SỞ CHÍNH: TCVN 5574:2018</span></h2>
+        <p>Dự ứng lực hữu hiệu sau đầy đủ 6 khoản tổn hao (Mục 9.1): <strong>σ_pe = ${fmt(bt03.prestress.effective.sigma_pe_Pa / 1e6, 4)} MPa</strong> | <strong>P_eff = ${fmt(bt03.prestress.effective.P_eff_N / 1e3, 4)} kN</strong> | <strong>σ_pc(Ab) = ${fmt(bt03.prestress.effective.sigma_pc_net_Pa / 1e6, 4)} MPa</strong>.</p>
+        <table><tr><th>Kiểm tra</th><th>Sức kháng tự tính</th><th>Hệ số sử dụng U</th><th>Kết quả (TCVN 5574:2018)</th></tr>
+        <tr><td>Chống nứt (TTGH II)</td><td>Mcrc = ${fmt(bt03.capacitiesSI.Mcrc_Nm / 1e3, 4)} kN·m</td><td>${fmt(bt03.utilization.crackingSLS, 3)}</td><td>${bt03.utilization.crackingSLS <= 1 ? 'ĐẠT' : 'KHÔNG ĐẠT'}</td></tr>
+        <tr><td>Chịu uốn (TTGH I)</td><td>MRd = ${fmt(bt03.capacitiesSI.MRd_design_Nm / 1e3, 4)} kN·m</td><td>${fmt(bt03.utilization.flexureULS, 3)}</td><td>${bt03.utilization.flexureULS <= 1 ? 'ĐẠT' : 'KHÔNG ĐẠT'}</td></tr>
+        <tr><td>Chịu cắt thân giữa (x1, x2)</td><td>QRd,mid = ${fmt(bt03.capacitiesSI.QRd_midZone_N / 1e3, 4)} kN</td><td>${fmt(bt03.utilization.shearMidZoneULS, 3)}</td><td>${bt03.utilization.shearMidZoneULS <= 1 ? 'ĐẠT' : 'KHÔNG ĐẠT'}</td></tr>
+        <tr><td>Nén cục bộ phía cọc (BT04)</td><td>N_loc,Rd = ${fmt(lastResults.bt04.capacitySI.N_loc_Rd_N / 1e3, 4)} kN</td><td>${fmt(lastResults.bt04.capacitySI.utilization, 3)}</td><td>${lastResults.bt04.capacitySI.pass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</td></tr>
+        <tr><td>Ép ngang vòng thành rỗng (BT05)</td><td>M_ring,crc = ${fmt(lastResults.bt05.capacitiesSI.M_ring_crc_Nm / 1e3, 4)} kN·m</td><td>${fmt(lastResults.bt05.capacitiesSI.utilizationCrack, 3)}</td><td>${lastResults.bt05.capacitiesSI.passCrack ? 'ĐẠT' : 'KHÔNG ĐẠT'}</td></tr>
+        </table>
+      `;
+    }
+
+    if (repStds.includes('EC2')) {
+      const ec2 = lastEC2Result || evaluateBT03Eurocode2Reference({ bt00: lastResults.bt00, bt03TCVN: bt03, beamResult: lastResults.bt02 });
+      bodyHtml += `
+        <h2>3. Kết quả đối chiếu theo <span class="badge badge-ref">THAM KHẢO / ĐỐI CHIẾU: EN 1992-1-1:2004 (Eurocode 2)</span></h2>
+        <p><em>Ghi chú phạm vi:</em> Phần này chỉ phục vụ tham khảo theo Eurocode 2 (hệ số tải ULS γ_G = 1,35; γ_c = 1,5; γ_s = 1,15), không suy ra kết luận TCVN và không thay thế kết luận chính TCVN 5574:2018.</p>
+        <table><tr><th>Kiểm tra (EC2)</th><th>Sức kháng EC2</th><th>Hệ số sử dụng U (EC2)</th><th>So với TCVN</th></tr>
+        <tr><td>Chống nứt (Mục 7.3)</td><td>Mcr,EC2 = ${fmt(ec2.capacitiesSI.Mcrc_Nm / 1e3, 4)} kN·m</td><td>${fmt(ec2.utilization.crackingSLS, 3)}</td><td>ΔU = ${fmt(ec2.comparisonVsTCVN.deltaCrackU, 3)}</td></tr>
+        <tr><td>Chịu uốn (Mục 6.1)</td><td>MRd,EC2 = ${fmt(ec2.capacitiesSI.MRd_design_Nm / 1e3, 4)} kN·m</td><td>${fmt(ec2.utilization.flexureULS, 3)}</td><td>ΔU = ${fmt(ec2.comparisonVsTCVN.deltaFlexureU, 3)}</td></tr>
+        <tr><td>Chịu cắt thân giữa (Mục 6.2)</td><td>VRd,EC2 = ${fmt(ec2.capacitiesSI.VRd_midZone_N / 1e3, 4)} kN</td><td>${fmt(ec2.utilization.shearMidZoneULS, 3)}</td><td>—</td></tr>
+        </table>
+      `;
+    }
+
+    if (lastStackResult) {
+      bodyHtml += `
+        <h2>4. Kết quả hệ xếp cọc ${lastStackResult.scheme} (${lastStackResult.code})</h2>
+        <p>Số tầng: <strong>${lastStackResult.nLayers}</strong> • Tổng số cọc: <strong>${lastStackResult.totalPiles}</strong> • Cơ chế chi phối: <strong>${lastStackResult.governingMechanism}</strong> (U_max = <strong>${fmt(lastStackResult.maxUtilization, 3)}</strong>) • Kết luận cọc (biên kho lý tưởng): <strong>${lastStackResult.structuralPass ? 'ĐÁP ỨNG' : 'KHÔNG ĐẠT'}</strong>.</p>
+      `;
+    }
+
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.open();
+      win.document.write(tpl.replace('{{REPORT_BODY}}', bodyHtml));
+      win.document.close();
+    }
+  });
+
+  function renderStackCrossSectionPlot(stackRes, Do_m) {
+    if (!stackRes?.crossSectionPiles?.length) return;
+    const r = Do_m / 2;
+    const shapes = stackRes.crossSectionPiles.map((p) => ({
+      type: 'circle',
+      xref: 'x',
+      yref: 'y',
+      x0: p.y_m - r,
+      x1: p.y_m + r,
+      y0: p.z_m - r,
+      y1: p.z_m + r,
+      fillcolor: p.U <= 1.0 ? 'rgba(16,185,129,0.28)' : 'rgba(239,68,68,0.28)',
+      line: { color: p.U <= 1.0 ? '#047857' : '#b91c1c', width: 2 },
+    }));
+    const ys = stackRes.crossSectionPiles.map(p => p.y_m);
+    const zs = stackRes.crossSectionPiles.map(p => p.z_m);
+    Plotly.newPlot(
+      'plot-stack-yz',
+      [{
+        x: ys,
+        y: zs,
+        mode: 'text',
+        text: stackRes.crossSectionPiles.map(p => `T${p.layer}`),
+        textfont: { size: 9, color: '#0f172a' },
+      }],
+      {
+        title: { text: `Mặt cắt ngang đống cọc y–z (${stackRes.scheme}, ${stackRes.nLayers} tầng, ${stackRes.totalPiles} cọc)`, font: { size: 12 } },
+        shapes,
+        margin: { l: 45, r: 15, t: 35, b: 35 },
+        xaxis: { title: 'Ngang bãi y (m)', scaleanchor: 'y', scaleratio: 1 },
+        yaxis: { title: 'Cao độ z (m)', rangemode: 'tozero' },
+        paper_bgcolor: 'transparent',
+        plot_bgcolor: '#f8fafc',
+      },
+      { responsive: true, displayModeBar: false }
+    );
+  }
+
+  function runStackAndRender() {
+    if (!lastResults?.bt00?.valid) return;
+    const cfg = readFormConfig();
+    const scheme = el('inp-scheme')?.value || 'S2';
+    const nLayers = Number(el('inp-nLayers')?.value || 3);
+    const baseCount = Number(el('inp-baseCount')?.value || 5);
+    const ecc = Number(el('inp-sysEcc')?.value || 0);
+    const scenario = el('inp-sysScenario')?.value || 'alternating';
+    const toleranceMode = el('inp-tolMode')?.value || 'global_axis';
+    const blocks = (el('inp-s3Blocks')?.value || '2,2').split(',').map(s => parseInt(s.trim(), 10)).filter(n => n > 0);
+    const m2 = cfg.m2Config || {};
+    const processInput = {
+      L_cang_m: m2.L_cang_m || lastResults.bt00.summarySI.L,
+      anchorSlip_mm: m2.anchorSlip_mm ?? 2.0,
+      measurementStage: m2.measurementStage || 'before_anchoring',
+      deltaT_K: m2.deltaT_K ?? 0,
+      zeroDeltaTJustification: 'Giả thiết thép DƯL và thiết bị giữ lực cùng trong hầm sấy (TCVN 5574:2018 Mục 9.1.4).',
+    };
+
+    if (scheme === 'S1') {
+      lastStackResult = solveS1Stack({ bt00: lastResults.bt00, nLayers, baseCount, x1_m: cfg.beamM1.x1_m, x2_m: cfg.beamM1.x2_m, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+    } else if (scheme === 'S3') {
+      lastStackResult = solveS3Stack({ bt00: lastResults.bt00, blocks: blocks.length ? blocks : [2, 2], baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+    } else {
+      lastStackResult = solveS2Stack({ bt00: lastResults.bt00, nLayers, pilesPerLayer: baseCount, x1_nom_m: cfg.beamM1.x1_m, x2_nom_m: cfg.beamM1.x2_m, eccentricity_m: ecc, scenario, toleranceMode, processInput, contactArcAngle_deg: m2.contactArcAngle_deg ?? 20 });
+    }
+
+    // Nếu bật đối chiếu song song Eurocode 2
+    lastEC2Result = el('chk-compare-ec2')?.checked
+      ? evaluateBT03Eurocode2Reference({ bt00: lastResults.bt00, bt03TCVN: lastResults.bt03, beamResult: lastResults.bt02 })
+      : null;
+
+    el('stack-status-badge').textContent = `Đã giải ${lastStackResult.scheme} (${lastStackResult.code})`;
+    el('stack-summary-box').innerHTML = `
+      <div><strong>${lastStackResult.scheme} (${lastStackResult.code}):</strong> ${lastStackResult.nLayers} tầng, tổng ${lastStackResult.totalPiles} cọc | Cơ chế chi phối: <strong>${lastStackResult.governingMechanism}</strong> | U_max = <strong>${fmt(lastStackResult.maxUtilization, 3)}</strong> → <strong class="${lastStackResult.structuralPass ? 'text-emerald-700' : 'text-red-700'}">${lastStackResult.structuralPass ? 'CỌC ĐÁP ỨNG (TCVN 5574:2018)' : 'CỌC VƯỢT GIỚI HẠN'}</strong></div>
+      ${lastEC2Result ? `<div class="mt-1 text-amber-900"><strong>Đối chiếu song song Eurocode 2 (Tham khảo, γ_G=1,35):</strong> U_uốn(EC2)=${fmt(lastEC2Result.utilization.flexureULS, 3)}, U_nứt(EC2)=${fmt(lastEC2Result.utilization.crackingSLS, 3)} (Không thay thế kết luận chính TCVN).</div>` : ''}
+    `;
+    renderStackCrossSectionPlot(lastStackResult, lastResults.bt00.summarySI.Do);
+  }
+
+  function renderBT13AndBT14Plots(bt13, bt14) {
+    if (bt13) {
+      Plotly.newPlot(
+        'plot-bt13-heatmap',
+        [{
+          type: 'heatmap',
+          x: bt13.heatmap.xEccentricity_m,
+          y: bt13.heatmap.yLayerLabels,
+          z: bt13.heatmap.zMaxUtilization,
+          zmin: 0,
+          zmax: 1.5,
+          colorscale: [[0, '#10b981'], [0.66, '#facc15'], [1, '#ef4444']],
+          colorbar: { title: 'U_max' },
+        }],
+        {
+          title: { text: `BT13: Bản đồ miền chấp nhận (n, e) — ${bt13.scheme} (U ≤ 1,0 đạt)`, font: { size: 12 } },
+          margin: { l: 55, r: 15, t: 35, b: 40 },
+          xaxis: { title: 'Độ lệch kê e (m)' },
+          yaxis: { title: 'Số tầng' },
+          paper_bgcolor: 'transparent',
+        },
+        { responsive: true, displayModeBar: false }
+      );
+    }
+    if (bt14) {
+      Plotly.newPlot(
+        'plot-bt14-pareto',
+        [
+          {
+            x: bt14.feasibleCandidates.map(c => c.nLayers),
+            y: bt14.feasibleCandidates.map(c => c.allowableEccentricity_m * 1e3),
+            mode: 'markers',
+            name: 'Phương án khả thi',
+            text: bt14.feasibleCandidates.map(c => `${c.label} (U=${c.nominalMaxU.toFixed(2)})`),
+            marker: { size: 9, color: '#94a3b8' },
+          },
+          {
+            x: bt14.paretoFront.map(c => c.nLayers),
+            y: bt14.paretoFront.map(c => c.allowableEccentricity_m * 1e3),
+            mode: 'markers+lines',
+            name: 'Tập Pareto (TCVN 5574)',
+            text: bt14.paretoFront.map(c => `${c.label} (U=${c.nominalMaxU.toFixed(2)})`),
+            marker: { size: 11, color: '#2563eb', symbol: 'star' },
+            line: { color: '#2563eb', dash: 'dot' },
+          },
+        ],
+        {
+          title: { text: 'BT14: Tập Phương án Pareto (Số tầng vs Dung sai đặt kê)', font: { size: 12 } },
+          margin: { l: 55, r: 15, t: 35, b: 40 },
+          xaxis: { title: 'Số tầng giới hạn theo cọc (n)' },
+          yaxis: { title: 'Dung sai đặt kê khảo sát (mm)' },
+          legend: { orientation: 'h', y: -0.22, font: { size: 10 } },
+          paper_bgcolor: 'transparent',
+          plot_bgcolor: '#f8fafc',
+        },
+        { responsive: true, displayModeBar: false }
+      );
+
+      const pRows = bt14.paretoFront
+        .map(p => `<tr class="border-b bg-blue-50/40"><td class="p-1.5 font-bold">${p.label}</td><td class="p-1.5 font-mono">${p.nLayers}</td><td class="p-1.5 font-mono">${(p.allowableEccentricity_m * 1e3).toFixed(0)} mm</td><td class="p-1.5 font-mono">${p.nominalMaxU.toFixed(3)}</td><td class="p-1.5">${p.nominalMechanism}</td></tr>`)
+        .join('');
+      el('bt14-pareto-table').innerHTML = `
+        <div class="font-bold text-slate-800 mb-1">Tập Phương án Pareto (${bt14.paretoFront.length} phương án / ${bt14.totalEvaluated} đã khảo sát • Cơ sở TCVN 5574:2018):</div>
+        <table class="w-full border-collapse text-xs">
+          <thead><tr class="bg-slate-100 text-left"><th class="p-1.5">Phương án</th><th class="p-1.5">Tầng</th><th class="p-1.5">Dung sai e</th><th class="p-1.5">U_max</th><th class="p-1.5">Cơ chế chi phối</th></tr></thead>
+          <tbody>${pRows || '<tr><td colspan="5" class="p-2 text-amber-700">Không có phương án khả thi trong miền khảo sát hiện tại.</td></tr>'}</tbody>
+        </table>
+      `;
+    }
+  }
+
+  function runSweepAndPareto() {
+    if (!lastResults?.bt00?.valid) return;
+    const cfg = readFormConfig();
+    const scheme = el('inp-scheme')?.value || 'S2';
+    const baseCount = Number(el('inp-baseCount')?.value || 5);
+    const scenario = el('inp-sysScenario')?.value || 'alternating';
+    const toleranceMode = el('inp-tolMode')?.value || 'global_axis';
+    const m2 = cfg.m2Config || {};
+    const processInput = {
+      L_cang_m: m2.L_cang_m || lastResults.bt00.summarySI.L,
+      anchorSlip_mm: m2.anchorSlip_mm ?? 2.0,
+      measurementStage: m2.measurementStage || 'before_anchoring',
+      deltaT_K: m2.deltaT_K ?? 0,
+      zeroDeltaTJustification: 'Giả thiết thép DƯL và thiết bị giữ lực cùng trong hầm sấy (TCVN 5574:2018 Mục 9.1.4).',
+    };
+    const optOptions = {
+      nMin: 2,
+      nMax: 6,
+      baseCount,
+      x1_nom_m: cfg.beamM1.x1_m,
+      x2_nom_m: cfg.beamM1.x2_m,
+      eccMax_m: 0.45,
+      eccStep_m: 0.05,
+      scenario,
+      toleranceMode,
+      processInput,
+      contactArcAngle_deg: m2.contactArcAngle_deg ?? 20,
+    };
+
+    el('stack-status-badge').textContent = 'Đang chạy Web Worker (BT13 & BT14)...';
+    try {
+      if (!calcWorker && typeof Worker !== 'undefined') {
+        calcWorker = new Worker('../workers/calculation_worker.js', { type: 'module' });
+      }
+      if (calcWorker) {
+        calcWorker.onmessage = (ev) => {
+          const { ok, result, error } = ev.data;
+          if (!ok) {
+            el('stack-status-badge').textContent = 'Lỗi Worker: ' + error;
+            return;
+          }
+          lastBT14Result = result;
+          lastBT13Result = result.scans[scheme] || result.scans.S2;
+          el('stack-status-badge').textContent = `Hoàn tất Worker: ${result.totalEvaluated} phương án, ${result.paretoFront.length} Pareto`;
+          renderBT13AndBT14Plots(lastBT13Result, lastBT14Result);
+        };
+        calcWorker.postMessage({ taskId: Date.now(), type: 'RUN_BT14', payload: { pileConfig: cfg, optOptions } });
+        return;
+      }
+    } catch (_) {
+      // Fallback đồng bộ nếu trình duyệt không hỗ trợ Module Worker
+    }
+    lastBT14Result = runBT14ParetoOptimizer({ bt00: lastResults.bt00, ...optOptions });
+    lastBT13Result = lastBT14Result.scans[scheme] || lastBT14Result.scans.S2;
+    el('stack-status-badge').textContent = `Hoàn tất BT13 & BT14 (${lastBT14Result.paretoFront.length} Pareto)`;
+    renderBT13AndBT14Plots(lastBT13Result, lastBT14Result);
+  }
+
+  el('btn-run-stack')?.addEventListener('click', runStackAndRender);
+  el('btn-run-sweep-pareto')?.addEventListener('click', runSweepAndPareto);
+  el('chk-compare-ec2')?.addEventListener('change', runStackAndRender);
 
   // Khôi phục từ LocalStorage hoặc nạp mặc định PHC-A600
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -916,6 +1228,7 @@ async function initApp() {
     renderReferenceBox(currentReference);
   }
   runCalculationAndRender();
+  runStackAndRender();
 }
 
 initApp();
